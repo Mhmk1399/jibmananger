@@ -20,10 +20,6 @@ const fileSchema = new mongoose.Schema({
   uploadDate: {
     type: Date,
     default: Date.now
-  },
-  storeId: {
-    type: String,
-    required: true
   }
 }, {
   timestamps: true

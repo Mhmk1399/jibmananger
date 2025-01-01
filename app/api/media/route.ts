@@ -28,13 +28,7 @@ export async function POST(request: Request) {
                 { status: 401 }
             );
         }
-        // const verifiedtoken = jwt.verify(token, process.env.JWT_SECRET!);
-        // if (!verifiedtoken) {
-        //     return NextResponse.json(
-        //         { message: "Unauthorized" },
-        //         { status: 401 }
-        //     );
-        // }
+      
         const decodedToken = jwt.decode(token) as CustomJwtPayload;
         if (!decodedToken) {
             return NextResponse.json(
@@ -42,8 +36,8 @@ export async function POST(request: Request) {
                 { status: 401 }
             );
         }
-        const targetDirectory = decodedToken.targetDirectory;
-        const uploadsDir = join(targetDirectory, "public", "uploads");
+        
+        const uploadsDir = join( "public", "uploads");
 
         const formData = await request.formData();
         const file = formData.get("file") as File;
@@ -77,7 +71,6 @@ export async function POST(request: Request) {
             fileType: file.type,
             fileSize: file.size,
             uploadDate: new Date(),
-            storeId: decodedToken.storeId
         });
 
         await newFile.save();
