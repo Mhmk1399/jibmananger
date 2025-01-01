@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ray } from "@/next-persian-fonts/ray";
 import "./globals.css";
+import Footer from "@/components/footer";
 
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
         className={ray.className}
       >
         {children}
+        <Footer />
       </body>
     </html>
   );
