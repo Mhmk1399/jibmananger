@@ -4,7 +4,7 @@ import Plus from "./plus";
 const Footer = () => {
   return (
     /* From Uiverse.io by cf2-exe */
-    <div className="flex justify-center items-center relative transition-all duration-[450ms] ease-in-out w-auto h-fit mx-4 mt-[32rem]">
+    <div className="flex justify-center items-center  transition-all duration-[450ms] ease-in-out w-auto h-fit  fixed bottom-0 inset-x-0 mx-4 mb-2 opacity-80">
       <article className="border border-solid border-white w-full ease-in-out duration-500 left-0 rounded-2xl h-fit flex shadow-lg shadow-gray-400/70 bg-blue-600 backdrop-blur-md">
         <label
           className="has-[:checked]:shadow-lg relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-white rounded-xl"
@@ -43,7 +43,8 @@ const Footer = () => {
           </svg>
         </label>
         <label
-          className="has-[:checked]:shadow-lg relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
+          className="
+          has-[:checked]:shadow-lg relative w-full h-16 p-4 ease-in-out duration-300 border-solid border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-black rounded-xl"
           htmlFor="profile"
         >
           <input

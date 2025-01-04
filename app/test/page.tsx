@@ -11,7 +11,10 @@ import { rayBold } from '@/next-persian-fonts/ray'
       bankAccount: '',
       description: ''
     })
-  
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault()
+      console.log(formData)
+    }
     const formatNumber = (value: string) => {
       const numberOnly = value.replace(/\D/g, '')
       return numberOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -35,8 +38,8 @@ import { rayBold } from '@/next-persian-fonts/ray'
             
 
   return (
-    <div className={`${rayBold.variable} font-ray min-h-screen bg-white p-4`} dir="rtl">
-      <div className="max-w-md mx-auto">
+    <div className={`${rayBold.variable} font-ray min-h-screen bg-white p-4 w-full mb-96`} dir="rtl">
+      <div className=" mx-auto">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">ثبت تراکنش جدید</h1>
         
         <div className="bg-gray-100 p-1 rounded-xl mb-6">
@@ -134,6 +137,7 @@ import { rayBold } from '@/next-persian-fonts/ray'
             className={`w-full py-4 rounded-lg text-white font-medium shadow-lg ${
               transactionType === 'income' ? 'bg-green-500' : 'bg-[#ff6961]'
             }`}
+            onClick={handleSubmit}
           >
             ثبت تراکنش
           </motion.button>

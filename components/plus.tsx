@@ -3,7 +3,7 @@ import React from "react";
 const Plus = () => {
   return (
     <label
-      className="has-[:checked]:shadow-lg  w-full h-16 p-4 ease-in-out duration-300 border-solid bg-blue-600  border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-black rounded-full"
+      className="has-[:checked]:shadow-lg w-full p-4  ease-in-out duration-300 border-solid bg-blue-600  border-black/10 has-[:checked]:border group flex flex-row gap-3 items-center justify-center text-black rounded-full"
       htmlFor="messages"
     >
       <input
@@ -18,6 +18,7 @@ const Plus = () => {
         viewBox="0 0 24 24"
         fill="#fffffff"
         xmlns="http://www.w3.org/2000/svg"
+        className="w-26 h-26"
       >
         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
         <g
