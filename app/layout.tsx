@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ray } from "@/next-persian-fonts/ray";
 import "./globals.css";
 import Footer from "@/components/footer";
-
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,9 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={ray.className}
-      >
+      <body className={ray.className}>
+        <Toaster position="top-right" />
+
         {children}
         <Footer />
       </body>

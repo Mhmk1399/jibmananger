@@ -1,10 +1,17 @@
+import CircularProgress from "@/components/circle";
 import Footer from "@/components/footer";
+import Notification from "@/components/notification";
+import Plan from "@/components/plan";
 import Profile from "@/components/profile";
+import Welcome from "@/components/welcome";
 
 const page = () => {
   return (
-    <div>
+    <div className="flex flex-col min-h-screen bg-purple-100">
       <Profile />
+      <Welcome />
+      <CircularProgress />
+      <Plan />
     </div>
   );
 };
