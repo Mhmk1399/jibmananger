@@ -7,7 +7,6 @@ export default function RegisterPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -16,9 +15,10 @@ export default function RegisterPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-
+    console.log(phoneNumber, name, password);
+    
   
-
+    
     try {
       const res = await fetch("/api/auth", {
         method: "POST",
@@ -27,7 +27,7 @@ export default function RegisterPage() {
         },
         body: JSON.stringify({ phoneNumber, name, password }),
       });
-
+      
       const data = await res.json();
 
       if (res.ok) {

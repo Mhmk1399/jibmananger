@@ -10,8 +10,7 @@ const bankSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    AccountBalance
-: {
+    AccountBalance: {
         type: Number,
         required: false,
     },
