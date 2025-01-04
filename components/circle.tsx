@@ -2,7 +2,7 @@ import React from "react";
 
 const CircularProgress = () => {
   return (
-    <div className="flex flex-col items-center w-fit mx-auto justify-center mt-4 border  border-gray-800 rounded-lg p-4">
+    <div className="flex flex-col items-center w-full mx-auto justify-center mt-4 border  border-gray-800 rounded-lg p-4">
       <div className="relative ">
         {/* Circular Progress Background */}
         <svg className="w-40 h-40" viewBox="0 0 36 36">
@@ -69,7 +69,7 @@ const CircularProgress = () => {
       </div>
 
       {/* Footer Text */}
-      <p className="mt-6 text-gray-400">شما هنوز هیچ پرداختی ثبت نکرده‌اید.</p>
+      <p className="mt-6 text-gray-400">شما هنوز هیچ پرداختی ثبت نکرده‌اید</p>
     </div>
   );
 };

@@ -1,6 +1,4 @@
 import CircularProgress from "@/components/circle";
-import Footer from "@/components/footer";
-import Notification from "@/components/notification";
 import Plan from "@/components/plan";
 import Profile from "@/components/profile";
 import Welcome from "@/components/welcome";

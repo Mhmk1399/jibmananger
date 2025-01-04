@@ -3,6 +3,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import UpdateProfileModal from "./updateProfile";
 import LogoutModal from "./logOut";
+import {
+  UserIcon,
+  ArrowLeftStartOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 
 const Profile = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -106,21 +110,25 @@ const Profile = () => {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="absolute right-0 mt-4 w-48 bg-purple-600 rounded-2xl shadow-lg z-10 backdrop-blur-sm bg-white/90"
+                className="absolute right-0 mt-4 w-48 p-2 rounded-2xl shadow-lg z-10 backdrop-blur-md border border-gray-100 bg-white/20"
               >
                 <motion.button
-                  whileHover={{ backgroundColor: "#f3f4f6", color: "#111827" }}
-                  className="block px-4 py-2 text-right rounded-2xl text-sm text-gray-100 w-full"
+                  whileHover={{ backgroundColor: "#ffffff" }}
+                  className="block px-4 py-2 text-right rounded-2xl text-sm  w-full"
                   onClick={() => setIsUpdateModalOpen(true)}
                 >
-                  بروزرسانی پروفایل
+                  <span className="text-purple-600 font-medium">
+                    بروزرسانی پروفایل
+                  </span>
+                  <UserIcon className="w-4 inline h-4 ml-2 text-purple-800" />
                 </motion.button>
                 <motion.button
-                  whileHover={{ backgroundColor: "#f3f4f6", color: "#111827" }}
-                  className="block px-4 py-2 text-sm rounded-2xl text-gray-100 w-full text-right"
+                  whileHover={{ backgroundColor: "#ffffff" }}
+                  className="block px-4 py-2 text-sm rounded-2xl w-full text-right"
                   onClick={() => setIsLogoutModalOpen(true)}
                 >
-                  خروج
+                  <span className="text-purple-600 font-medium">خروج</span>
+                  <ArrowLeftStartOnRectangleIcon className="w-4 h-4 ml-2 inline  text-purple-800" />{" "}
                 </motion.button>
               </motion.div>
             )}

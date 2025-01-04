@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { ray } from "@/next-persian-fonts/ray";
 import "./globals.css";
 import Footer from "@/components/footer";
+import ScrollToTop from "../components/scrollToTop";
+
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
@@ -20,6 +22,7 @@ export default function RootLayout({
         <Toaster position="top-right" />
 
         {children}
+        <ScrollToTop />
         <Footer />
       </body>
     </html>

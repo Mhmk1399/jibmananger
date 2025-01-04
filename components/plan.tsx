@@ -20,7 +20,7 @@ const Plan: React.FC = () => {
         dir="rtl"
       >
         <motion.div
-          className="flex-1 bg-gradient-to-br from-emerald-300 w-[50%] to-emerald-100 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="flex-1 bg-gradient-to-br from-[#2ec4b6] w-[50%] to-emerald-100 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
           whileHover={{ scale: 1.02 }}
           initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
@@ -50,7 +50,7 @@ const Plan: React.FC = () => {
         </motion.div>
 
         <motion.div
-          className="flex-1 bg-gradient-to-br from-rose-300 to-rose-100 p-4  w-[50%] rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="flex-1 bg-gradient-to-br from-[#ff758f]  to-red-100 p-4  w-[50%] rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
           whileHover={{ scale: 1.02 }}
           initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
@@ -63,7 +63,7 @@ const Plan: React.FC = () => {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-800">پرداختی</h3>
-              <p className="text-lg font-bold text-rose-600">3,240.00</p>
+              <p className="text-lg font-bold text-[#c9184a]">3,240.00</p>
             </div>
           </div>
           <div className="mt-4">
