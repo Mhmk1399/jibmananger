@@ -11,15 +11,15 @@ const GroupDetailsPage = ({ params }: { params: { id: string } }) => {
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <Overview groupId={params.id} />;
+        return <Overview  />;
       case 'members':
-        return <Members groupId={params.id} />;
+        return <Members  params={params}   />;
       case 'transactions':
         return <Transactions groupId={params.id} />;
       case 'chat':
         return <Chat groupId={params.id} />;
       default:
-        return <Overview groupId={params.id} />;
+        return <Overview  />;
     }
   };
 
