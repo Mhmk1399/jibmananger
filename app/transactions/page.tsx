@@ -1,13 +1,22 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { rayBold } from "@/next-persian-fonts/ray";
 import PriceInput from "../../components/priceInput";
-
+import LoadingComponent from '../../components/loading'
+ interface Recipient {
+    _id: string;
+    name: string;
+    phoneNumber: string;   
+  }
+ 
+  
 const Page = () => {
   const [transactionType, setTransactionType] = useState<"income" | "outcome">(
     "income"
   );
+  const [recipients, setRecipients] = useState<Recipient[]>([]);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     amount: "",
     category: "",
@@ -20,15 +29,32 @@ const Page = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
-  const cleanFormData = {
-    ...formData,
-    accountBalance: formData.amount.replace(/,/g, ""),
-  };
+
   const formatNumber = (value: string) => {
     const numberOnly = value.replace(/\D/g, "");
     return numberOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-
+  useEffect(() => {
+    const fetchRecipients = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/recipients', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setRecipients(data.recipients);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error fetching recipients:', error);
+      }
+    };
+  
+    fetchRecipients();
+  }, []);
+  
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatNumber(e.target.value);
     setFormData((prev) => ({
@@ -48,8 +74,10 @@ const Page = () => {
       [name]: value,
     }));
   };
-
-  return (
+  if (loading) {
+    return <LoadingComponent />;
+  }
+   if(!loading){return (
     <div
       className={`${rayBold.variable} font-ray min-h-screen bg-white p-4 lg:p-8 w-full mb-20`}
       dir="rtl"
@@ -134,18 +162,20 @@ const Page = () => {
                 </option>
               </select>
               <div className="space-y-4">
-                <select
-                  name="recipient"
-                  value={formData.recipient}
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                  onChange={handleInputChange}
-                >
-                  <option value="">انتخاب گیرنده</option>
-                  <option value="ali">علی</option>
-                  <option value="reza">رضا</option>
-                  <option value="sara">سارا</option>
-                  <option value="maryam">مریم</option>
-                </select>
+              <select
+  name="recipient"
+  value={formData.recipient}
+  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+  onChange={handleInputChange}
+>
+  <option value="">انتخاب گیرنده</option>
+  {recipients.map((recipient) => (
+    <option key={recipient._id} value={recipient._id}>
+      {recipient.name}
+    </option>
+  ))}
+</select>
+
               </div>
             </div>
 
@@ -201,4 +231,5 @@ const Page = () => {
     </div>
   );
 };
+} 
 export default Page;
