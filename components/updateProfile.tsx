@@ -25,6 +25,27 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
 
   const [errors, setErrors] = useState<FormErrors>({});
 
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch(`/api/getOneUser`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+      const data = await response.json();
+      setFormData({
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        password: "", // Don't pre-fill the password for security reasons
+      });
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
   const validateForm = () => {
     const newErrors: FormErrors = {};
 
@@ -42,7 +63,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (!passwordRegex.test(formData.password)) {
       newErrors.password = "رمز عبور باید شامل حروف بزرگ، کوچک و اعداد باشد";
-    } else if (formData.password.length < 5) {
+    } else if (formData.password.length < 6) {
       newErrors.password = "رمز عبور باید حداقل ۶ کاراکتر باشد";
     }
 
@@ -58,25 +79,29 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
     }
 
     try {
-      const response = await fetch("/api/auth/update", {
-        method: "PUT",
+      const response = await fetch(`/api/getOneUser`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        toast.success("پروفایل با موفقیت بروزرسانی شد", {
+        const data = await response.json();
+        fetchUserData();
+        toast.success("حساب کاربری شما با موفقیت بروز شد!", {
           style: {
             direction: "rtl",
             backgroundColor: "#10B981",
             color: "white",
           },
         });
-        onClose();
+        onClose(); // Close the modal after successful update
       } else {
-        throw new Error("Update failed");
+        const errorData = await response.json();
+        toast.error(`خطا: ${errorData.error}`);
       }
     } catch (error) {
       toast.error("خطا در بروزرسانی پروفایل", {
@@ -108,7 +133,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
           duration: 0.5,
         }}
         exit={{ y: -100, opacity: 0 }}
-        className="bg-white/20 backdrop-blur-xl rounded-lg p-6 w-96 max-w-[90%] mx-4"
+        className="bg-white/10 backdrop-blur-xl rounded-xl p-6 w-96 max-w-[90%] mx-4"
         dir="rtl"
       >
         <h2 className="text-xl font-bold mb-4 text-purple-100 border-b text-center border-gray-100 pb-2">
@@ -182,11 +207,11 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
               </p>
             )}
           </div>
-          <div className="flex justify-end gap-2 mt-6">
+          <div className="flex justify-start gap-2 mt-6">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-white bg-purple-600 hover:bg-purple-700 rounded-md"
+              className="px-4 py-2 text-white bg-rose-600 hover:bg-rose-700 rounded-md"
             >
               انصراف
             </button>

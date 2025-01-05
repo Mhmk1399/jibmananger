@@ -5,10 +5,10 @@ const Welcome = () => {
   return (
     <div
       dir="rtl"
-      className="text-right mt-4 mx-2 bg-gradient-to-tr from-purple-50 to-purple-300 p-4 rounded-2xl border-2 border-purple-500 shadow-lg"
+      className="text-right mt-4  p-4 rounded-2xl border-2 border-purple-500 shadow-lg"
     >
         <Notification />
-      <h1 className="text-xl font-bold text-gray-100">
+      <h1 className="text-xl font-bold text-purple-400 ">
         به سامانه <br />{" "}
         <strong className="font-extrabold text-2xl text-purple-400">
           {" "}

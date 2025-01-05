@@ -3,6 +3,18 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import UpdateProfileModal from "./updateProfile";
 import LogoutModal from "./logOut";
+
+interface User {
+  _id: string;
+  name: string;
+  phoneNumber: number;
+  password: string;
+  role: "user" | "admin";
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 import {
   UserIcon,
   ArrowLeftStartOnRectangleIcon,
@@ -15,6 +27,30 @@ const Profile = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [user, setUser] = useState<User>();
+
+  // fetch user data
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("/api/getOneUser", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data, "data");
+          setUser(data);
+        }
+      } catch (error) {
+        console.log("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -65,7 +101,7 @@ const Profile = () => {
   };
 
   return (
-    <section className="flex flex-row-reverse items-center justify-between w-full h-16 px-4 bg-purple-500 shadow-md">
+    <section className="flex flex-row-reverse items-center justify-between w-full h-16 px-2 my-4 ">
       <div className="flex flex-col font-medium items-end justify-end h-fit w-full relative mt-2">
         <div className="relative" ref={dropdownRef}>
           <motion.div
@@ -74,8 +110,8 @@ const Profile = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className="text-gray-100 text-xs font-bold mr-3">
-              نام پنل کاربری
+            <span className="text-purple-700 text-xs font-bold mr-3">
+              {user?.name || "کاربر"}
             </span>
             <div className="w-8 h-10 overflow-hidden rounded-full">
               <motion.img
@@ -89,7 +125,7 @@ const Profile = () => {
               animate={{ rotate: isDropdownOpen ? 180 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="w-4 h-4 ml-1"
-              fill="#ffffff"
+              fill="#7e22ce"
               //   stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -117,10 +153,10 @@ const Profile = () => {
                   className="block px-4 py-2 text-right rounded-2xl text-sm  w-full"
                   onClick={() => setIsUpdateModalOpen(true)}
                 >
-                  <span className="text-purple-600 font-medium">
+                  <span className="text-purple-600 font-medium ">
                     بروزرسانی پروفایل
                   </span>
-                  <UserIcon className="w-4 inline h-4 ml-2 text-purple-800" />
+                  <UserIcon className="w-4 inline h-4 ml-2 text-purple-800 " />
                 </motion.button>
                 <motion.button
                   whileHover={{ backgroundColor: "#ffffff" }}
@@ -136,7 +172,7 @@ const Profile = () => {
         </div>
       </div>
       <div
-        className="w-full text-[0.7rem] font-bold mt-2 rounded-md flex text-gray-200 items-start justify-end"
+        className="w-full text-[0.7rem] font-bold mt-2 rounded-md flex text-purple-700 items-start justify-end"
         dir="rtl"
       >
         {mounted
@@ -157,7 +193,7 @@ const Profile = () => {
       <LogoutModal
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
-        onConfirm={() => {}}
+        // onConfirm={() => {}}
       />
     </section>
   );

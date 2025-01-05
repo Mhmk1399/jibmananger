@@ -1,20 +1,27 @@
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface LogoutModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: () => void;
+  // onConfirm: () => void;
 }
 
 const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
+  const router = useRouter();
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/auth/logout", {
-        method: "POST",
+      const response = await fetch("/api/getOneUser", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
 
       if (response.ok) {
+        // Remove the token from local storage
+        localStorage.removeItem("token");
         toast.success("با موفقیت خارج شدید", {
           style: {
             direction: "rtl",
@@ -22,7 +29,18 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
             color: "white",
           },
         });
-        // Redirect to login page or home
+        // Redirect to login page
+        router.replace("/register");
+      } else if (response.status === 401) {
+        // Token not found or invalid
+        toast.error("توکن یافت نشد، لطفا دوباره وارد شوید", {
+          style: {
+            direction: "rtl",
+            backgroundColor: "#EF4444",
+            color: "white",
+          },
+        });
+        // Redirect to login page
         window.location.href = "/login";
       } else {
         throw new Error("Logout failed");
