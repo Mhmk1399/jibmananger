@@ -16,6 +16,7 @@ const GroupDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
         return <Overview />;
       case 'members':
         return <Members groupId={resolvedParams.id} />;
+        
       default:
         return <Overview />;
     }
