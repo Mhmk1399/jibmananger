@@ -20,7 +20,7 @@ const Plan: React.FC = () => {
         dir="rtl"
       >
         <motion.div
-          className="flex-1 bg-gradient-to-br from-[#2ec4b6] w-[50%] to-emerald-100 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
+          className="flex-1 bg-gradient-to-br from-green-500 w-[25%] to-white-100 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
           whileHover={{ scale: 1.02 }}
           initial={{ opacity: 0, y: 0 }}
           animate={{ opacity: 1, y: 0 }}
@@ -29,11 +29,11 @@ const Plan: React.FC = () => {
         >
           <div className="flex items-center gap-4">
             <div className="p-3 bg-emerald-500 rounded-full group-hover:bg-emerald-600 transition-colors">
-              <ArrowTrendingUpIcon className="w-4 h-4 text-white" />
+              <ArrowTrendingUpIcon className="w-4 h-4 text-gray-100" />
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-800">دریافتی</h3>
-              <p className="text-lg font-bold text-emerald-600">6,240.00</p>
+              <p className="text-lg font-bold text-white">6,240.00</p>
             </div>
           </div>
           <div className="mt-4">
@@ -63,7 +63,7 @@ const Plan: React.FC = () => {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-800">پرداختی</h3>
-              <p className="text-lg font-bold text-[#c9184a]">3,240.00</p>
+              <p className="text-lg font-bold text-gray-100">3,240.00</p>
             </div>
           </div>
           <div className="mt-4">
