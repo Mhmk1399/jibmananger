@@ -10,10 +10,6 @@ const resipientSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    amount: {
-        type: Number,
-        required: false,
-    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
