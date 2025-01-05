@@ -101,7 +101,7 @@ const Profile = () => {
   };
 
   return (
-    <section className="flex flex-row-reverse items-center justify-between w-full h-16 px-4 bg-purple-500 shadow-md">
+    <section className="flex flex-row-reverse items-center justify-between w-full h-16 px-2 my-4 ">
       <div className="flex flex-col font-medium items-end justify-end h-fit w-full relative mt-2">
         <div className="relative" ref={dropdownRef}>
           <motion.div
@@ -110,7 +110,7 @@ const Profile = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className="text-gray-100 text-xs font-bold mr-3">
+            <span className="text-purple-700 text-xs font-bold mr-3">
               {user?.name || "کاربر"}
             </span>
             <div className="w-8 h-10 overflow-hidden rounded-full">
@@ -125,7 +125,7 @@ const Profile = () => {
               animate={{ rotate: isDropdownOpen ? 180 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
               className="w-4 h-4 ml-1"
-              fill="#ffffff"
+              fill="#7e22ce"
               //   stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
@@ -172,7 +172,7 @@ const Profile = () => {
         </div>
       </div>
       <div
-        className="w-full text-[0.7rem] font-bold mt-2 rounded-md flex text-gray-200 items-start justify-end"
+        className="w-full text-[0.7rem] font-bold mt-2 rounded-md flex text-purple-700 items-start justify-end"
         dir="rtl"
       >
         {mounted
