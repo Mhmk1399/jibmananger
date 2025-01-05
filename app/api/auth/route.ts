@@ -24,13 +24,10 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
       role: "user",
     });
-    const token = jwt.sign(
-      { id: newUser._id },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1h" }
-    );
+    const secret = process.env.JWT_SECRET || '1234';
+    const token = jwt.sign({ id: newUser._id }, secret ,{ expiresIn: '100h' });
     newUser.token = token;
-
+    
     await newUser.save();
 
     return NextResponse.json(

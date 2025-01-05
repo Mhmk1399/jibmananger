@@ -3,13 +3,19 @@ import jwt from "jsonwebtoken";
 
 export const getDataFromToken = (request: NextRequest) => {
     try {
+
         const authHeader = request.headers.get("authorization");
+        console.log(authHeader);
+        
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             throw new Error("No token provided");
         }
 
         const token = authHeader.split(' ')[1];
-        const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET!);
+        if (!token) {
+            throw new Error("No token provided");
+        }
+            const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET!);
         return decodedToken.id;
     } catch (error: any) {
         throw new Error("Authentication failed: " + error.message);

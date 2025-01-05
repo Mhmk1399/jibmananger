@@ -121,6 +121,7 @@ const Page = () => {
                 type="number"
                 name="shabaNumber"
                 placeholder="شماره شبا"
+                maxLength={24}
                 value={formData.shabaNumber}
                 onChange={handleInputChange}
                 className="w-full px-4 py-3  rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
@@ -138,7 +139,7 @@ const Page = () => {
             />
 
             <input
-              type="text"
+              type="phone"
               name="recipientPhoneNumber"
               placeholder="شماره همراه گیرنده"
               value={formData.recipientPhoneNumber}
