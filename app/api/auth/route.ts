@@ -19,9 +19,8 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
       role: "user",
     });
-    const token = jwt.sign({ id: newUser._id }, secret ,{ expiresIn: '1h' });
+    const token = jwt.sign({ id: newUser._id }, secret ,{ expiresIn: '100h' });
     newUser.token = token;
-   console.log(token)
     
     await newUser.save();
 
