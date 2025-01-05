@@ -4,7 +4,7 @@ import { User } from "@/models/users";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken'; // Fixed require() style import
 
-
+const secret = process.env.JWT_SECRET || '1234';
 
 export async function POST(request: NextRequest) {
   const { name, phoneNumber, password } = await request.json();
@@ -19,9 +19,9 @@ export async function POST(request: NextRequest) {
       password: hashedPassword,
       role: "user",
     });
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+    const token = jwt.sign({ id: newUser._id }, secret ,{ expiresIn: '1h' });
     newUser.token = token;
-    localStorage.setItem('token', token);
+   console.log(token)
     
     await newUser.save();
 
