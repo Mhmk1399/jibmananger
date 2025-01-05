@@ -28,7 +28,7 @@ const GroupsPage = () => {
 
   const fetchGroups = async () => {
     try {
-      const response = await fetch(`/api/groups?search=${search}`, {
+      const response = await fetch("/api/groups", {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
