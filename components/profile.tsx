@@ -3,6 +3,18 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import UpdateProfileModal from "./updateProfile";
 import LogoutModal from "./logOut";
+
+interface User {
+  _id: string;
+  name: string;
+  phoneNumber: number;
+  password: string;
+  role: "user" | "admin";
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 import {
   UserIcon,
   ArrowLeftStartOnRectangleIcon,
@@ -15,6 +27,30 @@ const Profile = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [user, setUser] = useState<User>();
+
+  // fetch user data
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("/api/getOneUser", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data, "data");
+          setUser(data);
+        }
+      } catch (error) {
+        console.log("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -75,7 +111,7 @@ const Profile = () => {
             whileTap={{ scale: 0.95 }}
           >
             <span className="text-gray-100 text-xs font-bold mr-3">
-              نام پنل کاربری
+              {user?.name || "کاربر"}
             </span>
             <div className="w-8 h-10 overflow-hidden rounded-full">
               <motion.img
@@ -117,10 +153,10 @@ const Profile = () => {
                   className="block px-4 py-2 text-right rounded-2xl text-sm  w-full"
                   onClick={() => setIsUpdateModalOpen(true)}
                 >
-                  <span className="text-purple-600 font-medium">
+                  <span className="text-purple-600 font-medium ">
                     بروزرسانی پروفایل
                   </span>
-                  <UserIcon className="w-4 inline h-4 ml-2 text-purple-800" />
+                  <UserIcon className="w-4 inline h-4 ml-2 text-purple-800 " />
                 </motion.button>
                 <motion.button
                   whileHover={{ backgroundColor: "#ffffff" }}
@@ -157,7 +193,7 @@ const Profile = () => {
       <LogoutModal
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
-        onConfirm={() => {}}
+        // onConfirm={() => {}}
       />
     </section>
   );
