@@ -24,21 +24,21 @@ const Page = () => {
     const value = e.target.value.replace(/\D/g, '').replace(/(\d{4})/g, '$1 ').trim()
     setFormData(prev => ({ ...prev, cardNumber: value }))
 
-      // Detect bank
-    }
-   
-  
- 
+    // Detect bank
+  }
+
+
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     const cleanFormData = {
       ...formData,
       accountBalance: formData.accountBalance.replace(/,/g, ''),
       cardNumber: formData.cardNumber.replace(/\s/g, '')
     }
     console.log(cleanFormData);
-    
+
     try {
       const response = await fetch('/api/banks', {
         method: 'POST',
@@ -61,19 +61,19 @@ const Page = () => {
     } catch (error) {
       console.error('Error adding bank:', error)
     }
-}
+  }
 
 
   // Update the handleInputChange function to handle account balance formatting
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
-    
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }))
-    
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+
   }
   // Add this function before the return statement
   const handleExpiryDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,16 +106,16 @@ const Page = () => {
             />
 
             <div className="relative lg:mt-4">
-           < PriceInput
-           value={formData.accountBalance}
-           onChange={handleInputChange}
-           />
+              < PriceInput
+                value={formData.accountBalance}
+                onChange={handleInputChange}
+              />
 
             </div>
 
             <div className="relative">
               <CardInput value={formData.cardNumber} onChange={handleCardNumberChange} />
-              
+
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -141,14 +141,19 @@ const Page = () => {
 
             </div>
 
-            <input
-              type="text"
-              name="shabaNumber"
-              placeholder="شماره شبا"
-              value={formData.shabaNumber}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-            />
+            <div className='relative'>
+              <input
+                type="number"
+                name="shabaNumber"
+                placeholder="شماره شبا"
+                value={formData.shabaNumber}
+                onChange={handleInputChange}
+                maxLength={24}
+                className="w-full px-4 py-3  rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+              />
+              {formData.shabaNumber && <span className="absolute left-2 top-3 text-lg text-gray-400">IR</span>}
+
+            </div>
           </div>
 
           <motion.button

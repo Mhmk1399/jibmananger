@@ -129,16 +129,18 @@ const Page = () => {
                 className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
               />
             </div>
+            <div className='relative'>
+              <input
+                type="number"
+                name="shabaNumber"
+                placeholder="شماره شبا"
+                value={formData.shabaNumber}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3  rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+              />
+              {formData.shabaNumber && <span className="absolute left-2 top-3 text-lg text-gray-400">IR</span>}
 
-            <input
-              type="text"
-              name="shabaNumber"
-              placeholder="شماره شبا"
-              value={formData.shabaNumber}
-              onChange={handleInputChange}
-              className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-            />
-
+            </div>
             <input
               type="text"
               name="recipientName"
