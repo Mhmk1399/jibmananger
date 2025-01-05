@@ -17,7 +17,7 @@ const page = () => {
   }, [router]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-purple-50">
+    <div className="flex flex-col min-h-screen bg-purple-50 p-2">
       <Profile />
       <Welcome />
       <CircularProgress />
