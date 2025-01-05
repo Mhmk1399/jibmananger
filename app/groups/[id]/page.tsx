@@ -1,25 +1,23 @@
 'use client';
 import { useState } from 'react';
+import { use } from 'react';
 import { Members } from "../../../components/Members";
 import { Transactions } from "../../../components/Transactions";
 import { Chat } from "../../../components/Chat";
 import { Overview } from "../../../components/Overview";
 
-const GroupDetailsPage = ({ params }: { params: { id: string } }) => {
+const GroupDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  const resolvedParams = use(params);
   const [activeTab, setActiveTab] = useState('overview');
 
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
-        return <Overview  />;
+        return <Overview />;
       case 'members':
-        return <Members  params={params}   />;
-      case 'transactions':
-        return <Transactions groupId={params.id} />;
-      case 'chat':
-        return <Chat groupId={params.id} />;
+        return <Members groupId={resolvedParams.id} />;
       default:
-        return <Overview  />;
+        return <Overview />;
     }
   };
 

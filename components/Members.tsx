@@ -1,38 +1,61 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { UserPlus } from 'lucide-react';
-import { set } from 'mongoose';
 
 interface Member {
-  userId: {
-    name: string;
-    email: string;
-  };
-  role: string;
+  _id: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
 }
 
-export const Members = ({ params }: { params: { id: string } }) => {
+
+
+export const Members = ({ groupId }: { groupId: string }) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
-  const [newMemberPhoneNumber, setNewMemberPhoneNumber] = useState('');
+  const [newMemberData, setNewMemberData] = useState({
+    name: '',
+    phoneNumber: ''
+  });
+
+  useEffect(() => {
+    fetchMembers();
+  }, [groupId]);
+
+  const fetchMembers = async () => {
+    try {
+      const response = await fetch(`/api/groups/${groupId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      const data = await response.json();
+      if (data.success) {
+        setMembers(data.stats.groupInfo.members);
+      }
+    } catch (error) {
+      console.error('Error fetching members:', error);
+    }
+  };
 
   const handleAddMember = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-
-      const response = await fetch(`/api/groups/${params.id}`, {
+      const response = await fetch(`/api/groups/${groupId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ phoneNumber: newMemberPhoneNumber }),
+        body: JSON.stringify(newMemberData),
       });
       const data = await response.json();
+      
       if (data.success) {
-        setMembers([...members, data.data.member]);
+        await fetchMembers();
         setShowAddMemberModal(false);
-        setNewMemberPhoneNumber('');
+        setNewMemberData({ name: '', phoneNumber: '' });
       }
     } catch (error) {
       console.error('Error adding member:', error);
@@ -55,15 +78,12 @@ export const Members = ({ params }: { params: { id: string } }) => {
       <div className="bg-white rounded-lg shadow">
         <ul className="divide-y divide-gray-200">
           {members.map((member) => (
-            <li key={member.userId.email} className="px-6 py-4 hover:bg-gray-50 transition-colors">
+            <li key={member._id} className="px-6 py-4 hover:bg-gray-50 transition-colors">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{member.userId.name}</p>
-                  <p className="text-sm text-gray-500">{member.userId.email}</p>
+                  <p className="text-sm font-medium text-gray-900">{member.name}</p>
+                  <p className="text-sm text-gray-500">{member.phoneNumber}</p>
                 </div>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                  {member.role}
-                </span>
               </div>
             </li>
           ))}
@@ -76,11 +96,21 @@ export const Members = ({ params }: { params: { id: string } }) => {
             <h2 className="text-2xl font-bold mb-4">Add New Member</h2>
             <form onSubmit={handleAddMember}>
               <div className="mb-4">
+                <label className="block text-gray-700 mb-2">نام</label>
+                <input
+                  type="text"
+                  value={newMemberData.name}
+                  onChange={(e) => setNewMemberData({...newMemberData, name: e.target.value})}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
                 <label className="block text-gray-700 mb-2">شماره تماس</label>
                 <input
-                  type="Number"
-                  value={newMemberPhoneNumber}
-                  onChange={(e) => setNewMemberPhoneNumber(e.target.value)}
+                  type="text"
+                  value={newMemberData.phoneNumber}
+                  onChange={(e) => setNewMemberData({...newMemberData, phoneNumber: e.target.value})}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
                 />
