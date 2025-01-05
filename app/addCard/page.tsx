@@ -109,6 +109,7 @@ const Page = () => {
               < PriceInput
                 value={formData.accountBalance}
                 onChange={handleInputChange}
+                name="موجودی حساب"
               />
 
             </div>
