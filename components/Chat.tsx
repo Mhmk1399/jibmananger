@@ -1,51 +1,54 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
+'use client'
+import { useEffect, useState } from 'react'
+import { getSocket } from '@/lib/socket-client'
 
 interface Message {
-    name: string;
-    text: string;
+    userId: string
+    text: string
 }
 
 export const Chat = ({ groupId, userId }: { groupId: string; userId: string }) => {
-    const [socket, setSocket] = useState<Socket | null>(null);
-    const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([])
+    const [message, setMessage] = useState('')
 
     useEffect(() => {
-        const newSocket = io('http://localhost:3000');
-        setSocket(newSocket);
+        const socket = getSocket()
+        
+        socket.emit('enterRoom', { userId, groupId })
 
-        newSocket.emit('enterRoom', { userId, groupId });
-
-        newSocket.on('message', (message: Message) => {
-            setMessages(prev => [...prev, message]);
-        });
+        socket.on('message', (newMessage: Message) => {
+            setMessages(prev => [...prev, newMessage])
+        })
 
         return () => {
-            newSocket.close();
-        };
-    }, [groupId, userId]);
+            socket.off('message')
+        }
+    }, [groupId, userId])
 
     const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (message.trim() && socket) {
+        e.preventDefault()
+        const socket = getSocket()
+        
+        if (message.trim()) {
             socket.emit('message', {
                 userId,
                 groupId,
                 text: message
-            });
-            setMessage('');
+            })
+            setMessage('')
         }
-    };
+    }
 
     return (
         <div className="flex flex-col h-full">
             <div className="flex-1 overflow-y-auto p-4">
                 {messages.map((msg, i) => (
-                    <div key={i} className="mb-2">
-                        <span className="font-bold">{msg.name}: </span>
-                        <span>{msg.text}</span>
+                    <div key={i} className={`mb-2 ${msg.userId === userId ? 'text-right' : ''}`}>
+                        <div className={`inline-block p-2 rounded ${
+                            msg.userId === userId ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                        }`}>
+                            {msg.text}
+                        </div>
                     </div>
                 ))}
             </div>
@@ -59,5 +62,5 @@ export const Chat = ({ groupId, userId }: { groupId: string; userId: string }) =
                 />
             </form>
         </div>
-    );
-};
+    )
+}
