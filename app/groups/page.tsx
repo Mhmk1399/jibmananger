@@ -39,6 +39,11 @@ const GroupsPage = () => {
       if (data.success) {
         setGroups(data.groups);
       }
+      console.log(data);
+      const groupToken = data.groupToken;
+      localStorage.setItem('groupToken', groupToken);
+      console.log(groupToken);
+      
     } catch (error) {
       console.error('Error fetching groups:', error);
     } finally {

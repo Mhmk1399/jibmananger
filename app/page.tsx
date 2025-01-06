@@ -21,7 +21,7 @@ const page = () => {
       <Profile />
       <Welcome />
       <CircularProgress />
-      <Plan />
+      {/* <Plan /> */}
     </div>
   );
 };

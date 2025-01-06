@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 
             },
             process.env.JWT_SECRET as string,
-            { expiresIn: "1h" }
+            { expiresIn: "5h" }
         );
         console.log(token);
         return NextResponse.json({
