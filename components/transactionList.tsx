@@ -2,8 +2,6 @@
 import { motion } from "framer-motion";
 import { format } from "date-fns-jalali"; // For Persian date formatting
 import { useEffect, useState } from "react";
-// import Calendar from "react-modern-calendar-datepicker";
-// import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import PersianDatePicker from "../components/calender";
 import { DateObject } from "react-multi-date-picker";
 
