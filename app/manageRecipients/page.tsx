@@ -30,6 +30,7 @@ export default function ManageRecipients() {
       const data = await response.json()
       setRecipients(data.recipients)
     } catch (error) {
+      console.error('Error fetching recipients:', error)
       toast.error('خطا در دریافت اطلاعات دریافت‌کنندگان')
     }
   }
@@ -48,6 +49,7 @@ export default function ManageRecipients() {
         fetchRecipients()
       }
     } catch (error) {
+      console.error('Error deleting recipient:', error)
       toast.error('خطا در حذف دریافت‌کننده')
     }
   }
@@ -72,6 +74,7 @@ export default function ManageRecipients() {
         fetchRecipients()
       }
     } catch (error) {
+      console.error('Error updating recipient:', error)
       toast.error('خطا در ویرایش دریافت‌کننده')
     }
   }

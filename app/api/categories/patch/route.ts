@@ -21,10 +21,10 @@ export async function PATCH(req: NextRequest) {
             success: true,
             category: updatedCategory
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 }

@@ -14,11 +14,11 @@ export const GET = async (req: NextRequest) => {
             success: true,
             categories,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message,
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 };
 
@@ -37,10 +37,10 @@ export const POST = async (req: NextRequest) => {
             success: true,
             savedCategory,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message,
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 };

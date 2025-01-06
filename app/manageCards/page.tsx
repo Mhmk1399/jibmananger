@@ -99,6 +99,7 @@ export default function ManageCards() {
       console.log(data);
       
     } catch (error) {
+      console.error(error)
       toast.error('خطا در دریافت اطلاعات کارت‌ها')
     }
   }
@@ -118,6 +119,7 @@ export default function ManageCards() {
         fetchBanks()
       }
     } catch (error) {
+      console.error(error)
       toast.error('خطا در حذف کارت')
     }
   }
@@ -146,6 +148,7 @@ export default function ManageCards() {
         fetchBanks()
       }
     } catch (error) {
+      console.error(error)
       toast.error('خطا در ویرایش کارت')
     }
   }

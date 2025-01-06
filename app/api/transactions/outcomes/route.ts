@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
 import { Outcome } from "@/models/transactions/outcome";
-import { verifyJwtToken } from "@/lib/verifyJwtToken"; 
+import { verifyJwtToken } from "@/lib/verifyJwtToken";
 import { getDataFromToken } from "@/lib/getDataFromToken";
 export async function GET(req: NextRequest) {
     try {
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json(outcomes);
     } catch (error) {
-        return NextResponse.json({ message: "Error fetching outcomes" ,detials:error }, { status: 500 });
+        return NextResponse.json({ message: "Error fetching outcomes", detials: error }, { status: 500 });
     }
 }
 
@@ -43,26 +43,28 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json(outcome, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ message: "Error creating outcome",detials:error }, { status: 500 });
+        return NextResponse.json({ message: "Error creating outcome", detials: error }, { status: 500 });
     }
 }
 export async function DELETE(req: NextRequest) {
     try {
         await connect();
-        const userId= await getDataFromToken(req);
+        const userId = await getDataFromToken(req);
         const id = await req.headers.get('id');
         await Outcome.findOneAndDelete({ user: userId, _id: id });
         return NextResponse.json({
             success: true,
-            message: "Outcome deleted successfully"})
-            } catch (error: any) {
+            message: "Outcome deleted successfully"
+        })
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message
-        });
-        
-    }
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
+    };
+
 }
+
 export async function PATCH(req: NextRequest) {
     try {
         await connect();
@@ -70,7 +72,7 @@ export async function PATCH(req: NextRequest) {
         const id = await req.headers.get('id');
         const reqBody = await req.json();
         const updatedOutcome = await Outcome.findOneAndUpdate(
-            { user: userId , _id: id },
+            { user: userId, _id: id },
             reqBody,
             { new: true }
         );
@@ -78,10 +80,10 @@ export async function PATCH(req: NextRequest) {
             success: true,
             income: updatedOutcome
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 }

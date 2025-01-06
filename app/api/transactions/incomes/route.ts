@@ -55,14 +55,15 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({
             success: true,
             message: "Income deleted successfully"})
-            } catch (error: any) {
-        return NextResponse.json({
-            success: false,
-            error: error.message
-        });
+        } catch (error: unknown) {
+            return NextResponse.json({
+                success: false,
+                error: error instanceof Error ? error.message : 'An unknown error occurred'
+            }, { status: 500 });
+        }
         
     }
-}
+
 export async function PATCH(req: NextRequest) {
     try {
         await connect();
@@ -78,10 +79,10 @@ export async function PATCH(req: NextRequest) {
             success: true,
             income: updatedIncome
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 }

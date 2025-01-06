@@ -66,6 +66,7 @@ export async function PATCH(request: NextRequest, context: { params: Promise<{ i
             group: updatedGroup,
         }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to update group" }, { status: 500 });
+
+        return NextResponse.json({ error: "Failed to update group" ,detials:error }, { status: 500 });
     }
 }

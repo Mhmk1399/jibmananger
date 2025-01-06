@@ -15,7 +15,7 @@ const GroupDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
         return <Overview />;
       case "اعضاء":
         return <Members groupId={resolvedParams.id} />;
-      case "transactions":
+      case "تراکنشها":
         return <Transactions params={resolvedParams} />;
 
       default:
