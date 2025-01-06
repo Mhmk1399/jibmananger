@@ -92,9 +92,9 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           console.log(data, "data");
         }
       } catch (error) {
-        console.error("Error fetching transactions:", error);
+        console.log("Error fetching transactions:", error);
       } finally {
-        console.log("Loading finished",loading);
+        console.log("Loading finished", loading);
         setLoading(false);
       }
     };
@@ -295,7 +295,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         <div className="flex gap-2 justify-between mb-4">
           <button
             onClick={() => setDateModalOpen(true)}
-            className="bg-gray-300 text-black px-3 py-3 rounded-full"
+            className="bg-purple-400 px-3 py-3 rounded-full"
           >
             <svg
               width="15px"
@@ -321,7 +321,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           </button>
           <button
             onClick={() => setNameModalOpen(true)}
-            className="bg-gray-300 text-white px-3 py-3 rounded-full"
+            className="bg-purple-400 px-3 py-3 rounded-full"
           >
             <svg
               width="15px"
@@ -349,39 +349,47 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         </div>
       </div>
 
-      <div className="bg-gray-100 rounded-xl overflow-x-auto shadow-lg p-4">
+      <div className=" rounded-xl overflow-x-auto shadow-lg">
         {transactions.length > 0 ? (
           <table className="w-full overflow-x-auto">
             <thead>
-              <tr className="border-b border-white">
+              <tr className="border-b bg-slate-500 text-white">
                 <th className="text-center py-2 text-sm">تاریخ</th>
                 <th className="text-center py-2">توضیحات</th>
-                <th className="text-left py-2">مبلغ</th>
+                <th className="text-center py-2">مبلغ</th>
                 <th className="">{type === "income" ? "فرستنده" : "گیرنده"}</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-center">
               {transactions.map((transaction) => (
                 <tr
                   key={transaction._id}
-                  className="border-b hover:bg-gray-50 cursor-pointer transition-all duration-200"
+                  className={`border-b hover:bg-gray-300 ${type === "income" ? "hover:bg-emerald-100" : "hover:bg-red-100" } cursor-pointer transition-all duration-200`}
                   onClick={() => setSelectedTransaction(transaction)}
                 >
                   <td className="py-3">
                     {format(new Date(transaction.date), "yyyy/MM/dd")}
                   </td>
-                  <td className="py-3 text-sm">{transaction.description}</td>
+                  <td className="py-3 text-sm text-center" dir="rtl">
+                    {transaction.description.slice(0, 10)}
+                    {transaction.description.length > 20 ? "..." : ""}
+                  </td>
+
                   <td
-                    className={`py-1 px-1 text-nowrap text-sm text-left rounded-lg font-bold ${
+                    className={`py-1 text-nowrap text-xs text-center  font-bold ${
                       type === "income"
-                        ? "text-emerald-600 bg-emerald-100 "
-                        : "text-rose-600 bg-red-100"
+                        ? "text-emerald-700"
+                        : "text-rose-600"
                     }`}
                   >
                     {type === "income" ? "+" : "-"}
-                    {transaction.amount} تومان
+                   
+                    {transaction.amount}
+                    <span className="ml-1 text-[0.5rem]"> تومان</span>
+                    
+                    
                   </td>
-                  <td className="py-3 text-gray-600">
+                  <td className="py-3 text-gray-600 text-center">
                     {type === "income"
                       ? transaction.recipient.name
                       : transaction.recipient.name}
@@ -466,7 +474,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="bg-purple-400/20 backdrop-blur-lg p-6 rounded-xl w-96 max-w-[90%]"
+            className="bg-purple-400/40 backdrop-blur-sm p-6 w-full rounded-xl max-w-[90%]"
             onClick={(e) => e.stopPropagation()}
             dir="rtl"
           >
@@ -515,8 +523,8 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="fixed inset-0 flex items-center justify-center bg-purple-900 bg-opacity-50"
+          transition={{ duration: 0.5 }}
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
           dir="rtl"
         >
           <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 w-80">
