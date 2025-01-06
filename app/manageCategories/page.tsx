@@ -29,6 +29,7 @@ export default function ManageCategories() {
       const data = await response.json()
       setCategories(data.categories)
     } catch (error) {
+      console.error(error)
       toast.error('خطا در دریافت دسته‌بندی‌ها')
     }
   }
@@ -47,6 +48,7 @@ export default function ManageCategories() {
         fetchCategories()
       }
     } catch (error) {
+      console.error(error)
       toast.error('خطا در حذف دسته‌بندی')
     }
   }
@@ -71,6 +73,7 @@ export default function ManageCategories() {
         fetchCategories()
       }
     } catch (error) {
+      console.error(error)
       toast.error('خطا در ویرایش دسته‌بندی')
     }
   }

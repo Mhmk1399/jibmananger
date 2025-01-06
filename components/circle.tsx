@@ -13,6 +13,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  TooltipItem,
 } from "chart.js";
 import { motion } from "framer-motion";
 
@@ -53,7 +54,7 @@ const TransactionChart: React.FC = (
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
+          label: function (context: TooltipItem<'bar'>) {
             return `${
               context.dataset.label
             }: ${context.parsed.y.toLocaleString()} تومان`;

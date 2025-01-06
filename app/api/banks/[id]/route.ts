@@ -10,11 +10,11 @@ export const GET = async () => {
             success: true,
             banks,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message,
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 };
 
@@ -26,11 +26,11 @@ export const DELETE = async () => {
             success: true,
             banks,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message,
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 };
 
@@ -44,10 +44,10 @@ export async function PATCh(req: NextRequest) {
             success: true,
             savedBank,
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message,
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 }

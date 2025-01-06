@@ -9,7 +9,7 @@ export async function PATCH(req: NextRequest) {
         const userId = await getDataFromToken(req);
         const id = await req.headers.get('id');
         const reqBody = await req.json();
-        
+
         const updatedRecipient = await recipient.findOneAndUpdate(
             { user: userId, _id: id },
             reqBody,
@@ -20,10 +20,10 @@ export async function PATCH(req: NextRequest) {
             success: true,
             recipient: updatedRecipient
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 }

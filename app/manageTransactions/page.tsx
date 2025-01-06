@@ -51,6 +51,8 @@ export default function ManageTransactions() {
       setLoading(false)
 
     } catch (error) {
+      
+      console.error('Error fetching transactions:', error)
       toast.error('خطا در دریافت تراکنش‌ها')
     }
   }
@@ -69,6 +71,7 @@ export default function ManageTransactions() {
         fetchTransactions()
       }
     } catch (error) {
+      console.error('Error deleting transaction:', error)
       toast.error('خطا در حذف تراکنش')
     }
   }
@@ -97,6 +100,7 @@ export default function ManageTransactions() {
         fetchTransactions()
       }
     } catch (error) {
+      console.error('Error updating transaction:', error)
       toast.error('خطا در ویرایش تراکنش')
     }
   }

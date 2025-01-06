@@ -33,7 +33,7 @@ interface GroupInfo {
   ownerId: GroupOwner;
   members: GroupMember[];
   transactions: Transaction[];
-  messages: any[];
+  messages: string[];
   createdAt: string;
   updatedAt: string;
   __v: number;

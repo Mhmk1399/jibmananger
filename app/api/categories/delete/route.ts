@@ -14,10 +14,10 @@ export async function DELETE(request: NextRequest) {
             success: true,
             message: "Category deleted successfully"
         });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message
-        });
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
+        }, { status: 500 });
     }
 }

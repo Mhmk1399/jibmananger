@@ -13,10 +13,10 @@ export async function GET(request: NextRequest) {
             success: true,
             groups
         }, { status: 200 });
-    } catch (error: any) {
+    } catch (error: unknown) {
         return NextResponse.json({
             success: false,
-            error: error.message
+            error: error instanceof Error ? error.message : 'An unknown error occurred'
         }, { status: 500 });
     }
 }
