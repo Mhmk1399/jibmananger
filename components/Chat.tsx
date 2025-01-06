@@ -1,73 +1,63 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { Send } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { io, Socket } from 'socket.io-client';
 
 interface Message {
-  _id: string;
-  content: string;
-  createdAt: string;
-  userId: {
     name: string;
-  };
+    text: string;
 }
 
-export const Chat = ({ groupId }: { groupId: string }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState('');
-  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+export const Chat = ({ groupId, userId }: { groupId: string; userId: string }) => {
+    const [socket, setSocket] = useState<Socket | null>(null);
+    const [message, setMessage] = useState('');
+    const [messages, setMessages] = useState<Message[]>([]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+    useEffect(() => {
+        const newSocket = io('http://localhost:3000');
+        setSocket(newSocket);
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+        newSocket.emit('enterRoom', { userId, groupId });
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // Send message logic
-  };
+        newSocket.on('message', (message: Message) => {
+            setMessages(prev => [...prev, message]);
+        });
 
-  return (
-    <div className="flex flex-col h-[calc(100vh-12rem)]">
-      <div className="flex-1 bg-white rounded-lg shadow-sm mb-4 p-4 overflow-y-auto">
-        <div className="space-y-4">
-          {messages.map((message) => (
-            <div key={message._id} className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-900">
-                  {message.userId.name}
-                </span>
-                <span className="text-xs text-gray-500">
-                  {new Date(message.createdAt).toLocaleTimeString()}
-                </span>
-              </div>
-              <p className="text-gray-700 mt-1 bg-gray-50 rounded-lg p-3">
-                {message.content}
-              </p>
+        return () => {
+            newSocket.close();
+        };
+    }, [groupId, userId]);
+
+    const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (message.trim() && socket) {
+            socket.emit('message', {
+                userId,
+                groupId,
+                text: message
+            });
+            setMessage('');
+        }
+    };
+
+    return (
+        <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto p-4">
+                {messages.map((msg, i) => (
+                    <div key={i} className="mb-2">
+                        <span className="font-bold">{msg.name}: </span>
+                        <span>{msg.text}</span>
+                    </div>
+                ))}
             </div>
-          ))}
-          <div ref={messagesEndRef} />
+            <form onSubmit={sendMessage} className="p-4 border-t">
+                <input
+                    type="text"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    className="w-full p-2 border rounded"
+                    placeholder="Type a message..."
+                />
+            </form>
         </div>
-      </div>
-      
-      <form onSubmit={handleSendMessage} className="flex gap-4">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Type your message..."
-          className="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 p-2"
-        />
-        <button
-          type="submit"
-          className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
-        >
-          <Send size={20} />
-          Send
-        </button>
-      </form>
-    </div>
-  );
+    );
 };

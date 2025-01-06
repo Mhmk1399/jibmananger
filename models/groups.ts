@@ -20,9 +20,20 @@ const groupSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    members: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    }],
+    transactions: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Transaction"
+    }],
+    messages: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message"
+    }]
   },
   { timestamps: true }
 );
 
-export const Group =
-  mongoose.models.Group || mongoose.model("Group", groupSchema);
+export const Group = mongoose.models.Group || mongoose.model("Group", groupSchema);
