@@ -333,4 +333,5 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       )}
     </motion.div>
   );
-};export default TransactionList;
+};
+export default TransactionList;

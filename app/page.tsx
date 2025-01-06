@@ -1,10 +1,11 @@
-'use client'
+"use client";
 import CircularProgress from "@/components/circle";
 import Plan from "@/components/plan";
 import Profile from "@/components/profile";
 import Welcome from "@/components/welcome";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import TransactionList from "@/components/transactionList";
 
 const page = () => {
   const router = useRouter();
@@ -21,7 +22,7 @@ const page = () => {
       <Profile />
       <Welcome />
       <CircularProgress />
-      {/* <Plan /> */}
+      <Plan />
     </div>
   );
 };
