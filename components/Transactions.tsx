@@ -82,7 +82,7 @@ const Transactions = ({ params }: { params: { id: string } }) => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {transaction.createdBy.name}
+                    {/* {transaction.createdBy.name} */}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {formatDistance(new Date(transaction.date), new Date(), {

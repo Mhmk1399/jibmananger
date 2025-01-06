@@ -85,6 +85,7 @@ const TransactionChart: React.FC<TransactionChartProps> = ({
         borderWidth: 1,
         borderRadius: 1,
         hoverBackgroundColor: "rgba(34, 197, 94, 0.8)",
+        
       },
       {
         label: "پرداختی",

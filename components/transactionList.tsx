@@ -43,6 +43,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     null,
     null,
   ]);
+  const [originalTransactions, setOriginalTransactions] =
+    useState(transactions);
+  useEffect(() => {
+    // Store the original transactions when the component mounts
+    setOriginalTransactions(transactions);
+  }, [transactions]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -78,7 +84,46 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   };
 
   const handleFilterByName = () => {
+    if (!filterName) {
+      // If filterName is empty, reset to original transactions
+      setTransactions(originalTransactions);
+    } else {
+      const filteredTransactions = originalTransactions.filter(
+        (transaction) => {
+          return (
+            transaction.name &&
+            typeof transaction.name === "string" &&
+            transaction.name.toLowerCase().includes(filterName.toLowerCase())
+          );
+        }
+      );
+
+      setTransactions(filteredTransactions);
+    }
+    setNameModalOpen(false);
+  };
+
+  // Ensure to clear the filterName and reset transactions when the user clears the filter
+  const clearFilter = async () => {
     setFilterName("");
+
+    try {
+      // Re-fetch all transactions
+      const response = await fetch(`/api/transactions/${type}s`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setTransactions(data);
+        setOriginalTransactions(data);
+      }
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+
     setNameModalOpen(false);
   };
 
@@ -215,9 +260,9 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         </div>
       </div>
 
-      <div className="bg-gray-100 rounded-xl shadow-lg p-4">
+      <div className="bg-gray-100 rounded-xl overflow-x-auto shadow-lg p-4">
         {transactions.length > 0 ? (
-          <table className="w-full">
+          <table className="w-full overflow-x-auto">
             <thead>
               <tr className="border-b border-white">
                 <th className="text-center py-2 text-sm">تاریخ</th>
@@ -232,15 +277,18 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                   <td className="py-3">
                     {format(new Date(transaction.date), "yyyy/MM/dd")}
                   </td>
-                  <td className="py-3">{transaction.description}</td>
+                  <td className="py-3 text-sm">{transaction.description}</td>
                   <td
-                    className={`py-3 text-left font-bold ${
-                      type === "income" ? "text-emerald-600" : "text-rose-600"
+                    className={`py-1 px-1 text-nowrap text-sm text-left rounded-lg font-bold ${
+                      type === "income"
+                        ? "text-emerald-600 bg-emerald-100 "
+                        : "text-rose-600 bg-red-100"
                     }`}
                   >
-                    {type === "income" ? "+" : "-"} {transaction.amount} تومان
+                    {/* {type === "income" ? "+" : "-"}  */}
+                    {transaction.amount} تومان
                   </td>
-                  <td className="py-3">
+                  <td className="py-3 text-blue-600">
                     {type === "income" ? transaction.name : transaction.name}
                   </td>
                 </tr>
@@ -306,7 +354,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             <input
               type="text"
               value={filterName}
-              onChange={(e) => setFilterName(e.target.value)}
+              onChange={(e) => {
+                setFilterName(e.target.value);
+                if (!e.target.value) {
+                  clearFilter(); // Call clearFilter when input is emptied
+                }
+              }}
               placeholder="نام را وارد کنید"
               className="border p-2 mb-4 w-full rounded-lg focus:outline-none focus:ring-purple-500 focus:ring-1"
               dir="rtl"
@@ -320,7 +373,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                   فیلتر شده بر اساس: {filterName}
                 </span>
                 <button
-                  onClick={() => setFilterName("")} // Clear the filterName
+                  onClick={clearFilter} // Use clearFilter to reset transactions
                   className="text-red-500 font-bold ml-2"
                 >
                   X
