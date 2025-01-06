@@ -46,6 +46,7 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
         throw new Error("Logout failed");
       }
     } catch (error) {
+      console.error("Error during logout:", error);
       toast.error("خطا در خروج از حساب کاربری", {
         style: {
           direction: "rtl",

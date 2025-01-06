@@ -76,6 +76,7 @@ export const Overview = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        console.log(setStats);
         const response = await fetch(`/api/groups/${params.id}`, {
           method: "GET",
           headers: {

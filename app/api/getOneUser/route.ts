@@ -39,6 +39,7 @@ export async function GET(request: NextRequest) {
 
     return new NextResponse(JSON.stringify(user), { status: 200 });
   } catch (error) {
+    console.log(error);
     return new NextResponse("Error fetching user", { status: 500 });
   }
 }

@@ -30,7 +30,7 @@ export async function GET(
 
         return NextResponse.json(outcome);
     } catch (error) {
-        return NextResponse.json({ message: "Error fetching outcome" }, { status: 500 });
+        return NextResponse.json({ message: "Error fetching outcome" ,detials:error}, { status: 500 });
     }
 }
 
@@ -60,7 +60,7 @@ export async function PATCH(
 
         return NextResponse.json(outcome);
     } catch (error) {
-        return NextResponse.json({ message: "Error updating outcome" }, { status: 500 });
+        return NextResponse.json({ message: "Error updating outcome" ,detials:error}, { status: 500 });
     }
 }
 
@@ -88,6 +88,6 @@ export async function DELETE(
 
         return NextResponse.json({ message: "Outcome deleted successfully" });
     } catch (error) {
-        return NextResponse.json({ message: "Error deleting outcome" }, { status: 500 });
+        return NextResponse.json({ message: "Error deleting outcome",detials:error }, { status: 500 });
     }
 }

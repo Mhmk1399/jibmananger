@@ -94,6 +94,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       } catch (error) {
         console.error("Error fetching transactions:", error);
       } finally {
+        console.log("Loading finished",loading);
         setLoading(false);
       }
     };

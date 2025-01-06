@@ -25,6 +25,10 @@ import mehr from '@/public/images/mehr-bank-logo-512.png'
 import gavamin from '@/public/images/Ghavamin_logo.svg.png'
 import shahr from '@/public/images/shahr-bank-logo-512.png'
 import gardesh from '@/public/images/gardeshgari-bank-logo-512.png'
+<<<<<<< Updated upstream
+=======
+import Image from 'next/image';
+>>>>>>> Stashed changes
 
 const BANK_INFO = {
   '603799': { name: 'بانک ملی ایران', value: 'meli', color: '#008752', logo: bankmeli.src },
@@ -73,6 +77,7 @@ const CardInput = ({ value, onChange }: { value: string; onChange: (e: React.Cha
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').replace(/(\d{4})/g, '$1 ').trim();
     setFormData(prev => ({ ...prev, cardNumber: value }));
+    console.log(formData)
 
     const cleanNumber = value.replace(/\s/g, '');
     if (cleanNumber.length >= 6) {
@@ -99,7 +104,7 @@ const CardInput = ({ value, onChange }: { value: string; onChange: (e: React.Cha
               {detectedBank && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <span className="text-sm font-medium w-8">
-                    <img
+                    <Image
                       src={detectedBank.logo}
                       alt={detectedBank.name}
                       className="w-6 h-6"

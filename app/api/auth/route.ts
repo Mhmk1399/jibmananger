@@ -3,7 +3,6 @@ import { NextResponse, NextRequest } from "next/server";
 import { User } from "@/models/users";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"; // Fixed require() style import
-import { getDataFromToken } from "@/lib/getDataFromToken";
 
 export async function POST(request: NextRequest) {
   const { name, phoneNumber, password } = await request.json();

@@ -1,7 +1,6 @@
 import  { bank }  from "@/models/bank"
 import connect from "@/lib/data"
 import { NextResponse,NextRequest } from "next/server";
-import { use } from "react";
 import { getDataFromToken } from "@/lib/getDataFromToken";
 
 
@@ -12,7 +11,7 @@ export async function GET(req: NextRequest) {
         const banks = await bank.find({user:id}).populate('user');
         return NextResponse.json(banks);
     } catch (error) {
-        return NextResponse.json({ message: "Error fetching banks" }, { status: 500 });
+        return NextResponse.json({ message: "Error fetching banks",error }, { status: 500 });
     }
 }
 
@@ -36,7 +35,7 @@ export async function POST(req: NextRequest) {
         });
     }
     catch (error) {
-        return NextResponse.json({ message: "Error creating bank" }, { status: 500 });
+        return NextResponse.json({ message: "Error creating bank" ,error}, { status: 500 });
     }
 
 }

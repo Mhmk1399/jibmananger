@@ -36,6 +36,7 @@ export default function RegisterPage() {
         setError(data.message);
       }
     } catch (err) {
+      console.error(err);
       setError("An error occurred during registration");
     } finally {
       setLoading(false);
