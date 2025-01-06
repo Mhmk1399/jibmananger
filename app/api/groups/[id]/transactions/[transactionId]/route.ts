@@ -2,7 +2,14 @@ import { Group } from "@/models/groups";
 import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
 
-export async function GET(request: NextRequest, context: { params: { id: string, transactionId: string } }) {
+
+type Context = {
+    params: {
+      id: string;
+      transactionId: string;
+    };
+  };
+  export async function GET(request: NextRequest, context: Context) {
     try {
         await connect();
         const { id: groupId, transactionId } = context.params;
@@ -21,7 +28,7 @@ export async function GET(request: NextRequest, context: { params: { id: string,
     }
 }
 
-export async function PATCH(request: NextRequest, context: { params: { id: string, transactionId: string } }) {
+export async function PATCH(request: NextRequest, context: Context)  {
     try {
         await connect();
         const { id: groupId, transactionId } = context.params;
