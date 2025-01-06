@@ -13,6 +13,7 @@ interface Transaction {
   amount: number;
   description: string;
   date: string;
+  name: string;
 }
 interface StartDate {
   year: number;
@@ -23,7 +24,6 @@ interface StartDate {
 const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [isNameModalOpen, setNameModalOpen] = useState(false);
   const [isDateModalOpen, setDateModalOpen] = useState(false);
 
@@ -220,9 +220,10 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           <table className="w-full">
             <thead>
               <tr className="border-b border-white">
-                <th className="text-right py-2">تاریخ</th>
+                <th className="text-center py-2 text-sm">تاریخ</th>
                 <th className="text-center py-2">توضیحات</th>
                 <th className="text-left py-2">مبلغ</th>
+                <th className="">{type === "income" ? "فرستنده" : "گیرنده"}</th>
               </tr>
             </thead>
             <tbody>
@@ -238,6 +239,9 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                     }`}
                   >
                     {type === "income" ? "+" : "-"} {transaction.amount} تومان
+                  </td>
+                  <td className="py-3">
+                    {type === "income" ? transaction.name : transaction.name}
                   </td>
                 </tr>
               ))}
@@ -259,8 +263,8 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             </h2>
             <PersianDatePicker onChange={handleDateRangeChange} />
             <div className="flex flex-col justify-center items-end mt-4">
-            <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
-            <strong className="ml-44">تاریخ شروع:</strong>
+              <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+                <strong className="ml-44">تاریخ شروع:</strong>
                 {`${startDate.year}/${startDate.month}/${startDate.day}`}
               </span>
               <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
