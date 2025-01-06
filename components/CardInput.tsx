@@ -105,6 +105,8 @@ const CardInput = ({ value, onChange }: { value: string; onChange: (e: React.Cha
                       src={detectedBank.logo}
                       alt={detectedBank.name}
                       className="w-6 h-6"
+                      width={24}
+                      height={24}
                     />
                   </span>
                 </div>
