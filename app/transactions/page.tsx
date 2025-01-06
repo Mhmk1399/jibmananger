@@ -181,7 +181,7 @@ const Page = () => {
   };
   const fetchRecipients = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/recipients', {
+      const response = await fetch('/api/recipients', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -196,7 +196,7 @@ const Page = () => {
   };
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/categories', {
+      const response = await fetch('/api/categories', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -212,7 +212,7 @@ const Page = () => {
   };
   const fetchBanks = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/banks', {
+      const response = await fetch('/api/banks', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
