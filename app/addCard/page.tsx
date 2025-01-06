@@ -90,7 +90,7 @@ const Page = () => {
 
 
   return (
-    <div className={`${rayBold.variable} font-ray min-h-screen bg-white w-full mt-5`} dir="rtl">
+    <div className={`${rayBold.variable} font-ray min-h-screen bg-white w-full mt-5 mb-20`} dir="rtl">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-2xl lg:text-4xl font-bold text-gray-800 mb-6 lg:mb-10 text-center">افزودن حساب بانکی</h1>
 

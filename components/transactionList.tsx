@@ -23,8 +23,10 @@ interface StartDate {
 const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isDateModalOpen, setDateModalOpen] = useState(false);
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [isNameModalOpen, setNameModalOpen] = useState(false);
+  const [isDateModalOpen, setDateModalOpen] = useState(false);
+
   const [startDate, setStartDate] = useState<StartDate>({
     year: 1402,
     month: 1,

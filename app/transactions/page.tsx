@@ -10,13 +10,92 @@ interface Recipient {
   phoneNumber: string;
 }
 
+const RecipientModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  if (!isOpen) return null;
 
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    >
+      <motion.div
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+      >
+        <div className="flex justify-between items-center p-4 border-b">
+          <h3 className="text-lg font-bold">افزودن گیرنده جدید</h3>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            ✕
+          </button>
+        </div>
+        <iframe src="/addRecipient" className="w-full h-[calc(100%-60px)]" />
+      </motion.div>
+    </motion.div>
+  );
+};
+const CardModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  if (!isOpen) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    >
+      <motion.div
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+      >
+        <div className="flex justify-between items-center p-4 border-b">
+          <h3 className="text-lg font-bold">افزودن کارت بانکی جدید</h3>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            ✕
+          </button>
+        </div>
+        <iframe src="/addCard" className="w-full h-[calc(100%-60px)]" />
+      </motion.div>
+    </motion.div>
+  );}
+  const CategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+      >
+        <motion.div
+          initial={{ scale: 0.95 }}
+          animate={{ scale: 1 }}
+          className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+        >
+          <div className="flex justify-between items-center p-4 border-b">
+            <h3 className="text-lg font-bold">افزودن دسته‌بندی جدید</h3>
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+              ✕
+            </button>
+          </div>
+          <iframe src="/addCategory" className="w-full h-[calc(100%-60px)]" />
+        </motion.div>
+      </motion.div>
+    );
+  };
 const Page = () => {
   const [transactionType, setTransactionType] = useState<"incomes" | "outcomes">(
     "incomes"
   );
+  const [isRecipientModalOpen, setIsRecipientModalOpen] = useState(false);
   const [recipients, setRecipients] = useState<Recipient[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     amount: "",
     category: {
@@ -95,58 +174,59 @@ const Page = () => {
     postTransaction();
   };
   
-
+  
   const formatNumber = (value: string) => {
     const numberOnly = value.replace(/\D/g, "");
     return numberOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+  const fetchRecipients = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/recipients', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setRecipients(data.recipients);
+      }
+    } catch (error) {
+      console.error('Error fetching recipients:', error);
+    }
+  };
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/categories', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setCategories(data.categories);
+        
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
+  const fetchBanks = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/banks', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setBanks(data);
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
   useEffect(() => {
-    const fetchRecipients = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/recipients', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setRecipients(data.recipients);
-        }
-      } catch (error) {
-        console.error('Error fetching recipients:', error);
-      }
-    };
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/categories', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setCategories(data.categories);
-          
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
-    const fetchBanks = async () => {
-      try {
-        const response = await fetch('http://localhost:3000/api/banks', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setBanks(data);
-        }
-      } catch (error) {
-        console.error('Error fetching categories:', error);
-      }
-    };
+   
     const loading = async () => {
       await fetchCategories();
       await fetchRecipients();
@@ -155,7 +235,15 @@ const Page = () => {
     }
     loading();
   }, []);
-
+  useEffect(() => {
+    fetchRecipients();
+  }, [isRecipientModalOpen]);
+  useEffect(() => {
+    fetchBanks();
+  }, [isCardModalOpen]);
+  useEffect(() => {
+    fetchCategories();
+  }, [isCategoryModalOpen]);
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedValue = formatNumber(e.target.value);
     setFormData((prev) => ({
@@ -209,7 +297,7 @@ const handleInputChange = (
   if (!loading) {
     return (
       <div
-        className={`${rayBold.variable} font-ray min-h-screen bg-white p-4 lg:p-8 w-full mb-20`}
+        className={`${rayBold.variable} font-ray min-h-screen bg-white p-4 lg:p-8 w-full mb-24`}
         dir="rtl"
       >
         <div className="max-w-7xl mx-auto">
@@ -253,50 +341,89 @@ const handleInputChange = (
                     name="مبلغ"
                   />
                 </div>
+                <div className="flex justify-between items-center">
+  <select
+    name="category"
+    value={formData.category._id}
+    onChange={handleInputChange}
+    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+  >
+    <option value="">انتخاب دسته بندی</option>
+    {categories.map((category) => (
+      <option key={category._id} value={category._id}>
+        {category.name}
+      </option>
+    ))}
+  </select>
+  <button 
+    type="button"
+    onClick={() => setIsCategoryModalOpen(true)} 
+    className="bg-green-500 text-white px-3 py-3 text-2xl rounded-full w-fit mx-2"
+  >
+    +
+  </button>
+</div>
 
-                <select
-                  name="category"
-                  value={formData.category._id}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                >
-                  <option value="">انتخاب دسته بندی</option>
-                  {categories.map((category) => (
-                    <option key={category._id} value={category._id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
+<CategoryModal 
+  isOpen={isCategoryModalOpen} 
+  onClose={() => setIsCategoryModalOpen(false)} 
+/>
 
-                <select
-                  name="bankAccount"
-                  value={formData.bankAccount}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                >
-                  <option value="">انتخاب حساب بانکی</option>
-                  {banks.map((bank) => (
-                    <option key={bank._id} value={bank._id} className="flex justify-between items-center">
-                      {bank.name}({bank.cardNumber})
-                    </option>
-                  ))}
-                </select>
-                <div className="space-y-4">
-                  <select
-                    name="recipient"
-                    value={formData.recipient._id}
-                    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-                    onChange={handleInputChange}
-                  >
-                    <option value="">انتخاب گیرنده</option>
-                    {recipients.map((recipient) => (
-                      <option key={recipient._id} value={recipient._id} >
-                        {recipient.name},({recipient.phoneNumber})
-                      </option>
-                    ))}
-                  </select>
+                <div className="flex justify-between items-center">
+  <select
+    name="bankAccount"
+    value={formData.bankAccount}
+    onChange={handleInputChange}
+    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+  >
+    <option value="">انتخاب حساب بانکی</option>
+    {banks.map((bank) => (
+      <option key={bank._id} value={bank._id} className="flex justify-between items-center">
+        {bank.name}({bank.cardNumber})
+      </option>
+    ))}
+  </select>
+  <button 
+    type="button"
+    onClick={() => setIsCardModalOpen(true)} 
+    className="bg-green-500 text-white px-3 py-3 text-2xl rounded-full w-fit mx-2"
+  >
+    +
+  </button>
+</div>
 
-                </div>
+<CardModal 
+  isOpen={isCardModalOpen} 
+  onClose={() => setIsCardModalOpen(false)} 
+/>
+                <div className="flex justify-between items-center">
+  <select
+    name="recipient"
+    value={formData.recipient._id}
+    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
+    onChange={handleInputChange}
+  >
+    <option value="">انتخاب گیرنده</option>
+    {recipients.map((recipient) => (
+      <option key={recipient._id} value={recipient._id}>
+        {recipient.name},({recipient.phoneNumber})
+      </option>
+    ))}
+  </select>
+  <button 
+    type="button"
+    onClick={() => setIsRecipientModalOpen(true)} 
+    className="bg-green-500 text-white px-3 py-3 text-2xl rounded-full w-fit mx-2"
+  >
+    +
+  </button>
+</div>
+
+<RecipientModal 
+  isOpen={isRecipientModalOpen} 
+  onClose={() => setIsRecipientModalOpen(false)} 
+/>
+
               </div>
 
               {/* Full-width textarea and submit button */}
