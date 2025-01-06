@@ -8,12 +8,39 @@ import { DateObject } from "react-multi-date-picker";
 interface TransactionListProps {
   type: "income" | "outcome";
 }
+interface Category {
+  _id: string;
+  name: string;
+  color: string;
+  user: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+interface Recipient {
+  _id: string;
+  name: string;
+  phoneNumber: number;
+  user: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 interface Transaction {
   _id: string;
   amount: number;
   description: string;
+  category: Category;
   date: string;
+  user: string;
+  recipient: Recipient;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
+
 interface StartDate {
   year: number;
   month: number;
@@ -23,7 +50,6 @@ interface StartDate {
 const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [isNameModalOpen, setNameModalOpen] = useState(false);
   const [isDateModalOpen, setDateModalOpen] = useState(false);
 
@@ -43,6 +69,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     null,
     null,
   ]);
+  const [originalTransactions, setOriginalTransactions] =
+    useState(transactions);
+  useEffect(() => {
+    // Store the original transactions when the component mounts
+    setOriginalTransactions(transactions);
+  }, [transactions]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -55,6 +87,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         if (response.ok) {
           const data = await response.json();
           setTransactions(data);
+          console.log(data, "data");
         }
       } catch (error) {
         console.error("Error fetching transactions:", error);
@@ -73,14 +106,110 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     };
   }, [type]);
 
+  // Filter transactions by Date
+
   const handleFilterByDate = () => {
+    if (!dateRange[0] || !dateRange[1]) {
+      setTransactions(originalTransactions);
+    } else {
+      const filteredTransactions = originalTransactions.filter(
+        (transaction) => {
+          // Convert transaction date to Jalali
+          const transactionJalaliDate = format(
+            new Date(transaction.date),
+            "yyyy/MM/dd"
+          );
+          const startJalaliDate = dateRange[0]
+            ? format(dateRange[0], "yyyy/MM/dd")
+            : "";
+          const endJalaliDate = dateRange[1]
+            ? format(dateRange[1], "yyyy/MM/dd")
+            : "";
+
+          // Compare dates as strings since they're in yyyy/MM/dd format
+          return (
+            transactionJalaliDate >= startJalaliDate &&
+            transactionJalaliDate <= endJalaliDate
+          );
+        }
+      );
+      setTransactions(filteredTransactions);
+    }
     setDateModalOpen(false);
   };
 
+  // Add this function to clear date filters
+  const clearDateFilter = async () => {
+    setDateRange([null, null]);
+    setStartDate({ year: 1402, month: 1, day: 1 });
+    setEndDate({ year: 1402, month: 1, day: 1 });
+
+    try {
+      const response = await fetch(`/api/transactions/${type}s`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setTransactions(data);
+        setOriginalTransactions(data);
+      }
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+
+    setDateModalOpen(false);
+  };
+
+  // Filter transactions by Name
+
   const handleFilterByName = () => {
-    setFilterName("");
+    if (!filterName) {
+      // If filterName is empty, reset to original transactions
+      setTransactions(originalTransactions);
+    } else {
+      const filteredTransactions = originalTransactions.filter(
+        (transaction) => {
+          return (
+            transaction.recipient.name &&
+            typeof transaction.recipient.name === "string" &&
+            transaction.recipient.name.includes(filterName)
+          );
+        }
+      );
+
+      setTransactions(filteredTransactions);
+    }
     setNameModalOpen(false);
   };
+
+  // Ensure to clear the filterName and reset transactions when the user clears the filter
+  const clearNameFilter = async () => {
+    setFilterName("");
+
+    try {
+      // Re-fetch all transactions
+      const response = await fetch(`/api/transactions/${type}s`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setTransactions(data);
+        setOriginalTransactions(data);
+      }
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+
+    setNameModalOpen(false);
+  };
+
+  // Handle date range change
 
   const handleDateRangeChange = (dates: DateObject[]) => {
     if (dates.length === 2) {
@@ -103,6 +232,8 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       console.log(startDate, endDate);
     }
   };
+
+  // Handle the svg non Data
 
   const EmptyState = () => (
     <div className="flex flex-col items-center justify-center py-10">
@@ -215,14 +346,15 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         </div>
       </div>
 
-      <div className="bg-gray-100 rounded-xl shadow-lg p-4">
+      <div className="bg-gray-100 rounded-xl overflow-x-auto shadow-lg p-4">
         {transactions.length > 0 ? (
-          <table className="w-full">
+          <table className="w-full overflow-x-auto">
             <thead>
               <tr className="border-b border-white">
-                <th className="text-right py-2">تاریخ</th>
+                <th className="text-center py-2 text-sm">تاریخ</th>
                 <th className="text-center py-2">توضیحات</th>
                 <th className="text-left py-2">مبلغ</th>
+                <th className="">{type === "income" ? "فرستنده" : "گیرنده"}</th>
               </tr>
             </thead>
             <tbody>
@@ -231,13 +363,21 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                   <td className="py-3">
                     {format(new Date(transaction.date), "yyyy/MM/dd")}
                   </td>
-                  <td className="py-3">{transaction.description}</td>
+                  <td className="py-3 text-sm">{transaction.description}</td>
                   <td
-                    className={`py-3 text-left font-bold ${
-                      type === "income" ? "text-emerald-600" : "text-rose-600"
+                    className={`py-1 px-1 text-nowrap text-sm text-left rounded-lg font-bold ${
+                      type === "income"
+                        ? "text-emerald-600 bg-emerald-100 "
+                        : "text-rose-600 bg-red-100"
                     }`}
                   >
-                    {type === "income" ? "+" : "-"} {transaction.amount} تومان
+                    {type === "income" ? "+" : "-"}
+                    {transaction.amount} تومان
+                  </td>
+                  <td className="py-3 text-gray-600">
+                    {type === "income"
+                      ? transaction.recipient.name
+                      : transaction.recipient.name}
                   </td>
                 </tr>
               ))}
@@ -250,15 +390,46 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
 
       {/* Custom Date Filter Modal */}
       {isDateModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-96">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: { duration: 0.2 } }}
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+        >
+          <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 w-96">
             {" "}
             {/* Increased width for better calendar display */}
-            <h2 className="text-xl font-bold mb-4 text-right">
+            <h2 className="text-xl font-bold mb-4 border-b border-white pb-3 text-right text-gray-100">
               فیلتر بر اساس تاریخ
             </h2>
             <PersianDatePicker onChange={handleDateRangeChange} />
-            <div className="flex justify-between mt-4">
+            {dateRange[0] && dateRange[1] && (
+              <div
+                className="flex items-center bg-purple-100 p-1 rounded-xl justify-between my-4"
+                dir="rtl"
+              >
+                <span className="text-gray-400 text-sm">
+                  فیلتر شده از تاریخ {format(dateRange[0], "yyyy/MM/dd")} تا{" "}
+                  {format(dateRange[1], "yyyy/MM/dd")}
+                </span>
+                <button
+                  onClick={clearDateFilter}
+                  className="text-red-500 font-bold ml-2"
+                >
+                  X
+                </button>
+              </div>
+            )}
+            <div className="flex flex-col justify-center items-end mt-4">
+              <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+                <strong className="ml-44">تاریخ شروع:</strong>
+                {`${startDate.year}/${startDate.month}/${startDate.day}`}
+              </span>
+              <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+                <strong className="ml-44">تاریخ پایان:</strong>{" "}
+                {`${endDate.year}/${endDate.month}/${endDate.day}`}
+              </span>
+            </div>
+            <div className="flex justify-between flex-row-reverse mt-4">
               <button
                 onClick={handleFilterByDate}
                 className="bg-blue-500 text-white px-4 py-2 rounded"
@@ -266,14 +437,14 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                 اعمال فیلتر
               </button>
               <button
-                onClick={() => setDateModalOpen(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded"
+                onClick={clearDateFilter}
+                className="bg-rose-500 text-white px-4 py-2 rounded"
               >
                 بستن
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Custom Name Filter Modal */}
@@ -292,7 +463,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             <input
               type="text"
               value={filterName}
-              onChange={(e) => setFilterName(e.target.value)}
+              onChange={(e) => {
+                setFilterName(e.target.value);
+                if (!e.target.value) {
+                  clearNameFilter(); // Call clearFilter when input is emptied
+                }
+              }}
               placeholder="نام را وارد کنید"
               className="border p-2 mb-4 w-full rounded-lg focus:outline-none focus:ring-purple-500 focus:ring-1"
               dir="rtl"
@@ -306,7 +482,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                   فیلتر شده بر اساس: {filterName}
                 </span>
                 <button
-                  onClick={() => setFilterName("")} // Clear the filterName
+                  onClick={clearNameFilter} // Use clearFilter to reset transactions
                   className="text-red-500 font-bold ml-2"
                 >
                   X
