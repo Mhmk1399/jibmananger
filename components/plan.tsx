@@ -1,25 +1,25 @@
 "use client";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import TransactionList from "../components/transactionList"; // We'll create this next
-import {
-  ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
-} from "@heroicons/react/24/outline";
+// import { motion } from "framer-motion";
+// import { useState } from "react";
+import TransactionList from "../components/transactionList"; 
+// import {
+//   ArrowTrendingUpIcon,
+//   ArrowTrendingDownIcon,
+// } from "@heroicons/react/24/outline";
 
 const Plan: React.FC = () => {
-  const scrollToList = (type: "income" | "outcome") => {
-    document.getElementById(`${type}-list`)?.scrollIntoView({
-      behavior: "smooth",
-    });
-  };
+  // const scrollToList = (type: "income" | "outcome") => {
+  //   document.getElementById(`${type}-list`)?.scrollIntoView({
+  //     behavior: "smooth",
+  //   });
+  // };
   return (
     <>
       <div
         className="flex flex-row p-6 max-w-xl gap-2 mx-auto w-full"
         dir="rtl"
       >
-        <motion.div
+        {/* <motion.div
           className="flex-1 bg-gradient-to-br from-green-500 w-[25%] to-white-100 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
           whileHover={{ scale: 1.02 }}
           initial={{ opacity: 0, y: 0 }}
@@ -77,7 +77,7 @@ const Plan: React.FC = () => {
             </div>
             <p className="mt-2 text-sm text-gray-600">45% از بودجه ماهیانه</p>
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
       <div className="space-y-4">
         <div id="income-list">
