@@ -6,7 +6,7 @@ import Welcome from "@/components/welcome";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
@@ -20,10 +20,10 @@ const page = () => {
     <div className="flex flex-col min-h-screen bg-purple-50 p-2">
       <Profile />
       <Welcome />
-      <TransactionChart incomes={[]} outcomes={[]} />
+      <TransactionChart />
       <Plan />
     </div>
   );
 };
 
-export default page;
+export default Page;

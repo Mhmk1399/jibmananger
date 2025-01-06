@@ -1,9 +1,12 @@
 import { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+
+interface DecodedToken extends JwtPayload {
+    id: string;
+}
 
 export const getDataFromToken = (request: NextRequest) => {
     try {
-
         const authHeader = request.headers.get("authorization");
         console.log(authHeader);
         
@@ -15,9 +18,14 @@ export const getDataFromToken = (request: NextRequest) => {
         if (!token) {
             throw new Error("No token provided");
         }
-            const decodedToken: any = jwt.verify(token, process.env.JWT_SECRET!);
+
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
         return decodedToken.id;
-    } catch (error:Error) {
-        throw new Error("Authentication failed: " + error.message);
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            throw new Error("Authentication failed: " + error.message);
+        } else {
+            throw new Error("Authentication failed: Unknown error");
+        }
     }
 };

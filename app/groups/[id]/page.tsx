@@ -2,20 +2,20 @@
 import { useState } from "react";
 import { use } from "react";
 import { Members } from "../../../components/Members";
-import Transactions  from "../../../components/Transactions";
+import Transactions from "../../../components/Transactions";
 import { Overview } from "../../../components/Overview";
 
 const GroupDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const resolvedParams = use(params);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState(" نمای کلی");
 
   const renderContent = () => {
     switch (activeTab) {
-      case "overview":
+      case "نمای کلی":
         return <Overview />;
-      case "members":
+      case "اعضاء":
         return <Members groupId={resolvedParams.id} />;
-       case "transactions":
+      case "transactions":
         return <Transactions params={resolvedParams} />;
 
       default:
@@ -24,18 +24,18 @@ const GroupDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" dir="rtl">
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex space-x-8">
-              {["overview", "members", "transactions", "chat"].map((tab) => (
+          <div className="flex justify-between items-center h-20">
+            <div className="flex flex-row justify-between w-full">
+              {["نمای کلی", "اعضاء", "تراکنشها"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-3 py-2 text-sm font-medium ${
+                  className={`px-3 py-2 text-sm transition-all duration-500 ease-in-out font-medium ${
                     activeTab === tab
-                      ? "border-b-2 border-purple-500 text-purple-600"
+                      ? " bg-purple-500 rounded-lg  text-purple-100"
                       : "text-gray-500 hover:text-gray-700"
                   }`}
                 >

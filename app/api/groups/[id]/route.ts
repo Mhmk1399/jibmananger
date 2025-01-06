@@ -27,7 +27,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
 
         return NextResponse.json({ success: true, stats }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch group" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to fetch group",detials:error }, { status: 500 });
     }
 }
 

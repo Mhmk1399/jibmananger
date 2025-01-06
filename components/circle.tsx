@@ -25,15 +25,17 @@ ChartJS.register(
   Legend
 );
 
-interface TransactionChartProps {
-  incomes: Transaction[];
-  outcomes: Transaction[];
-}
+// interface TransactionChartProps {
+//   incomes: Transaction[];
+//   outcomes: Transaction[];
+// }
 
-const TransactionChart: React.FC<TransactionChartProps> = ({
-  incomes,
-  outcomes,
-}) => {
+const TransactionChart: React.FC = (
+  {
+    // incomes,
+    // outcomes,
+  }
+) => {
   const options = {
     responsive: true,
     interaction: {
@@ -85,7 +87,6 @@ const TransactionChart: React.FC<TransactionChartProps> = ({
         borderWidth: 1,
         borderRadius: 1,
         hoverBackgroundColor: "rgba(34, 197, 94, 0.8)",
-        
       },
       {
         label: "پرداختی",

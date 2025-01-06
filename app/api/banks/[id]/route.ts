@@ -2,7 +2,7 @@ import { bank } from "@/models/bank"
 import connect from "@/lib/data"
 import { NextResponse, NextRequest } from "next/server";
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
     try {
         await connect();
         const banks = await bank.find();
@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest) => {
     }
 };
 
-export const DELETE = async (req: NextRequest) => {
+export const DELETE = async () => {
     try {
         await connect();
         const banks = await bank.find();

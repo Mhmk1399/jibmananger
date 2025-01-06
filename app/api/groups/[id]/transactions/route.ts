@@ -17,7 +17,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
 
         return NextResponse.json({ success: true, group: updatedGroup }, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to create transaction" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to create transaction" ,details:error}, { status: 500 });
     }
 }
 
@@ -31,6 +31,6 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
         
         return NextResponse.json({ success: true, transactions: group.transactions }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch transactions" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to fetch transactions" ,details:error}, { status: 500 });
     }
 }
