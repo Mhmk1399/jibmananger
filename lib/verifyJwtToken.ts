@@ -1,6 +1,7 @@
 
 
 import jwt from 'jsonwebtoken';
+import { NextResponse } from 'next/server';
 
 interface JwtPayload {
     id: string;
@@ -19,6 +20,6 @@ export const verifyJwtToken = async (token?: string): Promise<JwtPayload | null>
         const decoded = jwt.verify(token, secret) as JwtPayload;
         return decoded;
     } catch (error) {
-        return null;
+        console.log(error)
     }
 };

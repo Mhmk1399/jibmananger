@@ -3,7 +3,6 @@ import { useState } from "react";
 import { use } from "react";
 import { Members } from "../../../components/Members";
 import Transactions  from "../../../components/Transactions";
-import { Chat } from "../../../components/Chat";
 import { Overview } from "../../../components/Overview";
 
 const GroupDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -16,9 +15,7 @@ const GroupDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
         return <Overview />;
       case "members":
         return <Members groupId={resolvedParams.id} />;
-      case "chat":
-        return <Chat groupId={resolvedParams.id} userId={resolvedParams.id} />;
-      case "transactions":
+       case "transactions":
         return <Transactions params={resolvedParams} />;
 
       default:
