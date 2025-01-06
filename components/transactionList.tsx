@@ -249,13 +249,23 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       {/* Custom Date Filter Modal */}
       {isDateModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-96">
+          <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 w-96">
             {" "}
             {/* Increased width for better calendar display */}
-            <h2 className="text-xl font-bold mb-4 text-right">
+            <h2 className="text-xl font-bold mb-4 border-b border-white pb-3 text-right text-gray-100">
               فیلتر بر اساس تاریخ
             </h2>
             <PersianDatePicker onChange={handleDateRangeChange} />
+            <div className="flex flex-col justify-center items-end mt-4">
+            <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+            <strong className="ml-44">تاریخ شروع:</strong>
+                {`${startDate.year}/${startDate.month}/${startDate.day}`}
+              </span>
+              <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+                <strong className="ml-44">تاریخ پایان:</strong>{" "}
+                {`${endDate.year}/${endDate.month}/${endDate.day}`}
+              </span>
+            </div>
             <div className="flex justify-between mt-4">
               <button
                 onClick={handleFilterByDate}
@@ -265,7 +275,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
               </button>
               <button
                 onClick={() => setDateModalOpen(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded"
+                className="bg-rose-500 text-white px-4 py-2 rounded"
               >
                 بستن
               </button>

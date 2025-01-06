@@ -1,11 +1,10 @@
 "use client";
-import CircularProgress from "@/components/circle";
+import TransactionChart from "@/components/circle";
 import Plan from "@/components/plan";
 import Profile from "@/components/profile";
 import Welcome from "@/components/welcome";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import TransactionList from "@/components/transactionList";
 
 const page = () => {
   const router = useRouter();
@@ -21,7 +20,7 @@ const page = () => {
     <div className="flex flex-col min-h-screen bg-purple-50 p-2">
       <Profile />
       <Welcome />
-      <CircularProgress />
+      <TransactionChart incomes={[]} outcomes={[]} />
       <Plan />
     </div>
   );
