@@ -6,7 +6,7 @@ import {
   ArrowTrendingDownIcon,
 } from "@heroicons/react/24/outline";
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, TooltipItem } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -31,7 +31,7 @@ const PieChart: React.FC = ({
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
+          label: function (context:TooltipItem<'pie'>) {
             return `${context.label}: ${context.parsed.toLocaleString()} تومان`;
           },
         },
