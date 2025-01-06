@@ -2,8 +2,10 @@
 import { motion } from "framer-motion";
 import { format } from "date-fns-jalali"; // For Persian date formatting
 import { useEffect, useState } from "react";
-import Calendar from "react-modern-calendar-datepicker";
-import "react-modern-calendar-datepicker/lib/DatePicker.css";
+// import Calendar from "react-modern-calendar-datepicker";
+// import "react-modern-calendar-datepicker/lib/DatePicker.css";
+import PersianDatePicker from "../components/calender";
+import { DateObject } from "react-multi-date-picker";
 
 interface TransactionListProps {
   type: "income" | "outcome";
@@ -14,19 +16,33 @@ interface Transaction {
   description: string;
   date: string;
 }
+interface StartDate {
+  year: number;
+  month: number;
+  day: number;
+}
 
 const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDateModalOpen, setDateModalOpen] = useState(false);
   const [isNameModalOpen, setNameModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<{
-    day: number;
-    month: number;
-    year: number;
-  } | null>(null);
+  const [startDate, setStartDate] = useState<StartDate>({
+    year: 1402,
+    month: 1,
+    day: 1,
+  });
+  const [endDate, setEndDate] = useState<StartDate>({
+    year: 1402,
+    month: 1,
+    day: 1,
+  });
 
   const [filterName, setFilterName] = useState("");
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -57,24 +73,35 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     };
   }, [type]);
 
-  const handleCalanderChange = (
-    selectedDate: { day: number; month: number; year: number } | null
-  ) => {
-    setSelectedDate(selectedDate);
-  };
-
   const handleFilterByDate = () => {
-    // Implement filtering logic by selectedDate
-    // Clear the selected date after applying the filter
-    // setSelectedDate();
     setDateModalOpen(false);
   };
 
   const handleFilterByName = () => {
-    // Implement filtering logic by filterName
-    // Clear the filterName after applying the filter
     setFilterName("");
     setNameModalOpen(false);
+  };
+
+  const handleDateRangeChange = (dates: DateObject[]) => {
+    if (dates.length === 2) {
+      const [start, end] = dates;
+      setDateRange([start.toDate(), end.toDate()]);
+
+      const startDate = format(start.toDate(), "yyyy/MM/dd");
+      const endDate = format(end.toDate(), "yyyy/MM/dd");
+      setStartDate({
+        year: Number(startDate.split("/")[0]),
+        month: Number(startDate.split("/")[1]),
+        day: Number(startDate.split("/")[2]),
+      });
+      setEndDate({
+        year: Number(endDate.split("/")[0]),
+        month: Number(endDate.split("/")[1]),
+        day: Number(endDate.split("/")[2]),
+      });
+
+      console.log(startDate, endDate);
+    }
   };
 
   const EmptyState = () => (
@@ -230,15 +257,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             <h2 className="text-xl font-bold mb-4 text-right">
               فیلتر بر اساس تاریخ
             </h2>
-            <Calendar
-              value={selectedDate}
-              onChange={handleCalanderChange}
-              shouldHighlightWeekends
-              locale="fa"
-              calendarClassName="responsive-calendar" // Add custom class for styling
-              colorPrimary="#673ab7"
-              colorPrimaryLight="#ede7f6"
-            />
+            <PersianDatePicker onChange={handleDateRangeChange} />
             <div className="flex justify-between mt-4">
               <button
                 onClick={handleFilterByDate}
@@ -316,5 +335,4 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       )}
     </motion.div>
   );
-};
-export default TransactionList;
+};export default TransactionList;
