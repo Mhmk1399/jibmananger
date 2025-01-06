@@ -52,6 +52,8 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   const [loading, setLoading] = useState(true);
   const [isNameModalOpen, setNameModalOpen] = useState(false);
   const [isDateModalOpen, setDateModalOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
 
   const [startDate, setStartDate] = useState<StartDate>({
     year: 1402,
@@ -292,13 +294,13 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         <div className="flex gap-2 justify-between mb-4">
           <button
             onClick={() => setDateModalOpen(true)}
-            className="bg-gray-200 text-white px-4 py-2 rounded"
+            className="bg-gray-300 text-black px-3 py-3 rounded-full"
           >
             <svg
-              width="15"
+              width="15px"
               height="15px"
               viewBox="0 0 16 16"
-              fill="none"
+              fill="#ffffff"
               xmlns="http://www.w3.org/2000/svg"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -309,22 +311,22 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
               ></g>
               <g id="SVGRepo_iconCarrier">
                 {" "}
-                <path d="M0 3H16V1H0V3Z" fill="#000000"></path>{" "}
-                <path d="M2 7H14V5H2V7Z" fill="#000000"></path>{" "}
-                <path d="M4 11H12V9H4V11Z" fill="#000000"></path>{" "}
-                <path d="M10 15H6V13H10V15Z" fill="#000000"></path>{" "}
+                <path d="M0 3H16V1H0V3Z" fill="#fff"></path>{" "}
+                <path d="M2 7H14V5H2V7Z" fill="#fff"></path>{" "}
+                <path d="M4 11H12V9H4V11Z" fill="#fff"></path>{" "}
+                <path d="M10 15H6V13H10V15Z" fill="#fff"></path>{" "}
               </g>
             </svg>
           </button>
           <button
             onClick={() => setNameModalOpen(true)}
-            className="bg-gray-200 text-white px-4 py-2 rounded"
+            className="bg-gray-300 text-white px-3 py-3 rounded-full"
           >
             <svg
               width="15px"
               height="15px"
               viewBox="0 0 24 24"
-              fill="none"
+              fill="#ffffff"
               xmlns="http://www.w3.org/2000/svg"
             >
               <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -338,7 +340,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                   fillRule="evenodd"
                   clipRule="evenodd"
                   d="M15 10.5A3.502 3.502 0 0 0 18.355 8H21a1 1 0 1 0 0-2h-2.645a3.502 3.502 0 0 0-6.71 0H3a1 1 0 0 0 0 2h8.645A3.502 3.502 0 0 0 15 10.5zM3 16a1 1 0 1 0 0 2h2.145a3.502 3.502 0 0 0 6.71 0H21a1 1 0 1 0 0-2h-9.145a3.502 3.502 0 0 0-6.71 0H3z"
-                  fill="#000000"
+                  fill="#ffffff"
                 ></path>
               </g>
             </svg>
@@ -359,7 +361,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             </thead>
             <tbody>
               {transactions.map((transaction) => (
-                <tr key={transaction._id} className="border-b hover:bg-gray-50">
+                <tr
+                  key={transaction._id}
+                  className="border-b hover:bg-gray-50 cursor-pointer transition-all duration-200"
+                  onClick={() => setSelectedTransaction(transaction)}
+                >
                   <td className="py-3">
                     {format(new Date(transaction.date), "yyyy/MM/dd")}
                   </td>
@@ -444,6 +450,62 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
               </button>
             </div>
           </div>
+        </motion.div>
+      )}
+      {selectedTransaction && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          onClick={() => setSelectedTransaction(null)}
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="bg-white/20 backdrop-blur-lg p-6 rounded-xl w-96 max-w-[90%]"
+            onClick={(e) => e.stopPropagation()}
+            dir="rtl"
+          >
+            <h2 className="text-xl font-bold mb-4 text-white border-b pb-2">
+              جزئیات تراکنش
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <p className="text-gray-200">تاریخ:</p>
+                <p className="text-white font-bold">
+                  {format(new Date(selectedTransaction.date), "yyyy/MM/dd")}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-200">توضیحات:</p>
+                <p className="text-white font-bold">
+                  {selectedTransaction.description}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-200">مبلغ:</p>
+                <p
+                  className={`font-bold ${
+                    type === "income" ? "text-emerald-400" : "text-rose-400"
+                  }`}
+                >
+                  {type === "income" ? "+" : "-"}
+                  {selectedTransaction.amount} تومان
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-200">
+                  {type === "income" ? "فرستنده" : "گیرنده"}:
+                </p>
+                <p className="text-white font-bold">
+                  {selectedTransaction.recipient.name}
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       )}
 
