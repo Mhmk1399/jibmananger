@@ -166,6 +166,39 @@ const Profile = () => {
                   <span className="text-purple-600 font-medium">خروج</span>
                   <ArrowLeftStartOnRectangleIcon className="w-4 h-4 ml-2 inline  text-purple-800" />{" "}
                 </motion.button>
+                <motion.button
+                  whileHover={{ backgroundColor: "#ffffff" }}
+                  className="block px-4 py-2 text-sm rounded-2xl w-full text-right"
+                  onClick={() => setIsLogoutModalOpen(true)}
+                >
+                  <span className="text-purple-600 font-medium">خروج</span>
+                  <ArrowLeftStartOnRectangleIcon className="w-4 h-4 ml-2 inline  text-purple-800" />{" "}
+                </motion.button>
+                <motion.button
+                  whileHover={{ backgroundColor: "#ffffff" }}
+                  className="block px-4 py-2 text-sm rounded-2xl w-full text-right"
+                  onClick={() => setIsLogoutModalOpen(true)}
+                >
+                  <span className="text-purple-600 font-medium">خروج</span>
+                  <ArrowLeftStartOnRectangleIcon className="w-4 h-4 ml-2 inline  text-purple-800" />{" "}
+                </motion.button>
+                <motion.button
+                  whileHover={{ backgroundColor: "#ffffff" }}
+                  className="block px-4 py-2 text-sm rounded-2xl w-full text-right"
+                  onClick={() => setIsLogoutModalOpen(true)}
+                >
+                  <span className="text-purple-600 font-medium">خروج</span>
+                  <ArrowLeftStartOnRectangleIcon className="w-4 h-4 ml-2 inline  text-purple-800" />{" "}
+                </motion.button>
+                <motion.button
+                  whileHover={{ backgroundColor: "#ffffff" }}
+                  className="block px-4 py-2 text-sm rounded-2xl w-full text-right"
+                  onClick={() => setIsLogoutModalOpen(true)}
+                >
+                  <span className="text-purple-600 font-medium">خروج</span>
+                  <ArrowLeftStartOnRectangleIcon className="w-4 h-4 ml-2 inline  text-purple-800" />{" "}
+                </motion.button>
+
               </motion.div>
             )}
           </AnimatePresence>
