@@ -56,7 +56,7 @@ const Page = () => {
   }
 
   return (
-    <div className={`${rayBold.variable} font-ray bg-white w-full mt-5`} dir="rtl">
+    <div className={`${rayBold.variable} font-ray bg-white w-full mt-5 mb-20`} dir="rtl">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-2xl lg:text-4xl font-bold text-gray-800 mb-2 lg:mb-10 text-center">
           افزودن دسته‌بندی جدید
