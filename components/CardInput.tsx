@@ -25,10 +25,7 @@ import mehr from '@/public/images/mehr-bank-logo-512.png'
 import gavamin from '@/public/images/Ghavamin_logo.svg.png'
 import shahr from '@/public/images/shahr-bank-logo-512.png'
 import gardesh from '@/public/images/gardeshgari-bank-logo-512.png'
-<<<<<<< Updated upstream
-=======
 import Image from 'next/image';
->>>>>>> Stashed changes
 
 const BANK_INFO = {
   '603799': { name: 'بانک ملی ایران', value: 'meli', color: '#008752', logo: bankmeli.src },

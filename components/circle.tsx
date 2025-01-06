@@ -25,7 +25,6 @@ ChartJS.register(
   Legend
 );
 
-<<<<<<< Updated upstream
 // interface TransactionChartProps {
 //   incomes: Transaction[];
 //   outcomes: Transaction[];
@@ -37,15 +36,6 @@ const TransactionChart: React.FC = (
     // outcomes,
   }
 ) => {
-=======
-interface TransactionChartProps {
-  incomes: string[];
-  outcomes: string[];
-}
-
-const TransactionChart: React.FC<TransactionChartProps> = ({
-}) => {
->>>>>>> Stashed changes
   const options = {
     responsive: true,
     interaction: {

@@ -10,28 +10,14 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-<<<<<<< Updated upstream
 // interface TransactionChartProps {
-//   incomes: Transaction[];
-//   outcomes: Transaction[];
+//   incomes: string[];
+//   outcomes: string[];
 // }
 
-const PieChart: React.FC = (
-  {
-    // incomes,
-    // outcomes,
-  }
-) => {
-=======
-interface TransactionChartProps {
-  incomes: string[];
-  outcomes: string[];
-}
-
-const TransactionChart: React.FC<TransactionChartProps> = ({
+const PieChart: React.FC = ({
   
 }) => {
->>>>>>> Stashed changes
   const options = {
     responsive: true,
     plugins: {
