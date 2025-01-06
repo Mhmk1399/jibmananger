@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connect from "@/lib/data";
 import { income } from "@/models/transactions/income";
 import { verifyJwtToken } from "@/lib/verifyJwtToken";
+import { getDataFromToken } from "@/lib/getDataFromToken";
 export async function GET(req: NextRequest) {
     try {
         await connect();
@@ -43,5 +44,44 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(outcome, { status: 201 });
     } catch (error) {
         return NextResponse.json({ message: "Error creating outcome" }, { status: 500 });
+    }
+}
+export async function DELETE(req: NextRequest) {
+    try {
+        await connect();
+        const userId= await getDataFromToken(req);
+        const id = await req.headers.get('id');
+        await income.findOneAndDelete({ user: userId, _id: id });
+        return NextResponse.json({
+            success: true,
+            message: "Income deleted successfully"})
+            } catch (error: any) {
+        return NextResponse.json({
+            success: false,
+            error: error.message
+        });
+        
+    }
+}
+export async function PATCH(req: NextRequest) {
+    try {
+        await connect();
+        const userId = await getDataFromToken(req);
+        const id = await req.headers.get('id');
+        const reqBody = await req.json();
+        const updatedIncome = await income.findOneAndUpdate(
+            { user: userId , _id: id },
+            reqBody,
+            { new: true }
+        );
+        return NextResponse.json({
+            success: true,
+            income: updatedIncome
+        });
+    } catch (error: any) {
+        return NextResponse.json({
+            success: false,
+            error: error.message
+        });
     }
 }
