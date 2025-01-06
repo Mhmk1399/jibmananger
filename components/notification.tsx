@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from "react";
 import {
   BellIcon,
   BanknotesIcon,
@@ -7,14 +6,8 @@ import {
 } from "@heroicons/react/24/outline";
 
 const Notification = () => {
-  const [hasNewNotification, setHasNewNotification] = useState(false);
-  const [hasNewIncome, setHasNewIncome] = useState(false);
-  const [hasWarning, setHasWarning] = useState(false);
 
-  const handleNotificationClick = () => {
-    setHasNewNotification(false);
-    // Handle showing notification list/modal
-  };
+
   return (
     <div className="flex flex-row items-center gap-4 relative" dir="ltr">
       {/* Notification Bell */}

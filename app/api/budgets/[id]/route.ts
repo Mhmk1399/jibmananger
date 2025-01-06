@@ -13,7 +13,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         }
         return NextResponse.json({ budget }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch budget" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to fetch budget",details:error }, { status: 500 });
     }
 }
 
@@ -24,7 +24,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
         await BudgetItem.findByIdAndDelete(budgetId);
         return NextResponse.json({ message: "Budget deleted successfully" }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to delete budget" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to delete budget",detials:error }, { status: 500 });
     }
 }
 
@@ -39,7 +39,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
         }
         return NextResponse.json({ message: "Budget updated successfully", budget: updatedBudget }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: "Failed to update budget" }, { status: 500 }
+        return NextResponse.json({ error: "Failed to update budget",details:error }, { status: 500 }
         );
     }
 }

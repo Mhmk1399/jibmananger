@@ -37,6 +37,7 @@ const Page = () => {
         })
       }
     } catch (error) {
+      console.log(error)
       toast.error('خطا در ثبت دسته‌بندی', {
         style: {
           direction: 'rtl',

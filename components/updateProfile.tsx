@@ -90,6 +90,9 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
 
       if (response.ok) {
         const data = await response.json();
+        if(!data){
+          throw new Error("خطا در بروزرسانی پروفایل");
+        }
         fetchUserData();
         toast.success("حساب کاربری شما با موفقیت بروز شد!", {
           style: {
@@ -100,10 +103,10 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
         });
         onClose(); // Close the modal after successful update
       } else {
-        const errorData = await response.json();
-        toast.error(`خطا: ${errorData.error}`);
+        throw new Error("خطا در بروزرسانی پروفایل");
       }
     } catch (error) {
+      console.log(error);
       toast.error("خطا در بروزرسانی پروفایل", {
         style: {
           direction: "rtl",

@@ -15,7 +15,6 @@ const Page = () => {
     recipientPhoneNumber: '',
   })
 
-  const [detectedBank, setDetectedBank] = useState<{ name: string; color: string; logo: string } | null>(null)
 
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').replace(/(\d{4})/g, '$1 ').trim()

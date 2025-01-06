@@ -86,7 +86,7 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   await connect();
   if (!connect) {
     return NextResponse.json(

@@ -11,16 +11,13 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 // interface TransactionChartProps {
-//   incomes: Transaction[];
-//   outcomes: Transaction[];
+//   incomes: string[];
+//   outcomes: string[];
 // }
 
-const PieChart: React.FC = (
-  {
-    // incomes,
-    // outcomes,
-  }
-) => {
+const PieChart: React.FC = ({
+  
+}) => {
   const options = {
     responsive: true,
     plugins: {

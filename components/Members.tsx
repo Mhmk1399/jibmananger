@@ -19,7 +19,7 @@ export const Members = ({ groupId }: { groupId: string }) => {
 
   useEffect(() => {
     fetchMembers();
-  }, [groupId]);
+  } );
 
   const fetchMembers = async () => {
     try {

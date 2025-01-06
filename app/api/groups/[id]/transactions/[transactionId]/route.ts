@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, context: { params: { id: string,
         
         return NextResponse.json(group.transactions[0]);
     } catch (error) {
-        return NextResponse.json({ error: "Failed to fetch transaction" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to fetch transaction",details:error }, { status: 500 });
     }
 }
 
@@ -42,6 +42,6 @@ export async function PATCH(request: NextRequest, context: { params: { id: strin
         
         return NextResponse.json(group);
     } catch (error) {
-        return NextResponse.json({ error: "Failed to update transaction" }, { status: 500 });
+        return NextResponse.json({ error: "Failed to update transaction",details:error }, { status: 500 });
     }
 }

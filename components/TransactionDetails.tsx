@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import PriceInput from "./priceInput";
 
-const TransactionDetails = ({ transactionId, groupId, onClose }: { transactionId: string; groupId: string; onClose: () => void }) => {
+const TransactionDetails = ({ transactionId, groupId }: { transactionId: string; groupId: string; onClose: () => void }) => {
     const [transaction, setTransaction] = useState<{
       amount: string;
       description: string;
