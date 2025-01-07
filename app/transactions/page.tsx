@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { rayBold } from "@/next-persian-fonts/ray";
 import PriceInput from "../../components/priceInput";
 import LoadingComponent from '../../components/loading'
+import toast from "react-hot-toast";
 interface Recipient {
   _id: string;
   name: string;
@@ -61,34 +62,38 @@ const CardModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
         <iframe src="/addCard" className="w-full h-[calc(100%-60px)]" />
       </motion.div>
     </motion.div>
-  );}
-  const CategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-    if (!isOpen) return null;
-  
-    return (
+  );
+}
+const CategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+  if (!isOpen) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+    >
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
       >
-        <motion.div
-          initial={{ scale: 0.95 }}
-          animate={{ scale: 1 }}
-          className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
-        >
-          <div className="flex justify-between items-center p-4 border-b">
-            <h3 className="text-lg font-bold">افزودن دسته‌بندی جدید</h3>
-            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-              ✕
-            </button>
-          </div>
-          <iframe src="/addCategory" className="w-full h-[calc(100%-60px)]" />
-        </motion.div>
+        <div className="flex justify-between items-center p-4 border-b">
+          <h3 className="text-lg font-bold">افزودن دسته‌بندی جدید</h3>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            ✕
+          </button>
+        </div>
+        <iframe src="/addCategory" className="w-full h-[calc(100%-60px)]" />
       </motion.div>
-    );
-  };
+    </motion.div>
+  );
+};
 const Page = () => {
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [isBankDropdownOpen, setBankDropdownOpen] = useState(false);
+  const [isRecipientDropdownOpen, setRecipientDropdownOpen] = useState(false);
   const [transactionType, setTransactionType] = useState<"incomes" | "outcomes">(
     "incomes"
   );
@@ -128,7 +133,7 @@ const Page = () => {
     },
     Date: Date.now(),
   });
-  
+
   const [categories, setCategories] = useState<[{
     _id: string;
     name: string;
@@ -137,7 +142,7 @@ const Page = () => {
   }]>([{
     _id: "",
     name: "",
-    color: "" ,
+    color: "",
     user: "",
 
   }]);
@@ -149,7 +154,7 @@ const Page = () => {
     user: string;
   }[]>([
     {
-     user: "",
+      user: "",
       cardNumber: "",
       accountBalance: "",
       name: "",
@@ -158,14 +163,14 @@ const Page = () => {
   ]);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const postTransaction = async () => {
       // Find the selected recipient from recipients array
       const selectedRecipient = recipients.find(r => r._id === formData.recipient._id);
       const selectedBank = banks.find(b => b._id === formData.bankAccount._id);
       // Convert amount string "1,234,567" to number 1234567
       const numericAmount = Number(formData.amount.replace(/,/g, ''));
-      
+
       const transactionData = {
         amount: numericAmount,
         description: formData.description,
@@ -176,12 +181,12 @@ const Page = () => {
           name: selectedRecipient ? selectedRecipient.name : "",
           phoneNumber: selectedRecipient ? selectedRecipient.phoneNumber : "",
           user: selectedRecipient ? selectedRecipient.user : "",
-        } , // Send full recipient object
+        }, // Send full recipient object
         bank: selectedBank,
         image: formData.image
       };
-      console.log('transactionData',transactionData);
-      
+      console.log('transactionData', transactionData);
+
       try {
         const response = await fetch(`/api/transactions/${transactionType}`, {
           method: "POST",
@@ -193,16 +198,18 @@ const Page = () => {
         });
         if (response.ok) {
           console.log("Transaction posted successfully");
+          toast.success("تراکنش با موفقیت انجام شد");
         }
       } catch (error) {
         console.error("Error posting transaction:", error);
+
       }
     };
     postTransaction();
   };
-  
-  
-  
+
+
+
   const formatNumber = (value: string) => {
     const numberOnly = value.replace(/\D/g, "");
     return numberOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -232,11 +239,11 @@ const Page = () => {
       if (response.ok) {
         const data = await response.json();
         setCategories(data.categories);
-        
+
       }
     } catch (error) {
       console.log('Error fetching categories:', error);
-      
+
     }
   };
   const fetchBanks = async () => {
@@ -255,7 +262,7 @@ const Page = () => {
     }
   };
   useEffect(() => {
-   
+
     const loading = async () => {
       await fetchCategories();
       await fetchRecipients();
@@ -282,46 +289,46 @@ const Page = () => {
   };
   console.log(categories);
 
-// Update the handleInputChange function to handle objects
-const handleInputChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
-) => {
-  const { name, value } = e.target;
-  
-  if (name === "category") {
-    const selectedCategory = categories.find(cat => cat._id === value);
-    setFormData(prev => ({
-      ...prev,
-      category: {
-        user: selectedCategory?._id || "",
-        name: selectedCategory?.name || "",
-        color: selectedCategory?.color || "",
-        _id: selectedCategory?._id || ""
-      }
-    }));
-  }
-  else if (name === "recipient") {
-    const selectedRecipient = recipients.find(rec => rec._id === value);
-    setFormData(prev => ({
-      ...prev,
-      recipient: {
-        name: selectedRecipient?.name || "",
-        phoneNumber: selectedRecipient?.phoneNumber || "",
-        _id: selectedRecipient?._id || "",
-        user: selectedRecipient?.user || ""
-      }
-    }));
-  }
+  // Update the handleInputChange function to handle objects
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
 
-  
-  else {
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  }  
-  console.log(formData);
-};
+    if (name === "category") {
+      const selectedCategory = categories.find(cat => cat._id === value);
+      setFormData(prev => ({
+        ...prev,
+        category: {
+          user: selectedCategory?._id || "",
+          name: selectedCategory?.name || "",
+          color: selectedCategory?.color || "",
+          _id: selectedCategory?._id || ""
+        }
+      }));
+    }
+    else if (name === "recipient") {
+      const selectedRecipient = recipients.find(rec => rec._id === value);
+      setFormData(prev => ({
+        ...prev,
+        recipient: {
+          name: selectedRecipient?.name || "",
+          phoneNumber: selectedRecipient?.phoneNumber || "",
+          _id: selectedRecipient?._id || "",
+          user: selectedRecipient?.user || ""
+        }
+      }));
+    }
+
+
+    else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
+    console.log(formData);
+  };
 
   if (loading) {
     return <LoadingComponent />;
@@ -337,7 +344,7 @@ const handleInputChange = (
             ثبت تراکنش جدید
           </h1>
 
-          <div className="bg-gray-100 p-1 rounded-xl mb-6 max-w-md mx-auto">
+          <div className="bg-gray-100 p-1 rounded-xl mb-2 max-w-md mx-auto">
             <div className="grid grid-cols-2 gap-2">
               <motion.button
                 whileTap={{ scale: 0.95 }}
@@ -363,9 +370,9 @@ const handleInputChange = (
           </div>
 
           <form className="space-y-4 lg:space-y-6 max-w-6xl mx-auto">
-            <div className="lg:grid lg:grid-cols-2 lg:gap-6">
+            <div className="lg:grid lg:grid-cols-2 lg:gap-2">
               {/* Left Column */}
-              <div className="space-y-4">
+              <div className="space-y-1">
                 <div className="relative lg:mt-4">
                   <PriceInput
                     value={formData.amount}
@@ -373,94 +380,13 @@ const handleInputChange = (
                     name="مبلغ"
                   />
                 </div>
-                <div className="flex justify-between items-center">
-  <select
-    name="category"
-    value={formData.category._id}
-    onChange={handleInputChange}
-    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-  >
-    <option value="">انتخاب دسته بندی</option>
-    {categories.map((category) => (
-      <option key={category._id} value={category._id}>
-        {category.name}
-      </option>
-    ))}
-  </select>
-  <button 
-    type="button"
-    onClick={() => setIsCategoryModalOpen(true)} 
-    className="bg-green-500 text-white px-3 py-3 text-2xl rounded-full w-fit mx-2"
-  >
-    +
-  </button>
-</div>
 
-<CategoryModal 
-  isOpen={isCategoryModalOpen} 
-  onClose={() => setIsCategoryModalOpen(false)} 
-/>
-
-                <div className="flex justify-between items-center">
-  <select
-    name="bankAccount"
-    value={formData.bankAccount._id}
-    onChange={handleInputChange}
-    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-  >
-    <option value="">انتخاب حساب بانکی</option>
-    {banks.map((bank) => (
-      <option key={bank._id} value={bank._id} className="flex justify-between items-center">
-        {bank.name}({bank.cardNumber})
-      </option>
-    ))}
-  </select>
-  <button 
-    type="button"
-    onClick={() => setIsCardModalOpen(true)} 
-    className="bg-green-500 text-white px-3 py-3 text-2xl rounded-full w-fit mx-2"
-  >
-    +
-  </button>
-</div>
-
-<CardModal 
-  isOpen={isCardModalOpen} 
-  onClose={() => setIsCardModalOpen(false)} 
-/>
-                <div className="flex justify-between items-center">
-  <select
-    name="recipient"
-    value={formData.recipient._id}
-    className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
-    onChange={handleInputChange}
-  >
-    <option value="">انتخاب گیرنده</option>
-    {recipients.map((recipient) => (
-      <option key={recipient._id} value={recipient._id}>
-        {recipient.name}
-      </option>
-    ))}
-  </select>
-  <button 
-    type="button"
-    onClick={() => setIsRecipientModalOpen(true)} 
-    className="bg-green-500 text-white px-3 py-3 text-2xl rounded-full w-fit mx-2"
-  >
-    +
-  </button>
-</div>
-
-<RecipientModal 
-  isOpen={isRecipientModalOpen} 
-  onClose={() => setIsRecipientModalOpen(false)} 
-/>
 
               </div>
 
               {/* Full-width textarea and submit button */}
-              <div className="lg:max-w-full mt-4">
-                <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-4 mb-6 text-center lg:h-[80px] flex items-center justify-center ">
+              <div className="lg:max-w-full mt-2">
+                <div className="relative border-2 border-dashed border-gray-300 rounded-lg p-4 mb-3 text-center lg:h-[80px] flex items-center justify-center ">
                   <input
                     type="file"
                     accept="image/*"
@@ -489,10 +415,147 @@ const handleInputChange = (
                   value={formData.description}
                   onChange={handleInputChange}
                   placeholder="توضیحات (اختیاری)"
-                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all mb-5 "
+                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all mb-1 "
                   rows={2}
                 />
+                <div className=" ">
+                  <div className="flex justify-between items-center ">
+                    <div className="relative w-full my-1">
+                      <div
+                        onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                        className="group bg-white px-4 py-3 rounded-xl border-2 border-gray-200 hover:border-blue-400 cursor-pointer transition-all duration-300 flex items-center gap-3"
+                      >
+                        <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-blue-50">
+                          <i className="fas fa-tag text-gray-500 group-hover:text-blue-500" />
+                        </div>
+                        <span className="flex-1">{formData.category.name || "دسته‌بندی"}</span>
+                        <i className={`fas fa-chevron-down text-gray-400 transition-all duration-300 ${isCategoryDropdownOpen ? 'rotate-180 text-blue-500' : ''}`} />
+                      </div>
+                      {isCategoryDropdownOpen && (
+                        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl border shadow-lg overflow-hidden">
+                          <div className="max-h-48 overflow-y-auto">
+                            {categories.map((category) => (
+                              <div
+                                key={category._id}
+                                onClick={() => {
+                                  setFormData(prev => ({ ...prev, category }));
+                                  setIsCategoryDropdownOpen(false);
+                                }}
+                                className="px-4 py-2.5 hover:bg-blue-50 cursor-pointer flex items-center gap-3"
+                                style={{ borderRight: `10px solid ${category.color}` }}
+                              >
+                                <span className="text-gray-700">{category.name}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsCategoryModalOpen(true)}
+                      className="bg-green-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
+                    >
+                      +
+                    </button>
+                  </div>
 
+                  <CategoryModal
+                    isOpen={isCategoryModalOpen}
+                    onClose={() => setIsCategoryModalOpen(false)}
+                  />
+
+                  <div className="flex justify-between items-center">
+                    <div className="relative w-full my-1">
+                      <div
+                        onClick={() => setBankDropdownOpen(!isBankDropdownOpen)}
+                        className="group bg-white px-4 py-3 rounded-xl border-2 border-gray-200 hover:border-purple-400 cursor-pointer transition-all duration-300 flex items-center gap-3"
+                      >
+                        <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-purple-50">
+                          <i className="fas fa-credit-card text-gray-500 group-hover:text-purple-500" />
+                        </div>
+                        <span className="flex-1">{formData.bankAccount.name ? `${formData.bankAccount.name}` : "حساب بانکی"}</span>
+                        <i className={`fas fa-chevron-down text-gray-400 transition-all duration-300 ${isBankDropdownOpen ? 'rotate-180 text-purple-500' : ''}`} />
+                      </div>
+                      {isBankDropdownOpen && (
+                        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl border shadow-lg overflow-hidden">
+                          <div className="max-h-48 overflow-y-auto">
+                            {banks.map((bank) => (
+                              <div
+                                key={bank._id}
+                                onClick={() => {
+                                  setFormData(prev => ({ ...prev, bankAccount: bank }));
+                                  setBankDropdownOpen(false);
+                                }}
+                                className="px-4 py-2.5 hover:bg-purple-50 cursor-pointer"
+                              >
+                                <div className="font-medium text-gray-700">{bank.name}</div>
+                                <div className="text-sm text-gray-500">{bank.cardNumber}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => setIsCardModalOpen(true)}
+                      className="bg-green-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <CardModal
+                    isOpen={isCardModalOpen}
+                    onClose={() => setIsCardModalOpen(false)}
+                  />
+                  <div className="flex justify-between items-center ">
+                    <div className="relative w-full my-1">
+                      <div
+                        onClick={() => setRecipientDropdownOpen(!isRecipientDropdownOpen)}
+                        className="group bg-white px-4 py-3 rounded-xl border-2 border-gray-200 hover:border-green-400 cursor-pointer transition-all duration-300 flex items-center gap-3"
+                      >
+                        <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-green-50">
+                          <i className="fas fa-user text-gray-500 group-hover:text-green-500" />
+                        </div>
+                        <span className="flex-1">{formData.recipient.name || "گیرنده"}</span>
+                        <i className={`fas fa-chevron-down text-gray-400 transition-all duration-300 ${isRecipientDropdownOpen ? 'rotate-180 text-green-500' : ''}`} />
+                      </div>
+                      {isRecipientDropdownOpen && (
+                        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl border shadow-lg overflow-hidden">
+                          <div className="max-h-48 overflow-y-auto">
+                            {recipients.map((recipient) => (
+                              <div
+                                key={recipient._id}
+                                onClick={() => {
+                                  setFormData(prev => ({ ...prev, recipient }));
+                                  setRecipientDropdownOpen(false);
+                                }}
+                                className="px-4 py-2.5 hover:bg-green-50 cursor-pointer"
+                              >
+                                <div className="font-medium text-gray-700">{recipient.name}</div>
+                                <div className="text-sm text-gray-500">{recipient.phoneNumber}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsRecipientModalOpen(true)}
+                      className="bg-green-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <RecipientModal
+                  isOpen={isRecipientModalOpen}
+                  onClose={() => setIsRecipientModalOpen(false)}
+                />
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   type="submit"
@@ -504,6 +567,7 @@ const handleInputChange = (
                 </motion.button>
               </div>
             </div>
+
           </form>
         </div>
       </div>

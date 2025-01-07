@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import PriceInput from '../../components/priceInput'
 import CardInput from '../../components/CardInput'
 import { rayBold } from '@/next-persian-fonts/ray'
+import { toast } from 'react-hot-toast'
 
 
 
@@ -56,9 +57,23 @@ const Page = () => {
           expiryDate: '',
           shabaNumber: '',
         })
+        toast.success('بانک با موفقیت اضافه شد', {
+          style: {
+            direction: 'rtl',
+            backgroundColor: '#10B981',
+            color: 'white'
+          }
+        })
       }
     } catch (error) {
       console.error('Error adding bank:', error)
+      toast.error('خطا در ثبت بانک', {
+        style: {
+          direction: 'rtl',
+          backgroundColor: '#EF4444',
+          color: 'white'
+        }
+      })
     }
   }
 

@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         if (!id) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
-        const banks = await bank.find({user:id}).populate('user');
+        const banks = await bank.find({user:id});
         return NextResponse.json(banks);
     } catch (error) {
         return NextResponse.json({ message: "Error fetching banks",error }, { status: 500 });
@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
         }
 
         const reqBody = await req.json();
+        console.log(reqBody);
+        
         const newBank = new bank({
             ...reqBody,
             user:id

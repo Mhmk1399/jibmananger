@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { rayBold } from '@/next-persian-fonts/ray'
-
+import { toast } from 'react-hot-toast'
 const Page = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -30,9 +30,11 @@ const Page = () => {
           name: '',
           phoneNumber: '',
         })
+        toast.success('گیرنده با موفقیت اضافه شد')
       }
     } catch (error) {
       console.log('Error adding recipient:', error)
+      toast.error('خطا در افزودن گیرنده')
     }
   }
 
