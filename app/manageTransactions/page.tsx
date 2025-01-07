@@ -49,7 +49,8 @@ export default function ManageTransactions() {
       const data = await response.json()
       setTransactions(data)
       setLoading(false)
-
+      console.log(data);
+      
     } catch (error) {
       
       console.error('Error fetching transactions:', error)
@@ -89,8 +90,8 @@ export default function ManageTransactions() {
           amount: transaction.amount,
           description: transaction.description,
           date: transaction.date,
-          category: transaction.category?._id,
-          recipient: transaction.recipient?._id,
+          category: transaction.category,
+          recipient: transaction.recipient,
           bank: transaction.bank?._id
         })
       })

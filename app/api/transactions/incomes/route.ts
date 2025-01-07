@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
 
         return NextResponse.json(outcomes);
     } catch (error) {
-        return NextResponse.json({ message: "Error fetching outcomes",detials:error }, { status: 500 });
+        return NextResponse.json({ message: "Error fetching income",detials:error }, { status: 500 });
     }
 }
 
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json(outcome, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ message: "Error creating outcome",detials:error }, { status: 500 });
+        return NextResponse.json({ message: "Error creating income",detials:error }, { status: 500 });
     }
 }
 export async function DELETE(req: NextRequest) {

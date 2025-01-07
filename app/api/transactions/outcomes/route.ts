@@ -13,12 +13,12 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-        const outcomes = await Outcome.find({ user: decoded.id })
+        const incomes = await Outcome.find({ user: decoded.id })
             .populate('category')
             .populate('recipient')
             .populate('bank');
 
-        return NextResponse.json(outcomes);
+        return NextResponse.json(incomes);
     } catch (error) {
         return NextResponse.json({ message: "Error fetching outcomes", detials: error }, { status: 500 });
     }
