@@ -3,15 +3,42 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+interface FormErrors {
+  phoneNumber?: string;
+  password?: string;
+}
 export default function LoginPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const validateForm = () => {
+    const newErrors: FormErrors = {};
+
+    // Phone validation
+    if (!phoneNumber.match(/^09[0-9]{9}$/)) {
+      newErrors.phoneNumber = "شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود";
+    }
+
+    // Password validation
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+    if (!passwordRegex.test(password)) {
+      newErrors.password = "رمز عبور باید شامل حروف بزرگ، کوچک و اعداد باشد";
+    } else if (password.length < 6) {
+      newErrors.password = "رمز عبور باید حداقل ۶ کاراکتر باشد";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateForm()) {
+      return;
+    }
     setLoading(true);
     setError("");
 
@@ -42,7 +69,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-purple-200">
       <div className="max-w-md w-full mx-2 space-y-8 p-8 bg-white/50 rounded-xl shadow-lg">
         <div>
           <h2
@@ -72,6 +99,11 @@ export default function LoginPage() {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
+              {errors.phoneNumber && (
+                <p className="mt-1 text-sm text-red-500 text-right">
+                  {errors.phoneNumber}
+                </p>
+              )}
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
@@ -88,6 +120,11 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-500 text-right">
+                  {errors.password}
+                </p>
+              )}
             </div>
           </div>
 
@@ -122,7 +159,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
             >
               {loading ? "در حال ورود به جیب" : "ورود به جیب مبارک"}
             </button>

@@ -478,7 +478,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="bg-purple-400/5 border border-white/60 backdrop-blur-md p-6 w-full rounded-xl max-w-[90%]"
+            className="bg-purple-400/15 border border-white/50 backdrop-blur-md p-6 w-full rounded-xl max-w-[90%]"
             onClick={(e) => e.stopPropagation()}
             dir="rtl"
           >
