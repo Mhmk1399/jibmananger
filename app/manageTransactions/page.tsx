@@ -28,7 +28,7 @@ interface Transaction {
 }
 
 export default function ManageTransactions() {
-  const [transactionType, setTransactionType] = useState<'income' | 'outcome'>('income')
+  const [transactionType, setTransactionType] = useState<'incomes' | 'outcomes'>('incomes')
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
@@ -117,17 +117,17 @@ export default function ManageTransactions() {
       <div className="flex justify-center mb-6">
         <div className="bg-white rounded-lg p-1 shadow-md">
           <button
-            onClick={() => setTransactionType('income')}
+            onClick={() => setTransactionType('incomes')}
             className={`px-4 py-2 rounded-lg transition-colors ${
-              transactionType === 'income' ? 'bg-green-500 text-white' : 'text-gray-600'
+              transactionType === 'incomes' ? 'bg-green-500 text-white' : 'text-gray-600'
             }`}
           >
             دریافتی‌ها
           </button>
           <button
-            onClick={() => setTransactionType('outcome')}
+            onClick={() => setTransactionType('outcomes')}
             className={`px-4 py-2 rounded-lg transition-colors ${
-              transactionType === 'outcome' ? 'bg-red-500 text-white' : 'text-gray-600'
+              transactionType === 'outcomes' ? 'bg-red-500 text-white' : 'text-gray-600'
             }`}
           >
             پرداختی‌ها

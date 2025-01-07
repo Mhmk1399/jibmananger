@@ -235,6 +235,8 @@ const Page = () => {
         
       }
     } catch (error) {
+      console.log('Error fetching categories:', error);
+      
     }
   };
   const fetchBanks = async () => {
