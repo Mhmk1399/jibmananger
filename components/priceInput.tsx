@@ -8,9 +8,9 @@ interface BalanceInputProps {
 }
 
 const PriceInput = ({ value, onChange, name }: BalanceInputProps) => {
-  const formatNumber = (num: string) => {
+  const formatNumber = (num: string | number) => {
     // Remove any non-digit characters
-    const cleanNum = num.replace(/\D/g, '')
+    const cleanNum = String(num).replace(/\D/g, '')
     // Format with commas
     return cleanNum.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }

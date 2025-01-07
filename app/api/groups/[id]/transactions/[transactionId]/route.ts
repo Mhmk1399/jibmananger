@@ -43,28 +43,23 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     await connect();
-    const url = request.nextUrl;
-    const groupId = url.pathname.split('/')[3];
-    const transactionId = url.pathname.split('/')[5];
-
-    if (!groupId || !transactionId) {
-      return NextResponse.json(
-        { error: "Group ID or Transaction ID missing" },
-        { status: 400 }
-      );
-    }
+    // Extract IDs directly from URL segments
+    const urlParts = request.nextUrl.pathname.split('/');
+    const groupId = urlParts[3];
+    const transactionId = urlParts[5];
 
     const updates = await request.json();
 
     const group = await Group.findOneAndUpdate(
       {
         _id: groupId,
-        "transactions._id": transactionId,
+        "transactions._id": transactionId
       },
       {
         $set: {
-          "transactions.$": updates,
-        },
+          "transactions.$.amount":updates.amount,
+          "transactions.$.description": updates.description
+        }
       },
       { new: true }
     );
@@ -76,7 +71,10 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    return NextResponse.json(group);
+    return NextResponse.json({
+      success: true,
+      updatedGroup: group
+    });
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to update transaction", details: error },
@@ -84,3 +82,5 @@ export async function PATCH(request: NextRequest) {
     );
   }
 }
+
+

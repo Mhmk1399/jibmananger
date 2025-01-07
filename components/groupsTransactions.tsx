@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { rayBold } from "@/next-persian-fonts/ray";
 import PriceInput from "./priceInput";
+import toast from "react-hot-toast";
 
 const GroupTransactions = ({
   groupId,
@@ -55,6 +56,7 @@ const GroupTransactions = ({
       });
 
       if (response.ok) {
+        toast.success("تراکنش با موفقیت ثبت شد");
         console.log("Transaction posted successfully");
         onClose();
       }
@@ -70,14 +72,14 @@ const GroupTransactions = ({
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
     >
       <div
-        className={`${rayBold.variable} font-ray bg-white rounded-xl p-6 w-[90%] max-w-2xl`}
+        className={`${rayBold.variable} font-ray bg-white/20 rounded-xl p-6 w-[90%] max-w-2xl`}
         dir="rtl"
       >
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-bold">ثبت تراکنش جدید</h2>
+          <h2 className="text-xl font-bold text-center text-purple-800 border-b border-gray-200 p-2">ثبت تراکنش جدید</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
+            className="text-red-500 font-bold hover:text-gray-700"
           >
             ✕
           </button>
