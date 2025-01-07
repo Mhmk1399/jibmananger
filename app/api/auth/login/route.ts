@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return NextResponse.json(
-                { message: "Invalid credentials" },
+                { message: "خطا در ورود" },
                 { status: 401 }
             );
         }
