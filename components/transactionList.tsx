@@ -6,7 +6,7 @@ import PersianDatePicker from "../components/calender";
 import { DateObject } from "react-multi-date-picker";
 
 interface TransactionListProps {
-  type: "income" | "outcome";
+  type: "incomes" | "outcomes";
 }
 interface Category {
   _id: string;
@@ -49,7 +49,6 @@ interface StartDate {
 
 const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
   const [isNameModalOpen, setNameModalOpen] = useState(false);
   const [isDateModalOpen, setDateModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
@@ -73,6 +72,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   ]);
   const [originalTransactions, setOriginalTransactions] =
     useState(transactions);
+
   useEffect(() => {
     // Store the original transactions when the component mounts
     setOriginalTransactions(transactions);
@@ -81,7 +81,8 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch(`/api/transactions/${type}s`, {
+        const response = await fetch(`/api/transactions/${type}`, {
+          method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -89,25 +90,25 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         if (response.ok) {
           const data = await response.json();
           setTransactions(data);
-          console.log(data, "data");
+          console.log(data);
         }
       } catch (error) {
-        console.error("Error fetching transactions:", error);
+        console.log("Error fetching transactions:", error);
       } finally {
-        console.log("Loading finished",loading);
-        setLoading(false);
+        console.log("Loading finished");
       }
     };
-
+  
     let mounted = true;
     if (mounted) {
       fetchTransactions();
     }
-
+  
     return () => {
       mounted = false;
     };
   }, [type]);
+  
 
   // Filter transactions by Date
 
@@ -148,7 +149,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     setEndDate({ year: 1402, month: 1, day: 1 });
 
     try {
-      const response = await fetch(`/api/transactions/${type}s`, {
+      const response = await fetch(`/api/transactions/${type}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -194,7 +195,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
 
     try {
       // Re-fetch all transactions
-      const response = await fetch(`/api/transactions/${type}s`, {
+      const response = await fetch(`/api/transactions/${type}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -242,13 +243,13 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     <div className="flex flex-col items-center justify-center py-10">
       <svg
         className={`w-32 h-32 ${
-          type === "income" ? "text-emerald-200" : "text-rose-200"
+          type === "incomes" ? "text-emerald-200" : "text-rose-200"
         }`}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
       >
-        {type === "income" ? (
+        {type === "incomes" ? (
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -266,10 +267,10 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       </svg>
       <p
         className={`mt-4 text-lg font-medium ${
-          type === "income" ? "text-emerald-600" : "text-rose-600"
+          type === "incomes" ? "text-emerald-600" : "text-rose-600"
         }`}
       >
-        {type === "income" ? "هنوز دریافتی ثبت نشده" : "هنوز پرداختی ثبت نشده"}
+        {type === "incomes" ? "هنوز دریافتی ثبت نشده" : "هنوز پرداختی ثبت نشده"}
       </p>
     </div>
   );
@@ -284,18 +285,18 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       <div className="flex flex-row-reverse justify-between items-center mb-4">
         <h2
           className={`text-xl font-bold px-4 mb-4 text-right ${
-            type === "income"
+            type === "incomes"
               ? "text-emerald-600 border-r-4 border-emerald-500"
               : "text-rose-600 border-r-4 border-rose-500"
           }`}
         >
-          {type === "income" ? "لیست دریافتی‌ها" : "لیست پرداختی‌ها"}
+          {type === "incomes" ? "لیست دریافتی‌ها" : "لیست پرداختی‌ها"}
         </h2>
 
         <div className="flex gap-2 justify-between mb-4">
           <button
             onClick={() => setDateModalOpen(true)}
-            className="bg-gray-300 text-black px-3 py-3 rounded-full"
+            className="bg-purple-400 px-3 py-3 rounded-full"
           >
             <svg
               width="15px"
@@ -321,7 +322,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           </button>
           <button
             onClick={() => setNameModalOpen(true)}
-            className="bg-gray-300 text-white px-3 py-3 rounded-full"
+            className="bg-purple-400 px-3 py-3 rounded-full"
           >
             <svg
               width="15px"
@@ -349,40 +350,50 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         </div>
       </div>
 
-      <div className="bg-gray-100 rounded-xl overflow-x-auto shadow-lg p-4">
+      <div className=" rounded-xl overflow-x-auto shadow-lg">
         {transactions.length > 0 ? (
           <table className="w-full overflow-x-auto">
             <thead>
-              <tr className="border-b border-white">
+              <tr className="border-b bg-slate-500 text-white">
                 <th className="text-center py-2 text-sm">تاریخ</th>
                 <th className="text-center py-2">توضیحات</th>
-                <th className="text-left py-2">مبلغ</th>
-                <th className="">{type === "income" ? "فرستنده" : "گیرنده"}</th>
+                <th className="text-center py-2">مبلغ</th>
+                <th className="">
+                  {type === "incomes" ? "فرستنده" : "گیرنده"}
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-center">
               {transactions.map((transaction) => (
                 <tr
                   key={transaction._id}
-                  className="border-b hover:bg-gray-50 cursor-pointer transition-all duration-200"
+                  className={`border-b hover:bg-gray-300 ${
+                    type === "incomes"
+                      ? "hover:bg-emerald-100"
+                      : "hover:bg-red-100"
+                  } cursor-pointer transition-all duration-200`}
                   onClick={() => setSelectedTransaction(transaction)}
                 >
                   <td className="py-3">
                     {format(new Date(transaction.date), "yyyy/MM/dd")}
                   </td>
-                  <td className="py-3 text-sm">{transaction.description}</td>
+                  <td className="py-3 text-sm text-center" dir="rtl">
+                    {transaction.description.slice(0, 10)}
+                    {transaction.description.length > 20 ? "..." : ""}
+                  </td>
+
                   <td
-                    className={`py-1 px-1 text-nowrap text-sm text-left rounded-lg font-bold ${
-                      type === "income"
-                        ? "text-emerald-600 bg-emerald-100 "
-                        : "text-rose-600 bg-red-100"
+                    className={`py-1 text-nowrap text-xs text-center  font-bold ${
+                      type === "incomes" ? "text-emerald-700" : "text-rose-600"
                     }`}
                   >
-                    {type === "income" ? "+" : "-"}
-                    {transaction.amount} تومان
+                    {type === "incomes" ? "+" : "-"}
+
+                    {transaction.amount}
+                    <span className="ml-1 text-[0.5rem]"> تومان</span>
                   </td>
-                  <td className="py-3 text-gray-600">
-                    {type === "income"
+                  <td className="py-3 text-gray-600 text-center">
+                    {type === "incomes"
                       ? transaction.recipient.name
                       : transaction.recipient.name}
                   </td>
@@ -399,13 +410,14 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       {isDateModalOpen && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.2 } }}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
         >
-          <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 w-96">
+          <div className="bg-white bg-opacity-85 border border-black/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
             {" "}
             {/* Increased width for better calendar display */}
-            <h2 className="text-xl font-bold mb-4 border-b border-white pb-3 text-right text-gray-100">
+            <h2 className="text-xl font-bold mb-4 border-b text-center border-gray-300 pb-3 text-purple-400">
               فیلتر بر اساس تاریخ
             </h2>
             <PersianDatePicker onChange={handleDateRangeChange} />
@@ -427,11 +439,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
               </div>
             )}
             <div className="flex flex-col justify-center items-end mt-4">
-              <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+              <span className="text-gray-400 border-b border-gray-300 pb-3 text-right mb-3">
                 <strong className="ml-44">تاریخ شروع:</strong>
                 {`${startDate.year}/${startDate.month}/${startDate.day}`}
               </span>
-              <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+              <span className="text-gray-400 border-b border-gray-300 pb-3 text-right mb-3">
                 <strong className="ml-44">تاریخ پایان:</strong>{" "}
                 {`${endDate.year}/${endDate.month}/${endDate.day}`}
               </span>
@@ -466,7 +478,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="bg-purple-400/20 backdrop-blur-lg p-6 rounded-xl w-96 max-w-[90%]"
+            className="bg-purple-400/5 border border-white/60 backdrop-blur-md p-6 w-full rounded-xl max-w-[90%]"
             onClick={(e) => e.stopPropagation()}
             dir="rtl"
           >
@@ -490,16 +502,16 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                 <p className="text-gray-200">مبلغ:</p>
                 <p
                   className={`font-bold ${
-                    type === "income" ? "text-emerald-400" : "text-rose-400"
+                    type === "incomes" ? "text-emerald-400" : "text-rose-400"
                   }`}
                 >
-                  {type === "income" ? "+" : "-"}
+                  {type === "incomes" ? "+" : "-"}
                   {selectedTransaction.amount} تومان
                 </p>
               </div>
               <div>
                 <p className="text-gray-200">
-                  {type === "income" ? "فرستنده" : "گیرنده"}:
+                  {type === "incomes" ? "فرستنده" : "گیرنده"}:
                 </p>
                 <p className="text-white font-bold">
                   {selectedTransaction.recipient.name}
@@ -515,12 +527,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="fixed inset-0 flex items-center justify-center bg-purple-900 bg-opacity-50"
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
           dir="rtl"
         >
-          <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 w-80">
-            <h2 className="text-xl font-bold text-white pb-3 border-b-2 border-gray-200 mb-4">
+          <div className="bg-white bg-opacity-85 border border-black/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
+          <h2 className="text-xl font-bold text-purple-400 text-center pb-3 border-b-2 border-gray-300 mb-4">
               فیلتر بر اساس نام
             </h2>
             <input

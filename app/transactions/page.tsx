@@ -8,6 +8,7 @@ interface Recipient {
   _id: string;
   name: string;
   phoneNumber: string;
+  user: string;
 }
 
 const RecipientModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
@@ -92,7 +93,12 @@ const Page = () => {
     "incomes"
   );
   const [isRecipientModalOpen, setIsRecipientModalOpen] = useState(false);
-  const [recipients, setRecipients] = useState<Recipient[]>([]);
+  const [recipients, setRecipients] = useState<Recipient[]>([{
+    name: "",
+    phoneNumber: "",
+    _id: "",
+    user: "",
+  }]);
   const [loading, setLoading] = useState(true);
   const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
@@ -104,14 +110,21 @@ const Page = () => {
       color: "",
       user: "",
     },
-    bankAccount: "123456789",
+    bankAccount: {
+      cardNumber: "",
+      accountBalance: "",
+      name: "",
+      _id: "",
+      user: "",
+    },
     description: "",
     transactionType: transactionType,
     image: "",
     recipient: {
       _id: "",
       name: "",
-      phoneNumber: ""
+      phoneNumber: "",
+      user: "",
     },
     Date: Date.now(),
   });
@@ -147,13 +160,27 @@ const Page = () => {
     e.preventDefault();
     
     const postTransaction = async () => {
+      // Find the selected recipient from recipients array
+      const selectedRecipient = recipients.find(r => r._id === formData.recipient._id);
+      const selectedBank = banks.find(b => b._id === formData.bankAccount._id);
       // Convert amount string "1,234,567" to number 1234567
       const numericAmount = Number(formData.amount.replace(/,/g, ''));
       
       const transactionData = {
-        ...formData,
-        amount: numericAmount
+        amount: numericAmount,
+        description: formData.description,
+        category: formData.category,
+        date: new Date(),
+        recipient: {
+          _id: selectedRecipient ? selectedRecipient._id : "",
+          name: selectedRecipient ? selectedRecipient.name : "",
+          phoneNumber: selectedRecipient ? selectedRecipient.phoneNumber : "",
+          user: selectedRecipient ? selectedRecipient.user : "",
+        } , // Send full recipient object
+        bank: selectedBank,
+        image: formData.image
       };
+      console.log('transactionData',transactionData);
       
       try {
         const response = await fetch(`/api/transactions/${transactionType}`, {
@@ -175,13 +202,14 @@ const Page = () => {
   };
   
   
+  
   const formatNumber = (value: string) => {
     const numberOnly = value.replace(/\D/g, "");
     return numberOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
   const fetchRecipients = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/recipients', {
+      const response = await fetch('/api/recipients', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -196,7 +224,7 @@ const Page = () => {
   };
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/categories', {
+      const response = await fetch('/api/categories', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -207,12 +235,13 @@ const Page = () => {
         
       }
     } catch (error) {
-      console.error('Error fetching categories:', error);
+      console.log('Error fetching categories:', error);
+      
     }
   };
   const fetchBanks = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/banks', {
+      const response = await fetch('/api/banks', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -276,19 +305,22 @@ const handleInputChange = (
     setFormData(prev => ({
       ...prev,
       recipient: {
-        user: selectedRecipient?._id || "",
         name: selectedRecipient?.name || "",
         phoneNumber: selectedRecipient?.phoneNumber || "",
-        _id: selectedRecipient?._id || ""
+        _id: selectedRecipient?._id || "",
+        user: selectedRecipient?.user || ""
       }
     }));
   }
+
+  
   else {
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-  }
+  }  
+  console.log(formData);
 };
 
   if (loading) {
@@ -372,7 +404,7 @@ const handleInputChange = (
                 <div className="flex justify-between items-center">
   <select
     name="bankAccount"
-    value={formData.bankAccount}
+    value={formData.bankAccount._id}
     onChange={handleInputChange}
     className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all"
   >
@@ -406,7 +438,7 @@ const handleInputChange = (
     <option value="">انتخاب گیرنده</option>
     {recipients.map((recipient) => (
       <option key={recipient._id} value={recipient._id}>
-        {recipient.name},({recipient.phoneNumber})
+        {recipient.name}
       </option>
     ))}
   </select>
@@ -476,6 +508,6 @@ const handleInputChange = (
         </div>
       </div>
     );
-  };
+  }
 }
 export default Page;

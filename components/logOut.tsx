@@ -64,18 +64,23 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <motion.div
-        initial={{ scale: 0.9 }}
-        animate={{ scale: 1 }}
-        className="bg-white/20 backdrop-blur-md rounded-lg p-6 w-80 max-w-[90%] mx-4"
-        dir="rtl"
+      className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
       >
-        <h2 className="text-xl font-bold mb-4 text-gray-100 border-b border-white pb-2">
+      <motion.div
+         initial={{ opacity: 0, scale: 0.95 }}
+         animate={{ opacity: 1, scale: 1 }}
+         transition={{
+           type: "spring",
+           stiffness: 50,
+           duration: 0.5,
+         }}
+         className="bg-white/85 border border-black/30 backdrop-blur-sm rounded-xl p-8 w-96 mx-4"
+         dir="rtl"
+      >
+        <h2 className="text-xl font-bold mb-4 text-purple-400 border-b border-black/20 pb-2">
           خروج از حساب کاربری
         </h2>
-        <p className="text-gray-200 mb-6">
+        <p className="text-gray-400 mb-6">
           آیا مطمئن هستید که می‌خواهید خارج شوید؟
         </p>
         <div className="flex justify-start gap-2">

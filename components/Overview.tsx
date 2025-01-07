@@ -97,7 +97,8 @@ export const Overview = () => {
     if (params.id) {
       fetchStats();
     }
-  }, [params.id]);
+}, [params.id, stats]);
+
 
   return (
     <div dir="rtl">

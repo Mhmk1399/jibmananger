@@ -8,7 +8,7 @@ import { getDataFromToken } from "@/lib/getDataFromToken";
 export const GET = async (req: NextRequest) => {
     try {
         await connect();
-        const id= await getDataFromToken(req);
+        const id= getDataFromToken(req);
         const categories = await Category.find({user:id});
         return NextResponse.json({
             success: true,

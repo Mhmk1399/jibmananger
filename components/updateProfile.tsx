@@ -90,7 +90,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
 
       if (response.ok) {
         const data = await response.json();
-        if(!data){
+        if (!data) {
           throw new Error("خطا در بروزرسانی پروفایل");
         }
         fetchUserData();
@@ -121,36 +121,35 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
+  >
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        type: "spring",
+        stiffness: 50,
+        duration: 0.5,
+      }}
+      className="bg-white/85 border border-black/30 backdrop-blur-sm rounded-xl p-8 w-96 mx-4"
+      dir="rtl"
     >
-      <motion.div
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{
-          type: "spring",
-          stiffness: 100,
-          bounce: 0.5,
-          duration: 0.5,
-        }}
-        exit={{ y: -100, opacity: 0 }}
-        className="bg-white/10 backdrop-blur-xl rounded-xl p-6 w-96 max-w-[90%] mx-4"
-        dir="rtl"
-      >
-        <h2 className="text-xl font-bold mb-4 text-purple-100 border-b text-center border-gray-100 pb-2">
+  
+        <h2 className="text-xl font-bold mb-4 text-purple-500 border-b text-center border-gray-300 pb-2">
           بروزرسانی پروفایل
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="block text-sm font-medium text-purple-700">
               نام
             </label>
             <input
               type="text"
               name="name"
-              className={`mt-1 w-full rounded-md border ${
+              className={`mt-1 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400 border ${
                 errors.name ? "border-red-500" : "border-gray-300"
               } p-2`}
               onChange={(e) =>
@@ -165,7 +164,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="block text-sm font-medium text-purple-700">
               شماره تماس
             </label>
             <input
@@ -173,7 +172,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
               pattern="09[0-9]{9}"
               maxLength={11}
               name="phoneNumber"
-              className={`mt-1 text-right w-full rounded-md border ${
+              className={`mt-1 text-right w-full  focus:outline-none focus:ring-2 focus:ring-purple-400 rounded-md border ${
                 errors.phoneNumber ? "border-red-500" : "border-gray-300"
               } p-2`}
               onChange={(e) => {
@@ -188,13 +187,13 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-200">
+            <label className="block text-sm font-medium text-purple-700">
               رمز عبور جدید
             </label>
             <input
               type="password"
               name="password"
-              className={`mt-1 w-full rounded-md border ${
+              className={`mt-1 w-full rounded-md  focus:outline-none focus:ring-2 focus:ring-purple-400 border ${
                 errors.password ? "border-red-500" : "border-gray-300"
               } p-2`}
               onChange={(e) =>

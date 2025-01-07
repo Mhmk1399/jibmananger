@@ -18,25 +18,13 @@ export async function POST(request: NextRequest) {
 
     const { 
       name,
-      cardNumber,
-      cvv2,
-      expiryDate,
-      shabaNumber,
-      recipientName,
-      recipientPhoneNumber 
+      phoneNumber 
     } = await request.json();
 
     const newRecipient = new recipient({
-      name: recipientName,
-      phoneNumber: recipientPhoneNumber,
-      user: decoded.id,
-      bankDetails: {
-        bankName: name,
-        cardNumber: cardNumber,
-        cvv2: cvv2,
-        expiryDate: expiryDate,
-        shabaNumber: shabaNumber
-      }
+      name: name,
+      phoneNumber: phoneNumber,
+      user: decoded.id,   
     });
 
     await newRecipient.save();
@@ -47,9 +35,10 @@ export async function POST(request: NextRequest) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error("Error adding recipient:", error);
+    console.log("Error adding recipient:", error);
     return NextResponse.json({ 
-      message: "Error adding recipient" 
+      message: "Error adding recipient" ,
+      error
     }, { status: 500 });
   }
 }
