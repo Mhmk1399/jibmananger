@@ -166,23 +166,17 @@ const Page = () => {
 
     const postTransaction = async () => {
       // Find the selected recipient from recipients array
-      const selectedRecipient = recipients.find(r => r._id === formData.recipient._id);
-      const selectedBank = banks.find(b => b._id === formData.bankAccount._id);
+    
       // Convert amount string "1,234,567" to number 1234567
       const numericAmount = Number(formData.amount.replace(/,/g, ''));
 
       const transactionData = {
         amount: numericAmount,
         description: formData.description,
-        category: formData.category,
+        category: formData.category.user,
         date: new Date(),
-        recipient: {
-          _id: selectedRecipient ? selectedRecipient._id : "",
-          name: selectedRecipient ? selectedRecipient.name : "",
-          phoneNumber: selectedRecipient ? selectedRecipient.phoneNumber : "",
-          user: selectedRecipient ? selectedRecipient.user : "",
-        }, // Send full recipient object
-        bank: selectedBank,
+        recipient: formData.recipient.user, // Send full recipient object
+        bank: formData.bankAccount.user, // Send full bank object
         image: formData.image
       };
       console.log('transactionData', transactionData);

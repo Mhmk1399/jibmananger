@@ -13,8 +13,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const incomes = await income
-      .find({ user: decoded.id })
+    const incomes = await income.find({ user: decoded.id })
       .populate("category")
       .populate("recipient")
       .populate("bank");

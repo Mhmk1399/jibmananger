@@ -26,8 +26,8 @@ const incomeSchema = new mongoose.Schema({
     },
     recipient: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'recipient',  // Capital 'R' to match the model name
-        required: false
+        ref: "recipient",
+        required: false,
     },
     bank: {
         type: mongoose.Schema.Types.ObjectId,
@@ -41,6 +41,4 @@ const incomeSchema = new mongoose.Schema({
 );
 
 
-export const income = mongoose.models.income || mongoose.model('income', incomeSchema);
-
-
+export const income = mongoose.models.income || mongoose.model("income", incomeSchema);
