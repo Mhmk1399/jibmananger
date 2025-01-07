@@ -124,7 +124,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="fixed inset-0  backdrop-blur-sm flex items-center justify-center z-50"
+    className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
   >
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -138,12 +138,12 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
       dir="rtl"
     >
   
-        <h2 className="text-xl font-bold mb-4 text-gray-100 border-b text-center border-gray-100 pb-2">
+        <h2 className="text-xl font-bold mb-4 text-purple-500 border-b text-center border-gray-300 pb-2">
           بروزرسانی پروفایل
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-100">
+            <label className="block text-sm font-medium text-purple-700">
               نام
             </label>
             <input
@@ -164,7 +164,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-100">
+            <label className="block text-sm font-medium text-purple-700">
               شماره تماس
             </label>
             <input
@@ -187,7 +187,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-100">
+            <label className="block text-sm font-medium text-purple-700">
               رمز عبور جدید
             </label>
             <input
