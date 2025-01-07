@@ -30,6 +30,7 @@ import gavamin from '@/public/images/Ghavamin_logo.svg.png'
 import shahr from '@/public/images/shahr-bank-logo-512.png'
 import gardesh from '@/public/images/gardeshgari-bank-logo-512.png'
 import CardInput from '@/components/CardInput'
+import Image from 'next/image'
 
 interface Bank {
     _id: string
@@ -175,7 +176,9 @@ export default function ManageCards() {
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">
                   {bankInfo && (
-                    <img
+                    <Image
+                    width={40}
+                    height={40}
                       src={bankInfo.logo}
                       alt={bankInfo.name}
                       className="w-10 h-10 object-contain"

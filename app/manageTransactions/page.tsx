@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { TrashIcon, PencilIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-hot-toast'
 import LoadingComponent from '@/components/loading'
+import { useCallback } from 'react'
 
 interface Transaction {
   _id: string
@@ -24,39 +25,42 @@ interface Transaction {
     name: string
     _id: string
     cardNumber: number
-  }
+  } 
 }
 
 export default function ManageTransactions() {
-  const [transactionType, setTransactionType] = useState<'income' | 'outcome'>('income')
+  const [transactionType, setTransactionType] = useState<'incomes' | 'outcomes'>('incomes')
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [loading, setLoading] = useState(true)
-  useEffect(() => {
-    fetchTransactions()
-  }, [transactionType])
+  
 
-  const fetchTransactions = async () => {
-    setLoading(true)
-
-    try {
-      const response = await fetch(`/api/transactions/${transactionType}s`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      const data = await response.json()
-      setTransactions(data)
-      setLoading(false)
-
-    } catch (error) {
-      
-      console.error('Error fetching transactions:', error)
-      toast.error('خطا در دریافت تراکنش‌ها')
-    }
+ 
+const fetchTransactions = useCallback(async () => {
+  setLoading(true)
+  try {
+    const response = await fetch(`/api/transactions/${transactionType}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    const data = await response.json()
+    setTransactions(data)
+    setLoading(false)
+  } catch (error) {
+    console.error('Error fetching transactions:', error)
+    toast.error('خطا در دریافت تراکنش‌ها')
   }
+}, [transactionType])
 
+
+useEffect(() => {
+  fetchTransactions()
+}, [fetchTransactions])
+useEffect(() => {
+  fetchTransactions()
+}, [transactionType])
   const handleDelete = async (id: string) => {
     try {
       const response = await fetch(`/api/transactions/${transactionType}s`, {
@@ -89,8 +93,8 @@ export default function ManageTransactions() {
           amount: transaction.amount,
           description: transaction.description,
           date: transaction.date,
-          category: transaction.category?._id,
-          recipient: transaction.recipient?._id,
+          category: transaction.category,
+          recipient: transaction.recipient,
           bank: transaction.bank?._id
         })
       })
@@ -116,17 +120,17 @@ export default function ManageTransactions() {
       <div className="flex justify-center mb-6">
         <div className="bg-white rounded-lg p-1 shadow-md">
           <button
-            onClick={() => setTransactionType('income')}
+            onClick={() => setTransactionType('incomes')}
             className={`px-4 py-2 rounded-lg transition-colors ${
-              transactionType === 'income' ? 'bg-green-500 text-white' : 'text-gray-600'
+              transactionType === 'incomes' ? 'bg-green-500 text-white' : 'text-gray-600'
             }`}
           >
             دریافتی‌ها
           </button>
           <button
-            onClick={() => setTransactionType('outcome')}
+            onClick={() => setTransactionType('outcomes')}
             className={`px-4 py-2 rounded-lg transition-colors ${
-              transactionType === 'outcome' ? 'bg-red-500 text-white' : 'text-gray-600'
+              transactionType === 'outcomes' ? 'bg-red-500 text-white' : 'text-gray-600'
             }`}
           >
             پرداختی‌ها
