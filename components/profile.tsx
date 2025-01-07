@@ -3,8 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import UpdateProfileModal from "./updateProfile";
 import LogoutModal from "./logOut";
-import { usePathname } from 'next/navigation';
-
+import { usePathname } from "next/navigation";
 
 interface User {
   _id: string;
@@ -26,9 +25,6 @@ import Image from "next/image";
 
 const Profile = () => {
   const pathname = usePathname();
-    if (pathname === '/login' || pathname === '/register') {
-      return null;
-    }
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
@@ -61,27 +57,35 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    setMounted(true);
-    const timer = setInterval(() => {
-      setCurrentDateTime(new Date());
-    }, 1000);
+    if (pathname !== "/login" && pathname !== "/register") {
+      setMounted(true);
+      const timer = setInterval(() => {
+        setCurrentDateTime(new Date());
+      }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+      return () => clearInterval(timer);
+    }
+  }, [pathname]);
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsDropdownOpen(false);
-      }
-    };
+    if (pathname !== "/login" && pathname !== "/register") {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target as Node)
+        ) {
+          setIsDropdownOpen(false);
+        }
+      };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [pathname]);
 
+  if (pathname === "/login" || pathname === "/register") {
+    return null;
+  }
   const dropdownVariants = {
     hidden: {
       opacity: 0,
