@@ -6,7 +6,7 @@ import PersianDatePicker from "../components/calender";
 import { DateObject } from "react-multi-date-picker";
 
 interface TransactionListProps {
-  type: "income" | "outcome";
+  type: "incomes" | "outcomes";
 }
 interface Category {
   _id: string;
@@ -81,7 +81,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await fetch(`/api/transactions/${type}s`, {
+        const response = await fetch(`/api/transactions/${type}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -242,13 +242,13 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     <div className="flex flex-col items-center justify-center py-10">
       <svg
         className={`w-32 h-32 ${
-          type === "income" ? "text-emerald-200" : "text-rose-200"
+          type === "incomes" ? "text-emerald-200" : "text-rose-200"
         }`}
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
       >
-        {type === "income" ? (
+        {type === "incomes" ? (
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -266,10 +266,10 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       </svg>
       <p
         className={`mt-4 text-lg font-medium ${
-          type === "income" ? "text-emerald-600" : "text-rose-600"
+          type === "incomes" ? "text-emerald-600" : "text-rose-600"
         }`}
       >
-        {type === "income" ? "هنوز دریافتی ثبت نشده" : "هنوز پرداختی ثبت نشده"}
+        {type === "incomes" ? "هنوز دریافتی ثبت نشده" : "هنوز پرداختی ثبت نشده"}
       </p>
     </div>
   );
@@ -284,12 +284,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       <div className="flex flex-row-reverse justify-between items-center mb-4">
         <h2
           className={`text-xl font-bold px-4 mb-4 text-right ${
-            type === "income"
+            type === "incomes"
               ? "text-emerald-600 border-r-4 border-emerald-500"
               : "text-rose-600 border-r-4 border-rose-500"
           }`}
         >
-          {type === "income" ? "لیست دریافتی‌ها" : "لیست پرداختی‌ها"}
+          {type === "incomes" ? "لیست دریافتی‌ها" : "لیست پرداختی‌ها"}
         </h2>
 
         <div className="flex gap-2 justify-between mb-4">
@@ -357,7 +357,9 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                 <th className="text-center py-2 text-sm">تاریخ</th>
                 <th className="text-center py-2">توضیحات</th>
                 <th className="text-center py-2">مبلغ</th>
-                <th className="">{type === "income" ? "فرستنده" : "گیرنده"}</th>
+                <th className="">
+                  {type === "incomes" ? "فرستنده" : "گیرنده"}
+                </th>
               </tr>
             </thead>
             <tbody className="text-center">
@@ -365,7 +367,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                 <tr
                   key={transaction._id}
                   className={`border-b hover:bg-gray-300 ${
-                    type === "income"
+                    type === "incomes"
                       ? "hover:bg-emerald-100"
                       : "hover:bg-red-100"
                   } cursor-pointer transition-all duration-200`}
@@ -381,16 +383,16 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
 
                   <td
                     className={`py-1 text-nowrap text-xs text-center  font-bold ${
-                      type === "income" ? "text-emerald-700" : "text-rose-600"
+                      type === "incomes" ? "text-emerald-700" : "text-rose-600"
                     }`}
                   >
-                    {type === "income" ? "+" : "-"}
+                    {type === "incomes" ? "+" : "-"}
 
                     {transaction.amount}
                     <span className="ml-1 text-[0.5rem]"> تومان</span>
                   </td>
                   <td className="py-3 text-gray-600 text-center">
-                    {type === "income"
+                    {type === "incomes"
                       ? transaction.recipient.name
                       : transaction.recipient.name}
                   </td>
@@ -409,7 +411,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50"
         >
           <div className="bg-white bg-opacity-30 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
             {" "}
@@ -499,16 +501,16 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                 <p className="text-gray-200">مبلغ:</p>
                 <p
                   className={`font-bold ${
-                    type === "income" ? "text-emerald-400" : "text-rose-400"
+                    type === "incomes" ? "text-emerald-400" : "text-rose-400"
                   }`}
                 >
-                  {type === "income" ? "+" : "-"}
+                  {type === "incomes" ? "+" : "-"}
                   {selectedTransaction.amount} تومان
                 </p>
               </div>
               <div>
                 <p className="text-gray-200">
-                  {type === "income" ? "فرستنده" : "گیرنده"}:
+                  {type === "incomes" ? "فرستنده" : "گیرنده"}:
                 </p>
                 <p className="text-white font-bold">
                   {selectedTransaction.recipient.name}
@@ -525,7 +527,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50"
           dir="rtl"
         >
           <div className="bg-white bg-opacity-30 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">

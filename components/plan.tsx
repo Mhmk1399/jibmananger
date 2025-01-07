@@ -81,10 +81,10 @@ const Plan: React.FC = () => {
       </div>
       <div className="space-y-4">
         <div id="income-list">
-          <TransactionList type="income" />
+          <TransactionList type="incomes" />
         </div>
         <div id="outcome-list">
-          <TransactionList type="outcome" />
+          <TransactionList type="outcomes" />
         </div>
       </div>
     </>
