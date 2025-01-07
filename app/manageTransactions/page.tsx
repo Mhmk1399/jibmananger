@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { TrashIcon, PencilIcon } from '@heroicons/react/24/outline'
 import { toast } from 'react-hot-toast'
 import LoadingComponent from '@/components/loading'
+import { useCallback } from 'react'
 
 interface Transaction {
   _id: string
@@ -24,7 +25,7 @@ interface Transaction {
     name: string
     _id: string
     cardNumber: number
-  }
+  } 
 }
 
 export default function ManageTransactions() {
@@ -33,31 +34,33 @@ export default function ManageTransactions() {
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [loading, setLoading] = useState(true)
-  useEffect(() => {
-    fetchTransactions()
-  }, [transactionType])
+  
 
-  const fetchTransactions = async () => {
-    setLoading(true)
-
-    try {
-      const response = await fetch(`/api/transactions/${transactionType}s`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
-      const data = await response.json()
-      setTransactions(data)
-      setLoading(false)
-      console.log(data);
-      
-    } catch (error) {
-      
-      console.error('Error fetching transactions:', error)
-      toast.error('خطا در دریافت تراکنش‌ها')
-    }
+ 
+const fetchTransactions = useCallback(async () => {
+  setLoading(true)
+  try {
+    const response = await fetch(`/api/transactions/${transactionType}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    const data = await response.json()
+    setTransactions(data)
+    setLoading(false)
+  } catch (error) {
+    console.error('Error fetching transactions:', error)
+    toast.error('خطا در دریافت تراکنش‌ها')
   }
+}, [transactionType])
 
+
+useEffect(() => {
+  fetchTransactions()
+}, [fetchTransactions])
+useEffect(() => {
+  fetchTransactions()
+}, [transactionType])
   const handleDelete = async (id: string) => {
     try {
       const response = await fetch(`/api/transactions/${transactionType}s`, {

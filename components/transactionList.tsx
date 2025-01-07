@@ -49,7 +49,6 @@ interface StartDate {
 
 const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
   const [isNameModalOpen, setNameModalOpen] = useState(false);
   const [isDateModalOpen, setDateModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
@@ -94,20 +93,20 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       } catch (error) {
         console.log("Error fetching transactions:", error);
       } finally {
-        console.log("Loading finished", loading);
-        setLoading(false);
+        console.log("Loading finished");
       }
     };
-
+  
     let mounted = true;
     if (mounted) {
       fetchTransactions();
     }
-
+  
     return () => {
       mounted = false;
     };
   }, [type]);
+  
 
   // Filter transactions by Date
 
