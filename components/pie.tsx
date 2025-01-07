@@ -6,18 +6,22 @@ import {
   ArrowTrendingDownIcon,
 } from "@heroicons/react/24/outline";
 
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, TooltipItem } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  TooltipItem,
+} from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-// interface TransactionChartProps {
-//   incomes: string[];
-//   outcomes: string[];
-// }
+interface TransactionChartProps {
+  incomes: number;
+  outcomes: number;
+}
 
-const PieChart: React.FC = ({
-  
-}) => {
+const PieChart: React.FC<TransactionChartProps> = ({ outcomes, incomes }) => {
   const options = {
     responsive: true,
     plugins: {
@@ -31,7 +35,7 @@ const PieChart: React.FC = ({
       },
       tooltip: {
         callbacks: {
-          label: function (context:TooltipItem<'pie'>) {
+          label: function (context: TooltipItem<"pie">) {
             return `${context.label}: ${context.parsed.toLocaleString()} تومان`;
           },
         },
@@ -44,7 +48,7 @@ const PieChart: React.FC = ({
     labels: ["دریافتی", "پرداختی"],
     datasets: [
       {
-        data: [495000, 396000],
+        data: [incomes, outcomes],
         backgroundColor: ["rgba(34, 197, 94, 0.6)", "rgba(239, 68, 68, 0.6)"],
         borderColor: ["rgb(34, 197, 94)", "rgb(239, 68, 68)"],
         borderWidth: 1,

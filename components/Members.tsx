@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { UserPlus } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface Member {
   _id: string;
@@ -8,10 +9,16 @@ interface Member {
   email: string;
   phoneNumber: string;
 }
+interface FormErrors {
+  name?: string;
+  phoneNumber?: string;
+}
 
 export const Members = ({ groupId }: { groupId: string }) => {
   const [members, setMembers] = useState<Member[]>([]);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const [newMemberData, setNewMemberData] = useState({
     name: "",
     phoneNumber: "",
@@ -19,7 +26,24 @@ export const Members = ({ groupId }: { groupId: string }) => {
 
   useEffect(() => {
     fetchMembers();
-  } );
+  }, []);
+
+  const validateForm = () => {
+    const newErrors: FormErrors = {};
+
+    // Name validation
+    if (newMemberData.name.length < 3) {
+      newErrors.name = "نام باید حداقل ۳ کاراکتر باشد";
+    }
+
+    // Phone validation
+    if (!newMemberData.phoneNumber.match(/^09[0-9]{9}$/)) {
+      newErrors.phoneNumber = "شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const fetchMembers = async () => {
     try {
@@ -39,6 +63,10 @@ export const Members = ({ groupId }: { groupId: string }) => {
 
   const handleAddMember = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
     try {
       const response = await fetch(`/api/groups/${groupId}`, {
         method: "PATCH",
@@ -52,10 +80,13 @@ export const Members = ({ groupId }: { groupId: string }) => {
 
       if (data.success) {
         await fetchMembers();
+        toast.success("اعضا با موفقیت اضافه شدند");
         setShowAddMemberModal(false);
         setNewMemberData({ name: "", phoneNumber: "" });
+        setErrors({});
       }
     } catch (error) {
+      toast.error("خطا در افزودن اعضا");
       console.error("Error adding member:", error);
     }
   };
@@ -114,6 +145,9 @@ export const Members = ({ groupId }: { groupId: string }) => {
                   className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                )}
               </div>
               <div className="mb-4">
                 <label className="block text-gray-100 mb-2">شماره تماس :</label>
@@ -129,6 +163,11 @@ export const Members = ({ groupId }: { groupId: string }) => {
                   className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                   required
                 />
+                {errors.phoneNumber && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.phoneNumber}
+                  </p>
+                )}
               </div>
               <div className="flex justify-end gap-4">
                 <button

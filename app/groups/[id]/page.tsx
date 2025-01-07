@@ -24,8 +24,8 @@ const GroupDetailsPage = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50" dir="rtl">
-      <div className="bg-white border-b">
+    <div className="min-h-screen bg-purple-50" dir="rtl">
+      <div className="bg-purple-50 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex flex-row justify-between w-full">

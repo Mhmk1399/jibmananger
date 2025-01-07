@@ -74,7 +74,7 @@ const handleCreateGroup = async (e: React.FormEvent) => {
 };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6" dir='rtl'>
+    <div className="min-h-screen bg-purple-50 p-6" dir='rtl'>
       {/* Header */}
       <div className="mb-8 flex justify-between items-center">
         <h1 className="text-3xl font-bold text-gray-800">گروه های مالی</h1>

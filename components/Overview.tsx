@@ -49,6 +49,8 @@ interface GroupStats {
 
 export const Overview = () => {
   const params = useParams();
+  const [income, setIncome] = useState(0);
+  const [outcome, setOutcome] = useState(0);
   const [stats, setStats] = useState<GroupStats>({
     memberCount: 0,
     totalTransactions: 0,
@@ -76,7 +78,6 @@ export const Overview = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        console.log(setStats);
         const response = await fetch(`/api/groups/${params.id}`, {
           method: "GET",
           headers: {
@@ -97,12 +98,30 @@ export const Overview = () => {
     if (params.id) {
       fetchStats();
     }
-}, [params.id, stats]);
+  }, [params.id]);
 
+  useEffect(() => {
+    const income = stats.groupInfo.transactions.reduce(
+      (sum, transaction) =>
+        transaction.type === "income" ? sum + transaction.amount : sum,
+      0
+    );
+    console.log(income, "income");
+
+    const outcome = stats.groupInfo.transactions.reduce(
+      (sum, transaction) =>
+        transaction.type === "outcome" ? sum + transaction.amount : sum,
+      0
+    );
+    console.log(outcome, "outcome");
+
+    setIncome(income);
+    setOutcome(outcome);
+  }, [stats.groupInfo.transactions]);
 
   return (
     <div dir="rtl">
-      <PieChart />
+      <PieChart incomes={income} outcomes={outcome} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 mb-12">
         <div className="bg-gradient-to-tl border-2 border-purple-400 from-purple-200 to-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
