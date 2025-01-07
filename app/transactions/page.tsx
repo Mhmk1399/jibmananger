@@ -173,10 +173,10 @@ const Page = () => {
       const transactionData = {
         amount: numericAmount,
         description: formData.description,
-        category: formData.category.user,
+        category: formData.category._id,
         date: new Date(),
-        recipient: formData.recipient.user, // Send full recipient object
-        bank: formData.bankAccount.user, // Send full bank object
+        recipient: formData.recipient._id, // Send full recipient object
+       
         image: formData.image
       };
       console.log('transactionData', transactionData);
