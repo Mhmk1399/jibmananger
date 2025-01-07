@@ -73,6 +73,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   ]);
   const [originalTransactions, setOriginalTransactions] =
     useState(transactions);
+
   useEffect(() => {
     // Store the original transactions when the component mounts
     setOriginalTransactions(transactions);
@@ -82,6 +83,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     const fetchTransactions = async () => {
       try {
         const response = await fetch(`/api/transactions/${type}`, {
+          method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
@@ -89,7 +91,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         if (response.ok) {
           const data = await response.json();
           setTransactions(data);
-          console.log(data, "data");
+          console.log(data);
         }
       } catch (error) {
         console.log("Error fetching transactions:", error);
@@ -148,7 +150,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     setEndDate({ year: 1402, month: 1, day: 1 });
 
     try {
-      const response = await fetch(`/api/transactions/${type}s`, {
+      const response = await fetch(`/api/transactions/${type}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -194,7 +196,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
 
     try {
       // Re-fetch all transactions
-      const response = await fetch(`/api/transactions/${type}s`, {
+      const response = await fetch(`/api/transactions/${type}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -411,12 +413,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
         >
-          <div className="bg-white bg-opacity-30 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
+          <div className="bg-white bg-opacity-85 border border-black/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
             {" "}
             {/* Increased width for better calendar display */}
-            <h2 className="text-xl font-bold mb-4 border-b border-white pb-3 text-right text-gray-100">
+            <h2 className="text-xl font-bold mb-4 border-b text-center border-gray-300 pb-3 text-purple-400">
               فیلتر بر اساس تاریخ
             </h2>
             <PersianDatePicker onChange={handleDateRangeChange} />
@@ -438,11 +440,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
               </div>
             )}
             <div className="flex flex-col justify-center items-end mt-4">
-              <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+              <span className="text-gray-400 border-b border-gray-300 pb-3 text-right mb-3">
                 <strong className="ml-44">تاریخ شروع:</strong>
                 {`${startDate.year}/${startDate.month}/${startDate.day}`}
               </span>
-              <span className="text-gray-200 border-b border-white pb-3 text-right mb-3">
+              <span className="text-gray-400 border-b border-gray-300 pb-3 text-right mb-3">
                 <strong className="ml-44">تاریخ پایان:</strong>{" "}
                 {`${endDate.year}/${endDate.month}/${endDate.day}`}
               </span>
@@ -527,11 +529,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50"
+          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
           dir="rtl"
         >
-          <div className="bg-white bg-opacity-30 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
-            <h2 className="text-xl font-bold text-white pb-3 border-b-2 border-gray-200 mb-4">
+          <div className="bg-white bg-opacity-85 border border-black/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
+          <h2 className="text-xl font-bold text-purple-400 text-center pb-3 border-b-2 border-gray-300 mb-4">
               فیلتر بر اساس نام
             </h2>
             <input

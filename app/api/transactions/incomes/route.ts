@@ -13,14 +13,14 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
 
-        const outcomes = await income.find({ user: decoded.id })
+        const incomes = await income.find({ user: decoded.id })
             .populate('category')
             .populate('recipient')
             .populate('bank');
 
-        return NextResponse.json(outcomes);
+        return NextResponse.json(incomes);
     } catch (error) {
-        return NextResponse.json({ message: "Error fetching outcomes",detials:error }, { status: 500 });
+        return NextResponse.json({ message: "Error fetching incomes",detials:error }, { status: 500 });
     }
 }
 
@@ -35,15 +35,15 @@ export async function POST(req: NextRequest) {
         }
 
         const data = await req.json();
-        const outcome = await income.create({
+        const incomes = await income.create({
             ...data,
             user: decoded.id,
             date: data.date || new Date()
         });
 
-        return NextResponse.json(outcome, { status: 201 });
+        return NextResponse.json(incomes, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ message: "Error creating outcome",detials:error }, { status: 500 });
+        return NextResponse.json({ message: "Error creating incomes",detials:error }, { status: 500 });
     }
 }
 export async function DELETE(req: NextRequest) {
