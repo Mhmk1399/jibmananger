@@ -134,7 +134,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
         stiffness: 50,
         duration: 0.5,
       }}
-      className="bg-white/50 border border-white/50 backdrop-blur-md rounded-xl p-8 w-96 mx-4"
+      className="bg-white/70 border border-white/20 backdrop-blur-md rounded-xl p-8 w-96 mx-4"
       dir="rtl"
     >
   
