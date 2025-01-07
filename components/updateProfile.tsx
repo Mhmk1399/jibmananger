@@ -124,7 +124,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50"
+    className="fixed inset-0 bg-black/10 backdrop-blur-sm flex items-center justify-center z-50"
   >
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -134,7 +134,7 @@ const UpdateProfileModal: React.FC<UpdateProfileModalProps> = ({
         stiffness: 50,
         duration: 0.5,
       }}
-      className="bg-white bg-opacity-10 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4"
+      className="bg-white bg-opacity-70 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4"
       dir="rtl"
     >
   
