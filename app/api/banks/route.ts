@@ -8,6 +8,9 @@ export async function GET(req: NextRequest) {
     try {
         await connect();
         const id= await getDataFromToken(req);
+        if (!id) {
+            return NextResponse.json({ message: "User not found" }, { status: 404 });
+        }
         const banks = await bank.find({user:id}).populate('user');
         return NextResponse.json(banks);
     } catch (error) {

@@ -6,19 +6,21 @@ import { getDataFromToken } from "@/lib/getDataFromToken";
 export async function GET(req: NextRequest) {
     try {
         await connect();
-        const token = req.headers.get("authorization")?.split(" ")[1];
-        const decoded = await verifyJwtToken(token);
-        
-        if (!decoded) {
+       const id=await getDataFromToken(req);
+        if (!id) {
             return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
         }
+console.log(id);
 
-        const outcomes = await income.find({ user: decoded.id })
-            .populate('category')
-            .populate('recipient')
-            .populate('bank');
+        const incomes = await income.find({ user: id })
+        
+        .populate("category")
+        .populate("recipient")
+        .populate("bank")
+   
 
-        return NextResponse.json(outcomes);
+
+        return NextResponse.json(incomes, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: "Error fetching income",detials:error }, { status: 500 });
     }
