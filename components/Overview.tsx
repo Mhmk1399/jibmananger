@@ -87,9 +87,7 @@ export const Overview = () => {
         });
         const data = await response.json();
         setStats(data.stats);
-
         console.log(data, "group data");
-        console.log(stats, "stats");
       } catch (error) {
         console.error("Error fetching stats:", error);
       }
@@ -99,6 +97,7 @@ export const Overview = () => {
       fetchStats();
     }
   }, [params.id]);
+
 
   useEffect(() => {
     const income = stats.groupInfo.transactions.reduce(

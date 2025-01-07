@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { UserPlus } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -24,9 +24,7 @@ export const Members = ({ groupId }: { groupId: string }) => {
     phoneNumber: "",
   });
 
-  useEffect(() => {
-    fetchMembers();
-  }, []);
+
 
   const validateForm = () => {
     const newErrors: FormErrors = {};
@@ -45,7 +43,7 @@ export const Members = ({ groupId }: { groupId: string }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const fetchMembers = async () => {
+  const fetchMembers = useCallback(async () => {
     try {
       const response = await fetch(`/api/groups/${groupId}`, {
         headers: {
@@ -59,7 +57,11 @@ export const Members = ({ groupId }: { groupId: string }) => {
     } catch (error) {
       console.error("Error fetching members:", error);
     }
-  };
+  }, [groupId]);
+  useEffect(() => {
+    fetchMembers();
+  }, [fetchMembers]);
+  
 
   const handleAddMember = async (e: React.FormEvent) => {
     e.preventDefault();

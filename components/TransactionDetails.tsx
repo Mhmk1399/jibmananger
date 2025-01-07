@@ -72,7 +72,7 @@ const TransactionDetails = ({
         setIsEditing(false);
         // Update local state with the updated transaction
         const updatedTransaction = result.updatedGroup.transactions.find(
-          (t: any) => t._id === transactionId
+          (t: { _id: string }) => t._id === transactionId
         );
         setTransaction(updatedTransaction);
         onClose();
