@@ -63,7 +63,7 @@ useEffect(() => {
 }, [transactionType])
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/transactions/${transactionType}s`, {
+      const response = await fetch(`/api/transactions/${transactionType}s`, { 
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
