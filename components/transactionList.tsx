@@ -364,7 +364,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
               {transactions.map((transaction) => (
                 <tr
                   key={transaction._id}
-                  className={`border-b hover:bg-gray-300 ${type === "income" ? "hover:bg-emerald-100" : "hover:bg-red-100" } cursor-pointer transition-all duration-200`}
+                  className={`border-b hover:bg-gray-300 ${
+                    type === "income"
+                      ? "hover:bg-emerald-100"
+                      : "hover:bg-red-100"
+                  } cursor-pointer transition-all duration-200`}
                   onClick={() => setSelectedTransaction(transaction)}
                 >
                   <td className="py-3">
@@ -377,17 +381,13 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
 
                   <td
                     className={`py-1 text-nowrap text-xs text-center  font-bold ${
-                      type === "income"
-                        ? "text-emerald-700"
-                        : "text-rose-600"
+                      type === "income" ? "text-emerald-700" : "text-rose-600"
                     }`}
                   >
                     {type === "income" ? "+" : "-"}
-                   
+
                     {transaction.amount}
                     <span className="ml-1 text-[0.5rem]"> تومان</span>
-                    
-                    
                   </td>
                   <td className="py-3 text-gray-600 text-center">
                     {type === "income"
@@ -407,10 +407,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       {isDateModalOpen && (
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { duration: 0.2 } }}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
         >
-          <div className="bg-white/20 backdrop-blur-md rounded-xl p-6 w-96">
+          <div className="bg-white bg-opacity-30 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
             {" "}
             {/* Increased width for better calendar display */}
             <h2 className="text-xl font-bold mb-4 border-b border-white pb-3 text-right text-gray-100">
@@ -474,7 +475,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="bg-purple-400/40 backdrop-blur-sm p-6 w-full rounded-xl max-w-[90%]"
+            className="bg-purple-400/5 border border-white/60 backdrop-blur-md p-6 w-full rounded-xl max-w-[90%]"
             onClick={(e) => e.stopPropagation()}
             dir="rtl"
           >
@@ -523,11 +524,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
           dir="rtl"
         >
-          <div className="bg-white/30 backdrop-blur-sm rounded-lg p-6 w-80">
+          <div className="bg-white bg-opacity-30 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
             <h2 className="text-xl font-bold text-white pb-3 border-b-2 border-gray-200 mb-4">
               فیلتر بر اساس نام
             </h2>

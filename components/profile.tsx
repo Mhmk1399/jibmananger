@@ -20,6 +20,7 @@ import {
   ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Image from "next/image";
 
 const Profile = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -115,11 +116,11 @@ const Profile = () => {
               {user?.name || "کاربر"}
             </span>
             <div className="w-8 h-10 overflow-hidden rounded-full">
-              <motion.img
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.2 }}
+              <Image
+                width={100}
+                height={100}
                 alt="profile"
-                src="https://images.unsplash.com/photo-1548544149-4835e62ee5b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80"
+                src="/images/profile.svg"
               />
             </div>
             <motion.svg
@@ -147,7 +148,7 @@ const Profile = () => {
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="absolute right-0 mt-4 w-52 p-2 rounded-2xl shadow-lg z-10 backdrop-blur-md border border-gray-100 bg-white/20"
+                className="absolute right-2 mt-4 w-52 p-3 rounded-2xl shadow-lg shadow-purple-300 z-10 backdrop-blur-md border-2 border-gray-300 bg-white/20"
               >
                 <motion.button
                   whileHover={{ backgroundColor: "#ffffff" }}
@@ -159,43 +160,82 @@ const Profile = () => {
                   </span>
                   <UserIcon className="w-4 inline h-4 ml-2 text-purple-800 " />
                 </motion.button>
-               <Link href="/manageTransactions">
-               <motion.button
-                  whileHover={{ backgroundColor: "#ffffff" }}
-                  className=" px-4 py-2 text-sm rounded-2xl w-full text-right flex items-center justify-end"
-                >
-                  <span className="text-purple-600 font-medium mx-2">مدیریت تراکنش‌ها</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#6b21a8"><path d="M240-160q-33 0-56.5-23.5T160-240q0-33 23.5-56.5T240-320q33 0 56.5 23.5T320-240q0 33-23.5 56.5T240-160Zm0-240q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm0-240q-33 0-56.5-23.5T160-720q0-33 23.5-56.5T240-800q33 0 56.5 23.5T320-720q0 33-23.5 56.5T240-640Zm240 0q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Zm240 0q-33 0-56.5-23.5T640-720q0-33 23.5-56.5T720-800q33 0 56.5 23.5T800-720q0 33-23.5 56.5T720-640ZM480-400q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm40 240v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T863-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" /></svg>               
-                   </motion.button>
-                   </Link>
-              <Link href="/manageRecipients">
-              <motion.button
-                  whileHover={{ backgroundColor: "#ffffff" }}
-                  className="flex px-4 py-2 text-sm rounded-2xl w-full text-end justify-end "
-                >
-                  <span className="text-purple-600 font-medium mx-2">مدیریت گیرنده ها</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#6b21a8"><path d="M480-800q-33 0-56.5-23.5T400-880q0-33 23.5-56.5T480-960q33 0 56.5 23.5T560-880q0 33-23.5 56.5T480-800ZM360-200v-480q-60-5-122-15t-118-25l20-80q78 21 166 30.5t174 9.5q86 0 174-9.5T820-800l20 80q-56 15-118 25t-122 15v480h-80v-240h-80v240h-80ZM320 0q-17 0-28.5-11.5T280-40q0-17 11.5-28.5T320-80q17 0 28.5 11.5T360-40q0 17-11.5 28.5T320 0Zm160 0q-17 0-28.5-11.5T440-40q0-17 11.5-28.5T480-80q17 0 28.5 11.5T520-40q0 17-11.5 28.5T480 0Zm160 0q-17 0-28.5-11.5T600-40q0-17 11.5-28.5T640-80q17 0 28.5 11.5T680-40q0 17-11.5 28.5T640 0Z" /></svg>
-                </motion.button>
+                <Link href="/manageTransactions">
+                  <motion.button
+                    whileHover={{ backgroundColor: "#ffffff" }}
+                    className=" px-4 py-2 text-sm rounded-2xl w-full text-right flex items-center justify-end"
+                  >
+                    <span className="text-purple-600 font-medium mx-2">
+                      مدیریت تراکنش‌ها
+                    </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="20px"
+                      viewBox="0 -960 960 960"
+                      width="20px"
+                      fill="#6b21a8"
+                    >
+                      <path d="M240-160q-33 0-56.5-23.5T160-240q0-33 23.5-56.5T240-320q33 0 56.5 23.5T320-240q0 33-23.5 56.5T240-160Zm0-240q-33 0-56.5-23.5T160-480q0-33 23.5-56.5T240-560q33 0 56.5 23.5T320-480q0 33-23.5 56.5T240-400Zm0-240q-33 0-56.5-23.5T160-720q0-33 23.5-56.5T240-800q33 0 56.5 23.5T320-720q0 33-23.5 56.5T240-640Zm240 0q-33 0-56.5-23.5T400-720q0-33 23.5-56.5T480-800q33 0 56.5 23.5T560-720q0 33-23.5 56.5T480-640Zm240 0q-33 0-56.5-23.5T640-720q0-33 23.5-56.5T720-800q33 0 56.5 23.5T800-720q0 33-23.5 56.5T720-640ZM480-400q-33 0-56.5-23.5T400-480q0-33 23.5-56.5T480-560q33 0 56.5 23.5T560-480q0 33-23.5 56.5T480-400Zm40 240v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q8 9 12.5 20t4.5 22q0 11-4 22.5T863-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+                    </svg>
+                  </motion.button>
+                </Link>
+                <Link href="/manageRecipients">
+                  <motion.button
+                    whileHover={{ backgroundColor: "#ffffff" }}
+                    className="flex px-4 py-2 text-sm rounded-2xl w-full text-end justify-end "
+                  >
+                    <span className="text-purple-600 font-medium mx-2">
+                      مدیریت گیرنده ها
+                    </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="20px"
+                      viewBox="0 -960 960 960"
+                      width="20px"
+                      fill="#6b21a8"
+                    >
+                      <path d="M480-800q-33 0-56.5-23.5T400-880q0-33 23.5-56.5T480-960q33 0 56.5 23.5T560-880q0 33-23.5 56.5T480-800ZM360-200v-480q-60-5-122-15t-118-25l20-80q78 21 166 30.5t174 9.5q86 0 174-9.5T820-800l20 80q-56 15-118 25t-122 15v480h-80v-240h-80v240h-80ZM320 0q-17 0-28.5-11.5T280-40q0-17 11.5-28.5T320-80q17 0 28.5 11.5T360-40q0 17-11.5 28.5T320 0Zm160 0q-17 0-28.5-11.5T440-40q0-17 11.5-28.5T480-80q17 0 28.5 11.5T520-40q0 17-11.5 28.5T480 0Zm160 0q-17 0-28.5-11.5T600-40q0-17 11.5-28.5T640-80q17 0 28.5 11.5T680-40q0 17-11.5 28.5T640 0Z" />
+                    </svg>
+                  </motion.button>
                 </Link>
                 <Link href="/manageCards">
-                <motion.button
-                  whileHover={{ backgroundColor: "#ffffff" }}
-                  className="flex px-4 py-2 text-sm rounded-2xl w-full text-end justify-end "
-                >
-                  <span className="text-purple-600 font-medium mx-2">مدیریت  کارت ها</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#6b21a8"><path d="M880-720v480q0 33-23.5 56.5T800-160H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720Zm-720 80h640v-80H160v80Zm0 160v240h640v-240H160Zm0 240v-480 480Z" /></svg>
-                </motion.button>
-                </Link>
-               <Link href="/manageCategories">
-               <motion.button
-                  whileHover={{ backgroundColor: "#ffffff" }}
-                  className="flex px-4 py-2 text-sm rounded-2xl w-full text-end justify-end "
-                  
-                >
-                  <span className="text-purple-600 font-medium mx-2">مدیریت دسته‌بندی ها</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#6b21a8"><path d="m276-528 204-336 204 336H276ZM696-96q-70 0-119-49t-49-119q0-70 49-119t119-49q70 0 119 49t49 119q0 70-49 119T696-96Zm-552-24v-288h288v288H144Zm551.77-48Q736-168 764-195.77q28-27.78 28-68Q792-304 764.23-332q-27.78-28-68-28Q656-360 628-332.23q-28 27.78-28 68Q600-224 627.77-196q27.78 28 68 28ZM216-192h144v-144H216v144Zm188-408h152l-76-125-76 125Zm76 0ZM360-336Zm331 67Z" /></svg>                        
+                  <motion.button
+                    whileHover={{ backgroundColor: "#ffffff" }}
+                    className="flex px-4 py-2 text-sm rounded-2xl w-full text-end justify-end "
+                  >
+                    <span className="text-purple-600 font-medium mx-2">
+                      مدیریت کارت ها
+                    </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="24px"
+                      viewBox="0 -960 960 960"
+                      width="24px"
+                      fill="#6b21a8"
+                    >
+                      <path d="M880-720v480q0 33-23.5 56.5T800-160H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720Zm-720 80h640v-80H160v80Zm0 160v240h640v-240H160Zm0 240v-480 480Z" />
+                    </svg>
                   </motion.button>
-                  </Link>
+                </Link>
+                <Link href="/manageCategories">
+                  <motion.button
+                    whileHover={{ backgroundColor: "#ffffff" }}
+                    className="flex px-4 py-2 text-sm rounded-2xl w-full text-end justify-end "
+                  >
+                    <span className="text-purple-600 font-medium mx-2">
+                      مدیریت دسته‌بندی ها
+                    </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      height="20px"
+                      viewBox="0 -960 960 960"
+                      width="20px"
+                      fill="#6b21a8"
+                    >
+                      <path d="m276-528 204-336 204 336H276ZM696-96q-70 0-119-49t-49-119q0-70 49-119t119-49q70 0 119 49t49 119q0 70-49 119T696-96Zm-552-24v-288h288v288H144Zm551.77-48Q736-168 764-195.77q28-27.78 28-68Q792-304 764.23-332q-27.78-28-68-28Q656-360 628-332.23q-28 27.78-28 68Q600-224 627.77-196q27.78 28 68 28ZM216-192h144v-144H216v144Zm188-408h152l-76-125-76 125Zm76 0ZM360-336Zm331 67Z" />
+                    </svg>
+                  </motion.button>
+                </Link>
                 <motion.button
                   whileHover={{ backgroundColor: "#ffffff" }}
                   className="block px-4 py-2 text-sm rounded-2xl w-full text-right"
@@ -204,7 +244,6 @@ const Profile = () => {
                   <span className="text-purple-600 font-medium">خروج</span>
                   <ArrowLeftStartOnRectangleIcon className="w-4 h-4 ml-2 inline  text-purple-800" />{" "}
                 </motion.button>
-
               </motion.div>
             )}
           </AnimatePresence>
@@ -216,13 +255,13 @@ const Profile = () => {
       >
         {mounted
           ? new Intl.DateTimeFormat("fa-IR", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            //   second: '2-digit',
-          }).format(currentDateTime)
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              //   second: '2-digit',
+            }).format(currentDateTime)
           : null}
       </div>
       <UpdateProfileModal
@@ -232,7 +271,7 @@ const Profile = () => {
       <LogoutModal
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
-      // onConfirm={() => {}}
+        // onConfirm={() => {}}
       />
     </section>
   );

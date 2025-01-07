@@ -64,12 +64,17 @@ const LogoutModal: React.FC<LogoutModalProps> = ({ isOpen, onClose }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    >
+      className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
+      >
       <motion.div
-        initial={{ scale: 0.9 }}
-        animate={{ scale: 1 }}
-        className="bg-white/20 backdrop-blur-md rounded-lg p-6 w-80 max-w-[90%] mx-4"
+         initial={{ opacity: 0, scale: 0.95 }}
+         animate={{ opacity: 1, scale: 1 }}
+         transition={{
+           type: "spring",
+           stiffness: 50,
+           duration: 0.5,
+         }}
+        className="bg-white bg-opacity-30 border border-white/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4"
         dir="rtl"
       >
         <h2 className="text-xl font-bold mb-4 text-gray-100 border-b border-white pb-2">
