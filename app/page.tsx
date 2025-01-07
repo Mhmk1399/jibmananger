@@ -1,7 +1,7 @@
 "use client";
 import TransactionChart from "@/components/circle";
 import Plan from "@/components/plan";
-import Profile from "@/components/profile";
+// import Profile from "@/components/profile";
 import Welcome from "@/components/welcome";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,7 @@ const Page = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-purple-50 p-2">
-      <Profile />
+      {/* <Profile /> */}
       <Welcome />
       <TransactionChart />
       <Plan />

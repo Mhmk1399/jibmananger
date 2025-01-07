@@ -3,8 +3,8 @@ import { ray } from "@/next-persian-fonts/ray";
 import "./globals.css";
 import Footer from "@/components/footer";
 import ScrollToTop from "../components/scrollToTop";
-
 import { Toaster } from "react-hot-toast";
+import Profile from "@/components/profile";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={ray.className}>
         <Toaster position="top-right" />
-
+        <Profile />
         {children}
         <ScrollToTop />
         <Footer />
