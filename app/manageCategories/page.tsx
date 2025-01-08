@@ -107,7 +107,7 @@ export default function ManageCategories() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 mb-24" dir="rtl">
+    <div className="min-h-screen bg-purple-50 p-4 mb-24" dir="rtl">
 <div className="flex justify-between items-center mb-6">
   <h1 className="text-2xl font-bold text-gray-800">مدیریت دسته‌بندی‌ها</h1>
   <button
