@@ -50,10 +50,10 @@ export async function POST(req: NextRequest) {
         console.log(token);
         return NextResponse.json({
             token,
-            message: "Login successful",
+            message: "ورود با موفقیت انجام شد",
         });
     } catch (err: unknown) {
-        console.error("Login error:", err);
-        return NextResponse.json({ message: "Error logging in" }, { status: 500 });
+        console.error("خطا در ورود به حساب", err);
+        return NextResponse.json({ message: "خطا در ورود به حساب" }, { status: 500 });
     }
 }

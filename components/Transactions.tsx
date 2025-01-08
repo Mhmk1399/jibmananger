@@ -106,7 +106,7 @@ const Transactions = ({ params }: { params: { id: string } }) => {
                     <span
                       className={`flex items-center gap-1 ${
                         transaction.type === "income"
-                          ? "text-green-600"
+                          ? "text-purple-600"
                           : "text-red-600"
                       }`}
                     >
@@ -127,7 +127,7 @@ const Transactions = ({ params }: { params: { id: string } }) => {
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-medium ${
                         transaction.type === "income"
-                          ? "bg-green-100 text-green-800"
+                          ? "bg-purple-100 text-green-800"
                           : "bg-red-100 text-red-800"
                       }`}
                     >

@@ -33,7 +33,7 @@ export default function ManageRecipients() {
         <motion.div
           initial={{ scale: 0.95 }}
           animate={{ scale: 1 }}
-          className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+          className="bg-purple-50 rounded-xl w-[90%] max-w-2xl h-[65vh] overflow-hidden"
         >
           <div className="flex justify-between items-center p-4 border-b">
             <h3 className="text-lg font-bold">افزودن گیرنده جدید</h3>
@@ -112,7 +112,7 @@ export default function ManageRecipients() {
         <h1 className="text-xl font-bold text-gray-800  ">مدیریت دریافت‌کنندگان</h1>
   <button
     onClick={() => setIsAddModalOpen(true)}
-    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
+    className="bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors"
   >
     افزودن+ 
   </button>
@@ -167,7 +167,7 @@ export default function ManageRecipients() {
     <motion.div
       initial={{ scale: 0.9 }}
       animate={{ scale: 1 }}
-      className="bg-white rounded-xl p-6 w-full max-w-md"
+      className="bg-purple-50 rounded-xl p-6 w-full max-w-md"
     >
       <h2 className="text-xl font-bold mb-4">ویرایش دریافت‌کننده</h2>
       <form
@@ -197,14 +197,14 @@ export default function ManageRecipients() {
         <div className="flex gap-2">
           <button
             type="submit"
-            className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+            className="flex-1 bg-purple-600 text-white py-2 rounded-lg hover:bg-blue-700"
           >
             ذخیره
           </button>
           <button
             type="button"
             onClick={() => setIsEditModalOpen(false)}
-            className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300"
+            className="flex-1 bg-red-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300"
           >
             انصراف
           </button>

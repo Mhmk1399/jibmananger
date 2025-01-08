@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (err: unknown) {
-    console.error("Error creating user account:", err);
+    console.error("خطا در ساخت حساب کاربری", err);
     return NextResponse.json(
-      { message: "Error creating user account" },
+      { message: "خطا در ساخت حساب کاربری" },
       { status: 500 }
     );
   }
@@ -63,7 +63,7 @@ export async function GET(request: NextRequest) {
   } catch (err: unknown) {
     console.error("Error fetching users:", err);
     return NextResponse.json(
-      { message: "Error fetching users" },
+      { message: "خطا در دریافت کاربران" },
       { status: 500 }
     );
   }

@@ -25,7 +25,7 @@ const RecipientModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => v
       <motion.div
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
-        className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+        className="bg-purple-50 rounded-xl w-[90%] max-w-2xl h-[65vh] overflow-hidden"
       >
         <div className="flex justify-between items-center p-4 border-b">
           <h3 className="text-lg font-bold">افزودن گیرنده جدید</h3>
@@ -51,7 +51,7 @@ const CardModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }
       <motion.div
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
-        className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+        className="bg-purple-50 rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
       >
         <div className="flex justify-between items-center p-4 border-b">
           <h3 className="text-lg font-bold">افزودن کارت بانکی جدید</h3>
@@ -77,7 +77,7 @@ const CategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => vo
       <motion.div
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
-        className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+        className="bg-purple-50 rounded-xl w-[90%] max-w-2xl h-[65vh] overflow-hidden"
       >
         <div className="flex justify-between items-center p-4 border-b">
           <h3 className="text-lg font-bold">افزودن دسته‌بندی جدید</h3>
@@ -331,7 +331,7 @@ console.log(formData.bankAccount);
   if (!loading) {
     return (
       <div
-        className={`${rayBold.variable} font-ray min-h-screen bg-white p-4 lg:p-8 w-full mb-24`}
+        className={`${rayBold.variable} font-ray min-h-screen bg-purple-50 p-4 lg:p-8 w-full mb-24`}
         dir="rtl"
       >
         <div className="max-w-7xl mx-auto">
@@ -345,7 +345,7 @@ console.log(formData.bankAccount);
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setTransactionType("incomes")}
                 className={`py-3 rounded-lg text-center ${transactionType === "incomes"
-                  ? "bg-green-500 text-white shadow-lg"
+                  ? "bg-purple-500 text-white shadow-lg"
                   : "bg-transparent text-gray-600"
                   }`}
               >
@@ -427,7 +427,7 @@ console.log(formData.bankAccount);
                         <i className={`fas fa-chevron-down text-gray-400 transition-all duration-300 ${isCategoryDropdownOpen ? 'rotate-180 text-blue-500' : ''}`} />
                       </div>
                       {isCategoryDropdownOpen && (
-                        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl border shadow-lg overflow-hidden">
+                        <div className="absolute z-50 w-full mt-2 bg-purple-50 rounded-xl border shadow-lg overflow-hidden">
                           <div className="max-h-48 overflow-y-auto">
                             {categories.map((category) => (
                               <div
@@ -449,7 +449,7 @@ console.log(formData.bankAccount);
                     <button
                       type="button"
                       onClick={() => setIsCategoryModalOpen(true)}
-                      className="bg-green-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
+                      className="bg-purple-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
                     >
                       +
                     </button>
@@ -473,7 +473,7 @@ console.log(formData.bankAccount);
                         <i className={`fas fa-chevron-down text-gray-400 transition-all duration-300 ${isBankDropdownOpen ? 'rotate-180 text-purple-500' : ''}`} />
                       </div>
                       {isBankDropdownOpen && (
-                        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl border shadow-lg overflow-hidden">
+                        <div className="absolute z-50 w-full mt-2 bg-purple-50 rounded-xl border shadow-lg overflow-hidden">
                           <div className="max-h-48 overflow-y-auto">
                             {banks.map((bank) => (
                               <div
@@ -496,7 +496,7 @@ console.log(formData.bankAccount);
                     <button
                       type="button"
                       onClick={() => setIsCardModalOpen(true)}
-                      className="bg-green-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
+                      className="bg-purple-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
                     >
                       +
                     </button>
@@ -519,7 +519,7 @@ console.log(formData.bankAccount);
                         <i className={`fas fa-chevron-down text-gray-400 transition-all duration-300 ${isRecipientDropdownOpen ? 'rotate-180 text-green-500' : ''}`} />
                       </div>
                       {isRecipientDropdownOpen && (
-                        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl border shadow-lg overflow-hidden">
+                        <div className="absolute z-50 w-full mt-2 bg-purple-50 rounded-xl border shadow-lg overflow-hidden">
                           <div className="max-h-48 overflow-y-auto">
                             {recipients.map((recipient) => (
                               <div
@@ -541,7 +541,7 @@ console.log(formData.bankAccount);
                     <button
                       type="button"
                       onClick={() => setIsRecipientModalOpen(true)}
-                      className="bg-green-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
+                      className="bg-purple-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
                     >
                       +
                     </button>
@@ -554,7 +554,7 @@ console.log(formData.bankAccount);
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className={`w-full lg:w-full lg:mx-auto block py-4 rounded-lg text-white font-medium shadow-lg ${transactionType === "incomes" ? "bg-green-500" : "bg-[#ff6961]"
+                  className={`w-full lg:w-full lg:mx-auto block py-4 rounded-lg text-white font-medium shadow-lg ${transactionType === "incomes" ? "bg-purple-500" : "bg-[#ff6961]"
                     }`}
                   onClick={handleSubmit}
                 >

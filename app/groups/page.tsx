@@ -81,9 +81,24 @@ const GroupsPage = () => {
       });
       const data = await response.json();
       if (data.success) {
+        toast.success("گروه با موفقیت ایجاد شد.", {
+          style: {
+            direction: "rtl",
+            backgroundColor: "#10B981",
+            color: "white",
+          },
+        });
         setGroups([...groups, data.data.group]);
         setShowCreateModal(false);
         setNewGroup({ name: "", description: "", budget: 0 });
+      }else{
+        toast.error("خطا در ایجاد گروه.", {
+          style: {
+            direction: "rtl",
+            backgroundColor: "#EF4444",
+            color: "white",
+          },
+        });
       }
     } catch (error) {
       console.error("Error creating group:", error);
@@ -205,13 +220,13 @@ const GroupsPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-red-400 border-red-600 border-2 rounded-lg hover:bg-red-800"
+                  className="px-4 py-2 bg-red-400 text-gray-200  rounded-lg hover:bg-red-800"
                 >
                   لغو
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500"
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-500"
                 >
                   ساخت گروه
                 </button>

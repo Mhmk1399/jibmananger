@@ -115,7 +115,7 @@ const Plan: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-row p-6 max-w-4xl gap-2 mx-auto w-full" dir="rtl">
+      <div className="flex flex-row p-2 max-w-4xl gap-2 mx-auto w-full" dir="rtl">
         <TransactionChart 
           incomes={monthlyData.incomes} 
           outcomes={monthlyData.outcomes} 

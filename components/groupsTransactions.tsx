@@ -92,7 +92,7 @@ const GroupTransactions = ({
               onClick={() => setTransactionType("income")}
               className={`py-3 rounded-lg text-center ${
                 transactionType === "income"
-                  ? "bg-green-500 text-white"
+                  ? "bg-purple-500 text-white"
                   : "bg-transparent"
               }`}
             >
@@ -145,7 +145,7 @@ const GroupTransactions = ({
             whileTap={{ scale: 0.95 }}
             type="submit"
             className={`w-full py-4 rounded-lg text-white font-medium ${
-              transactionType === "income" ? "bg-green-500" : "bg-red-500"
+              transactionType === "income" ? "bg-purple-500" : "bg-red-500"
             }`}
           >
             ثبت تراکنش

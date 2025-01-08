@@ -29,7 +29,7 @@ export default function ManageCategories() {
         <motion.div
           initial={{ scale: 0.95 }}
           animate={{ scale: 1 }}
-          className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+          className="bg-purple-50 rounded-xl w-[90%] max-w-2xl h-[65vh] overflow-hidden"
         >
           <div className="flex justify-between items-center p-4 border-b">
             <h3 className="text-lg font-bold">افزودن دسته‌بندی جدید</h3>
@@ -112,7 +112,7 @@ export default function ManageCategories() {
   <h1 className="text-2xl font-bold text-gray-800">مدیریت دسته‌بندی‌ها</h1>
   <button
     onClick={() => setIsCategoryModalOpen(true)}
-    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+    className=" bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600"
   >
     افزودن+  
   </button>
@@ -165,13 +165,13 @@ export default function ManageCategories() {
 
       {/* Edit Modal */}
       {isEditModalOpen && editingCategory && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 ">
           <motion.div
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
-            className="bg-white rounded-xl p-6 w-full max-w-md"
+            className="bg-purple-50 rounded-xl p-6 w-full max-w-md"
           >
-            <h2 className="text-xl font-bold mb-4">ویرایش دسته‌بندی</h2>
+            <h2 className="text-xl font-bold mb-4 bg-purple-50">ویرایش دسته‌بندی</h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault()
@@ -195,14 +195,14 @@ export default function ManageCategories() {
               <div className="flex gap-2">
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                  className="flex-1 bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-700"
                 >
                   ذخیره
                 </button>
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300"
+                  className="flex-1 bg-red-300 text-gray-800 py-2 rounded-lg hover:bg-red-300"
                 >
                   انصراف
                 </button>

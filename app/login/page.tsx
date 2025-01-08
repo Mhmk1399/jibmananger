@@ -62,7 +62,7 @@ export default function LoginPage() {
       }
     } catch (err) {
       console.error(err);
-      setError("An error occurred during login");
+      setError("ورود به سیستم با مشکل مواجه شد");
     } finally {
       setLoading(false);
     }

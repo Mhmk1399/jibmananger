@@ -150,26 +150,26 @@ const TransactionChart: React.FC<TransactionChartProps> = ({
       <h2 className="text-xl font-bold mb-6 text-purple-500 text-center">
         نمودار تراکنش‌های مالی سال {currentJalaliYear}
       </h2>
-      <div className="min-w-[320px] h-[200px] md:h-[400px]">
+      <div className="min-w-[310px] h-[200px] md:h-[400px]">
         <Bar options={options} data={data} />
       </div>
       <div className="mt-4 grid grid-cols-2 gap-4" dir="rtl">
-        <div className="bg-green-500/80 p-4 rounded-lg">
+        <div className="bg-green-500/80 p-2 rounded-lg">
           <div className="flex items-center gap-2">
             <ArrowTrendingUpIcon className="w-5 h-5 text-green-100" />
             <p className="text-green-100 text-sm">مجموع دریافتی‌ها</p>
           </div>
-          <p className="text-white text-lg font-bold">
+          <p className="text-white text-md font-bold">
             {totalIncomes.toLocaleString()} تومان
           </p>
         </div>
 
-        <div className="bg-red-500/80 p-4 rounded-lg">
+        <div className="bg-red-500/80 p-2 rounded-lg">
           <div className="flex items-center gap-2">
             <ArrowTrendingDownIcon className="w-5 h-5 text-red-100" />
             <p className="text-red-100 text-sm">مجموع پرداختی‌ها</p>
           </div>
-          <p className="text-white text-lg font-bold">
+          <p className="text-white text-md font-bold">
             {totalOutcomes.toLocaleString()} تومان
           </p>
         </div>

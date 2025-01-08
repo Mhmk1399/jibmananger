@@ -73,11 +73,11 @@ const Page = () => {
  
 
   return (
-    <div className={`${rayBold.variable} font-ray  bg-white w-full mt-5 mb-20`} dir="rtl">
+    <div className={`${rayBold.variable} font-ray bg-purple-50 w-full pt-5 pb-20`} dir="rtl">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl lg:text-4xl font-bold text-gray-800 mb-2 lg:mb-10 text-center">افزودن گیرنده</h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white rounded-xl p-6">
+
+        <form onSubmit={handleSubmit} className="space-y-4 bg-purple-50 rounded-xl p-6">
           <div className="space-y-4">
           
 
@@ -110,7 +110,7 @@ const Page = () => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             type="submit"
-            className="w-full py-4 rounded-lg text-white font-medium shadow-lg bg-blue-500 hover:bg-blue-600 transition-colors"
+            className="w-full py-4 rounded-lg text-white font-medium shadow-lg bg-purple-500 hover:bg-purple-600 transition-colors"
           >
             ثبت اطلاعات بانکی
           </motion.button>
