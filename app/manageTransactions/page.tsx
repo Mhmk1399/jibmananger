@@ -112,7 +112,7 @@ export default function ManageTransactions() {
     return <LoadingComponent />;
   }
   return (
-    <div className="min-h-screen bg-gray-100 p-4 mb-24" dir="rtl">
+    <div className="min-h-screen bg-purple-50 p-4 mb-24" dir="rtl">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">
         مدیریت تراکنش‌ها
       </h1>
