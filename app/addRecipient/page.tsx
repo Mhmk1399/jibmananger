@@ -26,15 +26,39 @@ const Page = () => {
         body: JSON.stringify(formData)
       })
       if (response.ok) {
-        setFormData({
-          name: '',
-          phoneNumber: '',
+        toast.success('دسته‌بندی با موفقیت اضافه شد', {
+          style: {
+            direction: 'rtl',
+            backgroundColor: '#10B981',
+            color: 'white'
+          }
         })
-        toast.success('گیرنده با موفقیت اضافه شد')
+       setFormData({
+          name: '',
+          phoneNumber: ''
+        })
+      } else {
+        // Add this else block to handle non-ok responses
+        const errorData = await response.json()
+        toast.error(errorData.message || 'خطا در ثبت دسته‌بندی', {
+          style: {
+            direction: 'rtl',
+            backgroundColor: '#EF4444',
+            color: 'white'
+          }
+        })
       }
     } catch (error) {
-      console.log('Error adding recipient:', error)
-      toast.error('خطا در افزودن گیرنده')
+      // Improve error handling by showing the actual error
+      const errorMessage = error instanceof Error ? error.message : 'خطا در ثبت دسته‌بندی'
+      toast.error(errorMessage, {
+        style: {
+          direction: 'rtl',
+          backgroundColor: '#EF4444',
+          color: 'white'
+        }
+      })
+      console.error('Category creation error:', error)
     }
   }
 

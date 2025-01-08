@@ -12,7 +12,7 @@ import { toast } from 'react-hot-toast'
 const Page = () => {
   const [formData, setFormData] = useState({
     name: '',
-    accountBalance: '',
+    AccountBalance: 0, // Change to number type
     cardNumber: '',
     cvv2: '',
     expiryDate: '',
@@ -27,17 +27,25 @@ const Page = () => {
     // Detect bank
   }
 
-
+  // Add a specific handler for AccountBalance
+  const handleAccountBalanceChange = (value: string) => {
+    // Remove commas and convert to number
+    const numericValue = parseInt(value.replace(/,/g, '')) || 0
+    setFormData(prev => ({
+      ...prev,
+      AccountBalance: numericValue
+    }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     const cleanFormData = {
       ...formData,
-      accountBalance: formData.accountBalance.replace(/,/g, ''),
+      
+      AccountBalance: Number(formData.AccountBalance),
       cardNumber: formData.cardNumber.replace(/\s/g, '')
     }
-    console.log(cleanFormData);
 
     try {
       const response = await fetch('/api/banks', {
@@ -49,31 +57,43 @@ const Page = () => {
         body: JSON.stringify(cleanFormData)
       })
       if (response.ok) {
-        setFormData({
-          name: '',
-          accountBalance: '',
-          cardNumber: '',
-          cvv2: '',
-          expiryDate: '',
-          shabaNumber: '',
-        })
-        toast.success('بانک با موفقیت اضافه شد', {
+        toast.success('دسته‌بندی با موفقیت اضافه شد', {
           style: {
             direction: 'rtl',
             backgroundColor: '#10B981',
             color: 'white'
           }
         })
+          setFormData({
+          name: '',
+          AccountBalance: 0,
+          cardNumber: '',
+          cvv2: '',
+          expiryDate: '',
+          shabaNumber: ''
+        })
+      } else {
+        // Add this else block to handle non-ok responses
+        const errorData = await response.json()
+        toast.error(errorData.message || 'خطا در ثبت دسته‌بندی', {
+          style: {
+            direction: 'rtl',
+            backgroundColor: '#EF4444',
+            color: 'white'
+          }
+        })
       }
     } catch (error) {
-      console.error('Error adding bank:', error)
-      toast.error('خطا در ثبت بانک', {
+      // Improve error handling by showing the actual error
+      const errorMessage = error instanceof Error ? error.message : 'خطا در ثبت دسته‌بندی'
+      toast.error(errorMessage, {
         style: {
           direction: 'rtl',
           backgroundColor: '#EF4444',
           color: 'white'
         }
       })
+      console.error('Category creation error:', error)
     }
   }
 
@@ -82,14 +102,18 @@ const Page = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
 
-
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-
+    if (name === "AccountBalance") {
+      // Remove any non-digit characters except commas
+      const cleanValue = value.replace(/[^\d,]/g, '');
+      handleAccountBalanceChange(cleanValue);
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   }
-  // Add this function before the return statement
+
   const handleExpiryDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '')
     if (value.length <= 4) {
@@ -120,11 +144,11 @@ const Page = () => {
             />
 
             <div className="relative lg:mt-4">
-              < PriceInput
-                value={formData.accountBalance}
-                onChange={handleInputChange}
-                name="موجودی حساب"
-              />
+            <PriceInput
+              value={formData.AccountBalance.toString()}
+              onChange={(e) => handleAccountBalanceChange(e.target.value)}
+              name="موجودی حساب"
+            />
 
             </div>
 
@@ -183,5 +207,4 @@ const Page = () => {
     </div>
   )
 }
-
 export default Page;

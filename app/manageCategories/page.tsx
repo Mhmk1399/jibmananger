@@ -14,7 +14,35 @@ export default function ManageCategories() {
   const [categories, setCategories] = useState<Category[]>([])
   const [editingCategory, setEditingCategory] = useState<Category | null>(null)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
+  const CategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+      >
+        <motion.div
+          initial={{ scale: 0.95 }}
+          animate={{ scale: 1 }}
+          className="bg-white rounded-xl w-[90%] max-w-2xl h-[80vh] overflow-hidden"
+        >
+          <div className="flex justify-between items-center p-4 border-b">
+            <h3 className="text-lg font-bold">افزودن دسته‌بندی جدید</h3>
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+              ✕
+            </button>
+          </div>
+          <iframe src="/addCategory" className="w-full h-[calc(100%-60px)]" />
+        </motion.div>
+      </motion.div>
+    );
+  };
+  
   useEffect(() => {
     fetchCategories()
   }, [])
@@ -80,7 +108,21 @@ export default function ManageCategories() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 mb-24" dir="rtl">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">مدیریت دسته‌بندی‌ها</h1>
+<div className="flex justify-between items-center mb-6">
+  <h1 className="text-2xl font-bold text-gray-800">مدیریت دسته‌بندی‌ها</h1>
+  <button
+    onClick={() => setIsCategoryModalOpen(true)}
+    className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+  >
+    افزودن+  
+  </button>
+</div>
+<CategoryModal
+  isOpen={isCategoryModalOpen}
+  onClose={() => {setIsCategoryModalOpen(false)
+    fetchCategories()
+  }}
+/>
 
       <div className="grid grid-cols-1 gap-4">
         {categories.map((category) => (

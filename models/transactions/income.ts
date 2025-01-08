@@ -31,7 +31,7 @@ const incomeSchema = new mongoose.Schema({
     },
     bank: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Bank",
+        ref: "bank",
         required: false,
     }
 

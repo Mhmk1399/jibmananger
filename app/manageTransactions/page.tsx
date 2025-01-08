@@ -82,7 +82,7 @@ export default function ManageTransactions() {
 
   const handleUpdate = async (transaction: Transaction) => {
     try {
-      const response = await fetch(`/api/transactions/${transactionType}s`, {
+      const response = await fetch(`/api/transactions/${transactionType}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

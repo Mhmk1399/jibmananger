@@ -12,7 +12,7 @@ const Page = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+      
     try {
       const response = await fetch('/api/categories', {
         method: 'POST',
@@ -22,7 +22,7 @@ const Page = () => {
         },
         body: JSON.stringify(formData)
       })
-
+  
       if (response.ok) {
         toast.success('دسته‌بندی با موفقیت اضافه شد', {
           style: {
@@ -35,18 +35,31 @@ const Page = () => {
           name: '',
           color: '#000000'
         })
+      } else {
+        // Add this else block to handle non-ok responses
+        const errorData = await response.json()
+        toast.error(errorData.message || 'خطا در ثبت دسته‌بندی', {
+          style: {
+            direction: 'rtl',
+            backgroundColor: '#EF4444',
+            color: 'white'
+          }
+        })
       }
     } catch (error) {
-      console.log(error)
-      toast.error('خطا در ثبت دسته‌بندی', {
+      // Improve error handling by showing the actual error
+      const errorMessage = error instanceof Error ? error.message : 'خطا در ثبت دسته‌بندی'+error
+      toast.error(errorMessage, {
         style: {
           direction: 'rtl',
           backgroundColor: '#EF4444',
           color: 'white'
         }
       })
+      console.error('Category creation error:', error)
     }
   }
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target

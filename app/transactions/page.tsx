@@ -169,6 +169,7 @@ const Page = () => {
     
       // Convert amount string "1,234,567" to number 1234567
       const numericAmount = Number(formData.amount.replace(/,/g, ''));
+console.log(formData.bankAccount);
 
       const transactionData = {
         amount: numericAmount,
@@ -176,7 +177,7 @@ const Page = () => {
         category: formData.category._id,
         date: new Date(),
         recipient: formData.recipient._id, // Send full recipient object
-       
+        bank: formData.bankAccount._id, // Send full bank object
         image: formData.image
       };
       console.log('transactionData', transactionData);
