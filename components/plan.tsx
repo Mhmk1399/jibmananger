@@ -1,8 +1,60 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import TransactionList from "../components/transactionList";
 import TransactionChart from "./circle";
 import moment from "moment-jalaali";
+interface Transaction {
+  amount: number;
+  description: string;
+  category?: {
+    name: string;
+    color: string;
+  }
+  date: Date;
+  user:{
+    _id: string;
+    name: string;
+    phoneNumber: string;
+    email: string;
+    password: string;
+    profilePicture: string;
+    birthdate: string;
+    gender: string;
+    address: string;
+    postalCode: string;
+    city: string;
+    state: string;
+    country: string;
+    bank: {
+      _id: string;
+      name: string;
+      cardNumber: string;
+      cvv2: string;
+      expiryDate: string;
+      shabaNumber: string;
+      AccountBalance: number;
+    }
+    recipient: {
+      _id: string;
+      name: string;
+      phoneNumber: string;
+    }
+  }
+  recipient?: {
+    _id: string;
+    name: string;
+    phoneNumber: string;
+  }
+  bank?: {
+    _id: string;
+    name: string;
+    cardNumber: string;
+    cvv2: string;
+    expiryDate: string;
+    shabaNumber: string;
+    AccountBalance: number;
+  }
+}
 
 const Plan: React.FC = () => {
   const [monthlyData, setMonthlyData] = useState({
@@ -10,19 +62,20 @@ const Plan: React.FC = () => {
     outcomes: Array(12).fill(0)
   });
 
-  const processTransactions = (transactions: any[], type: string) => {
+  const processTransactions = (transactions: Transaction[], type: string) => {
     const monthlyTotals = Array(12).fill(0);
+    console.log(type);
     
     transactions.forEach(transaction => {
       const jalaliDate = moment(transaction.date);
       const month = jalaliDate.jMonth();
       monthlyTotals[month] += transaction.amount;
     });
-    
+      
     return monthlyTotals;
   };
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     try {
       const [incomesResponse, outcomesResponse] = await Promise.all([
         fetch('/api/transactions/incomes', {
@@ -36,27 +89,29 @@ const Plan: React.FC = () => {
           },
         })
       ]);
-
+  
       if (!incomesResponse.ok || !outcomesResponse.ok) {
         throw new Error('Failed to fetch transactions');
       }
-
+  
       const incomesData = await incomesResponse.json();
       const outcomesData = await outcomesResponse.json();
-
+  
       setMonthlyData({
-        incomes: processTransactions(incomesData, 'income'),
-        outcomes: processTransactions(outcomesData, 'outcome')
+        incomes: processTransactions(incomesData, 'incomes'),
+        outcomes: processTransactions(outcomesData, 'outcomes')
       });
-
+  
     } catch (error) {
       console.error("Error fetching transactions:", error);
     }
-  };
+  }, []);
+  
 
   useEffect(() => {
     fetchTransactions();
-  }, []);
+  }, [fetchTransactions]);
+  
 
   return (
     <>

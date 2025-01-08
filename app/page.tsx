@@ -1,5 +1,4 @@
 "use client";
-import TransactionChart from "@/components/circle";
 import Plan from "@/components/plan";
 import Welcome from "@/components/welcome";
 import { useEffect } from "react";
