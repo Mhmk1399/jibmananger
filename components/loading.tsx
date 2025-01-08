@@ -23,10 +23,13 @@ const LoadingComponent = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <h2 className="text-2xl font-bold text-emerald-700 animate-pulse">
-            در حال بارگذاری...
+          <h2
+            className="text-2xl font-bold text-purple-700 animate-pulse"
+            dir="rtl"
+          >
+            در حال بارگذاری ...
           </h2>
-          <p className="text-emerald-600 mt-2">لطفاً چند لحظه صبر کنید</p>
+          <p className="text-purple-600 mt-2">لطفاً چند لحظه صبر کنید</p>
         </div>
       </div>
     </div>
