@@ -57,7 +57,13 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (pathname !== "/login" && pathname !== "/register") {
+    if (
+      pathname === "/login" ||
+      pathname === "/register" ||
+      pathname === "/addCard" ||
+      pathname === "/addCategory" ||
+      pathname === "/addRecipient"
+    ) {
       setMounted(true);
       const timer = setInterval(() => {
         setCurrentDateTime(new Date());
@@ -68,7 +74,13 @@ const Profile = () => {
   }, [pathname]);
 
   useEffect(() => {
-    if (pathname !== "/login" && pathname !== "/register") {
+    if (
+      pathname !== "/login" &&
+      pathname !== "/register" &&
+      pathname !== "/addCard" &&
+      pathname !== "/addCategory" &&
+      pathname !== "/addRecipient"
+    ) {
       const handleClickOutside = (event: MouseEvent) => {
         if (
           dropdownRef.current &&
@@ -79,11 +91,18 @@ const Profile = () => {
       };
 
       document.addEventListener("mousedown", handleClickOutside);
-      return () => document.removeEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [pathname]);
 
-  if (pathname === "/login" || pathname === "/register") {
+  if (
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/addCard" ||
+    pathname === "/addCategory" ||
+    pathname === "/addRecipient"
+  ) {
     return null;
   }
   const dropdownVariants = {
