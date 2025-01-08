@@ -1,6 +1,6 @@
 const LoadingComponent = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-50 to-purple-100">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-50 to-purple-200">
       <div className="relative">
         {/* Animated dollar bills stack */}
         <div className="flex items-center">

@@ -18,8 +18,7 @@ const Footer = () => {
 
   return (
     <>
-     
-      <div className="fixed bottom-0 inset-x-0 mx-4   p-3 px-6 m-0   flex items-center justify-between   backdrop-blur-sm bg-purple-500/30  border border-solid border-purple-500/90  mb-8  shadow-3xl text-gray-400 rounded-2xl cursor-pointer">
+      <div className="fixed bottom-0 inset-x-0 mx-4   p-3 px-6 m-0   flex items-center justify-between   backdrop-blur-sm bg-purple-500/30  border-2 border-solid border-purple-700/50  mb-8  shadow-3xl text-gray-400 rounded-2xl cursor-pointer">
         <div className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
           <Link href="/">
             <svg
@@ -116,7 +115,6 @@ const Footer = () => {
             <Link href="/transactions">
               <Plus />
             </Link>
-
           </div>
         </div>
 
