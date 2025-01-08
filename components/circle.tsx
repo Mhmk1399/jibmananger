@@ -4,7 +4,7 @@ import {
   ArrowTrendingUpIcon,
   ArrowTrendingDownIcon,
 } from "@heroicons/react/24/outline";
-
+import moment from "moment-jalaali";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,17 +26,32 @@ ChartJS.register(
   Legend
 );
 
-// interface TransactionChartProps {
-//   incomes: Transaction[];
-//   outcomes: Transaction[];
-// }
+interface TransactionChartProps {
+  incomes: number[];
+  outcomes: number[];
+}
 
-const TransactionChart: React.FC = (
-  {
-    // incomes,
-    // outcomes,
-  }
-) => {
+const persianMonths = [
+  "فروردین",
+  "اردیبهشت",
+  "خرداد",
+  "تیر",
+  "مرداد",
+  "شهریور",
+  "مهر",
+  "آبان",
+  "آذر",
+  "دی",
+  "بهمن",
+  "اسفند",
+];
+
+const TransactionChart: React.FC<TransactionChartProps> = ({
+  incomes,
+  outcomes,
+}) => {
+  const currentJalaliYear = moment().jYear();
+
   const options = {
     responsive: true,
     interaction: {
@@ -54,11 +69,22 @@ const TransactionChart: React.FC = (
       },
       tooltip: {
         callbacks: {
-          label: function (context: TooltipItem<'bar'>) {
+          label: function (context: TooltipItem<"bar">) {
             return `${
               context.dataset.label
             }: ${context.parsed.y.toLocaleString()} تومان`;
           },
+          title: function (tooltipItems: TooltipItem<"bar">[]) {
+            const monthIndex = tooltipItems[0].dataIndex;
+            return `${persianMonths[monthIndex]} ${currentJalaliYear}`;
+          },
+        },
+      },
+      zoom: {
+        zoom: {
+          wheel: { enabled: true },
+          pinch: { enabled: true },
+          mode: "xy",
         },
       },
     },
@@ -67,22 +93,32 @@ const TransactionChart: React.FC = (
         grid: {
           display: false,
         },
+        ticks: {
+          font: {
+            family: "Vazirmatn",
+          },
+        },
       },
       y: {
         beginAtZero: true,
         grid: {
           color: "rgba(0, 0, 0, 0.1)",
         },
+        ticks: {
+          callback: function (tickValue: string | number) {
+            return Number(tickValue).toLocaleString() + " تومان";
+          },
+        },
       },
     },
   };
 
   const data = {
-    labels: ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور"],
+    labels: persianMonths,
     datasets: [
       {
         label: "دریافتی",
-        data: [65000, 78000, 90000, 81000, 86000, 95000],
+        data: incomes,
         backgroundColor: "rgba(34, 197, 94, 0.6)",
         borderColor: "rgb(34, 197, 94)",
         borderWidth: 1,
@@ -91,7 +127,7 @@ const TransactionChart: React.FC = (
       },
       {
         label: "پرداختی",
-        data: [45000, 59000, 80000, 81000, 56000, 75000],
+        data: outcomes,
         backgroundColor: "rgba(239, 68, 68, 0.6)",
         borderColor: "rgb(239, 68, 68)",
         borderWidth: 1,
@@ -101,17 +137,20 @@ const TransactionChart: React.FC = (
     ],
   };
 
+  const totalIncomes = incomes.reduce((sum, value) => sum + value, 0);
+  const totalOutcomes = outcomes.reduce((sum, value) => sum + value, 0);
+
   return (
     <motion.div
-      className="w-full p-6 bg-white/10 backdrop-blur-lg mt-8 rounded-2xl shadow-xl"
+      className="w-full lg:p-6 p-3 overflow-x-auto touch-pan-x bg-white/10 backdrop-blur-lg mt-8 rounded-2xl shadow-xl"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
       <h2 className="text-xl font-bold mb-6 text-purple-500 text-center">
-        نمودار تراکنش‌های مالی
+        نمودار تراکنش‌های مالی سال {currentJalaliYear}
       </h2>
-      <div className="p-4">
+      <div className="min-w-[320px] h-[200px] md:h-[400px]">
         <Bar options={options} data={data} />
       </div>
       <div className="mt-4 grid grid-cols-2 gap-4" dir="rtl">
@@ -120,7 +159,9 @@ const TransactionChart: React.FC = (
             <ArrowTrendingUpIcon className="w-5 h-5 text-green-100" />
             <p className="text-green-100 text-sm">مجموع دریافتی‌ها</p>
           </div>
-          <p className="text-white text-lg font-bold">495,000 تومان</p>
+          <p className="text-white text-lg font-bold">
+            {totalIncomes.toLocaleString()} تومان
+          </p>
         </div>
 
         <div className="bg-red-500/80 p-4 rounded-lg">
@@ -128,7 +169,9 @@ const TransactionChart: React.FC = (
             <ArrowTrendingDownIcon className="w-5 h-5 text-red-100" />
             <p className="text-red-100 text-sm">مجموع پرداختی‌ها</p>
           </div>
-          <p className="text-white text-lg font-bold">396,000 تومان</p>
+          <p className="text-white text-lg font-bold">
+            {totalOutcomes.toLocaleString()} تومان
+          </p>
         </div>
       </div>
     </motion.div>

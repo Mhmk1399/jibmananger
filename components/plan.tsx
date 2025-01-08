@@ -1,83 +1,70 @@
 "use client";
-// import { motion } from "framer-motion";
-// import { useState } from "react";
+import { useEffect, useState } from "react";
 import TransactionList from "../components/transactionList";
-// import {
-//   ArrowTrendingUpIcon,
-//   ArrowTrendingDownIcon,
-// } from "@heroicons/react/24/outline";
+import TransactionChart from "./circle";
+import moment from "moment-jalaali";
 
 const Plan: React.FC = () => {
-  // const scrollToList = (type: "income" | "outcome") => {
-  //   document.getElementById(`${type}-list`)?.scrollIntoView({
-  //     behavior: "smooth",
-  //   });
-  // };
+  const [monthlyData, setMonthlyData] = useState({
+    incomes: Array(12).fill(0),
+    outcomes: Array(12).fill(0)
+  });
+
+  const processTransactions = (transactions: any[], type: string) => {
+    const monthlyTotals = Array(12).fill(0);
+    
+    transactions.forEach(transaction => {
+      const jalaliDate = moment(transaction.date);
+      const month = jalaliDate.jMonth();
+      monthlyTotals[month] += transaction.amount;
+    });
+    
+    return monthlyTotals;
+  };
+
+  const fetchTransactions = async () => {
+    try {
+      const [incomesResponse, outcomesResponse] = await Promise.all([
+        fetch('/api/transactions/incomes', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }),
+        fetch('/api/transactions/outcomes', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+      ]);
+
+      if (!incomesResponse.ok || !outcomesResponse.ok) {
+        throw new Error('Failed to fetch transactions');
+      }
+
+      const incomesData = await incomesResponse.json();
+      const outcomesData = await outcomesResponse.json();
+
+      setMonthlyData({
+        incomes: processTransactions(incomesData, 'income'),
+        outcomes: processTransactions(outcomesData, 'outcome')
+      });
+
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
+
   return (
     <>
-      <div
-        className="flex flex-row p-6 max-w-xl gap-2 mx-auto w-full"
-        dir="rtl"
-      >
-        {/* <motion.div
-          className="flex-1 bg-gradient-to-br from-green-500 w-[25%] to-white-100 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
-          whileHover={{ scale: 1.02 }}
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          onClick={() => scrollToList("income")}
-        >
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-emerald-500 rounded-full group-hover:bg-emerald-600 transition-colors">
-              <ArrowTrendingUpIcon className="w-4 h-4 text-gray-100" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800">دریافتی</h3>
-              <p className="text-lg font-bold text-white">6,240.00</p>
-            </div>
-          </div>
-          <div className="mt-4">
-            <div className="h-2 bg-emerald-200 rounded-full">
-              <motion.div
-                className="h-full bg-emerald-500 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: "70%" }}
-                transition={{ duration: 1, delay: 0.2 }}
-              />
-            </div>
-            <p className="mt-2 text-sm text-gray-600">70% از بودجه ماهیانه</p>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="flex-1 bg-gradient-to-br from-[#ff758f]  to-red-100 p-4  w-[50%] rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer group"
-          whileHover={{ scale: 1.02 }}
-          initial={{ opacity: 0, y: 0 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          onClick={() => scrollToList("outcome")}
-        >
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-rose-500 rounded-full group-hover:bg-rose-600 transition-colors">
-              <ArrowTrendingDownIcon className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800">پرداختی</h3>
-              <p className="text-lg font-bold text-gray-100">3,240.00</p>
-            </div>
-          </div>
-          <div className="mt-4">
-            <div className="h-2 bg-rose-200 rounded-full">
-              <motion.div
-                className="h-full bg-rose-500 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: "45%" }}
-                transition={{ duration: 1, delay: 0.4 }}
-              />
-            </div>
-            <p className="mt-2 text-sm text-gray-600">45% از بودجه ماهیانه</p>
-          </div>
-        </motion.div> */}
+      <div className="flex flex-row p-6 max-w-4xl gap-2 mx-auto w-full" dir="rtl">
+        <TransactionChart 
+          incomes={monthlyData.incomes} 
+          outcomes={monthlyData.outcomes} 
+        />
       </div>
       <div className="space-y-4">
         <div id="income-list">
