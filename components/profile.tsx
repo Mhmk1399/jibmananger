@@ -289,7 +289,6 @@ const Profile = () => {
               day: "numeric",
               hour: "2-digit",
               minute: "2-digit",
-              //   second: '2-digit',
             }).format(currentDateTime)
           : null}
       </div>
@@ -300,7 +299,6 @@ const Profile = () => {
       <LogoutModal
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}
-        // onConfirm={() => {}}
       />
     </section>
   );
